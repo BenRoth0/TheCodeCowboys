@@ -10,8 +10,8 @@ _See the contributors file for more details_
 ## Project Overview:
 This repository contains the code and documentation for our senior project at Western Oregon University for the 2024-2025 school year. Currently, the project concept is undecided, so below there are several project ideas that we are currently considering.
 
-## Project Idea: 
-- **Project Idea #1:** Turn-based mad lib style adventure browser game that generates enemies and story items using an AI API.
+## Concept: 
+- Turn-based mad lib style adventure browser game that generates enemies and story items using an AI API.
 - **Mind Map Link:** https://miro.com/app/board/uXjVLuRwYso=/?share_link_id=202072063563
 
 ## Technologies Used:
