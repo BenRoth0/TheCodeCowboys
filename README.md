@@ -1,7 +1,7 @@
 # The Code Cowboys - Senior Project
 
 ## Concept: 
-In this turn-based mad-lib style adventure browser game, the story is simple, you are an adventurer tasked with working their way through 10 dangerous levels from eerie dungeons to vast forests. Along the way, the player will discover items and monsters. What the player may find cannot be described in any greater detail because it doesn't exist yet! Instead, the player will be asked to provide adjectives to contribute to the item or creature's name. Before encounters the player will receive a window to enter their modifications to the monster ahead. With a small prompt like The ____ Centaur of ____ it is up to the player to decide what their adversary will look like. These creatures and items will then come to life with the help of AI image generation. The player must use the items they find to defeat the monsters that stand in their way on their path to victory. Ditch the roleplaying, and embark on a journey filled with... well, whatever you can think of!
+In this turn-based mad-lib style adventure browser game, the story is simple, you are an adventurer tasked with working their way through 10 dangerous levels from eerie dungeons to vast forests. Along the way, the player will discover items and monsters. What the player may find cannot be described in any greater detail because it doesn't exist yet! Instead, the player will be asked to provide adjectives to contribute to the item or creature's name. These creatures and items will then come to life with the help of AI image generation. The player must use the items they find to defeat the monsters that stand in their way on their path to victory. Ditch the roleplaying, and embark on a journey filled with... well, whatever you can think of!
 
 ## Vision Statement:
 Coming soon!
@@ -9,9 +9,6 @@ Coming soon!
 ## Project Planning:
 - **Mind Map Link:** https://miro.com/app/board/uXjVLuRwYso=/?share_link_id=202072063563
 - **Initial Architecture Diagram:** [Insert Link Here]
-
-## Meet the Team:
-We are The Code Cowboys, a rag-tag group of software engineers from Western Oregon University.
 
 ## Technologies Used:
 - **Visual Studio 2022**
@@ -28,6 +25,9 @@ We are The Code Cowboys, a rag-tag group of software engineers from Western Oreg
 
 ## Database Setup:
 1. Instructions coming soon!
+
+## Meet the Team:
+We are The Code Cowboys, a rag-tag group of software engineers from Western Oregon University.
 
 Our crew consists of just three members: 
 - Ben Roth
