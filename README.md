@@ -10,10 +10,11 @@ to the monsters you fight, the player, and the items you receive as rewards. For
 of blank that has +2 speed and -2 defense, the player could name it accordingly to the Brittle Helmet of Swiftness. The main goal
 will be to complete a series of levels without being defeated by the monsters. Players will be able to navigate through the levels
 and choose which location they move to next (a campsite to heal, an event space to trigger a random effect, etc.). The main purpose
-of our game is for entertainment. It will be fun and hilarious to see the outcomes of what the player types. We proposed this topic
-as each of our team members are interested in game design and we feel that this will help us further our skills in multiple areas.
-As far as we are aware, there aren't any existing games or websites that do exactly what we are planning to do. We aim to provide 
-a unique experience to anyone who plays our game.
+of our game is to entertain players for a short time. The game will be easy to pick up and play whenever you have downtime. It will 
+be fun and hilarious to see the outcomes of what the player types. We proposed this topic as each of our team members are interested 
+in game design and we feel that this will help us further our skills in multiple areas. As far as we are aware, there aren't any 
+existing games or websites that do exactly what we are planning to do. We aim to provide a unique experience to anyone who plays 
+our game.
 
 ## Project Planning:
 - **Mind Map Link:** https://miro.com/app/board/uXjVLuRwYso=/?share_link_id=202072063563
