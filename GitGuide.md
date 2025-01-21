@@ -8,7 +8,7 @@ To remedy this, run the following command:
 ```bash
 git config --global pull.ff true # Pull will now fast forward if possible, and if not, it will create a merge commit.
 ```
-### Get Changes From official/dev into origin/dev:
+### Get Changes From official/dev into origin/dev
 Before you can get any changes made to official/dev into our feature branch, you need to update your origin/dev branch.
 ```bash
 git checkout dev
