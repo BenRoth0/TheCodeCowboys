@@ -40,7 +40,7 @@ Here's a visual: [Initial Architecture Diagram](https://miro.com/app/board/uXjVL
 1. Instructions coming soon!
 
 ## How to Contribute
-See our [Official Code Cowboys Git Workflow Guide](GitGuide.md)
+See our [Git Workflow Guide](GitGuide.md)
 
 ## Meet the Team
 We are The Code Cowboys, a rag-tag group of software engineers from Western Oregon University.
