@@ -31,7 +31,7 @@ Job: Software Engineer at a tech startup
 Background:
 Emma grew up in a family of avid gamers and was introduced to gaming through LAN parties with her older siblings. She enjoys story-driven RPGs, strategy games, and cooperative multiplayer experiences. As a software engineer, Emma has an analytical mindset and is drawn to games with intricate mechanics and puzzles.
 Image:
-![Emma](Stakeholders/Emma.png)
+![Emma](Emma.png)
 
 Persona 2: Carlos Mendoza
 Hometown: Bogotá, Colombia
@@ -40,7 +40,7 @@ Job: University student studying mechanical engineering
 Background:
 Carlos grew up in a bustling urban area and was introduced to gaming through mobile devices before moving to consoles and PCs. He has a particular passion for racing games, first-person shooters, and esports. Carlos competes in local gaming tournaments and dreams of becoming a professional esports player.
 Image:
-![Carlos](Stakeholders/Carlos.png)
+![Carlos](Carlos.png)
 
 Persona 3: Aisha Patel
 Hometown: Mumbai, India
@@ -49,4 +49,4 @@ Job: Freelance Graphic Designer
 Background:
 Aisha discovered gaming as a form of relaxation during long working hours as a designer. She gravitates toward visually stunning games, simulations, and sandbox-style experiences where creativity can flourish. Aisha also enjoys casual games that she can play in short bursts between client meetings.
 Image:
-![Aisha](Stakeholders/Aisha.png)
+![Aisha](Aisha.png)
