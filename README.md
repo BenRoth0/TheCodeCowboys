@@ -17,7 +17,7 @@ Our core mission is to provide players with a burst of entertainment during thei
 
 ### Schedule
 - Here is our current [release plan](Timeline.md) for this project.
-- For contributors' sake, this is our [team schedule](CCMeetingSchedule.pdf). We are most active around these times
+- For contributors' sake, this is our [team schedule](CCMeetingSchedule.md). We are most active around these times
 
 ## Technologies Used
 - **Visual Studio 2022**
