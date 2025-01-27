@@ -10,6 +10,8 @@ Our core mission is to provide players with a burst of entertainment during thei
 ## Project Planning
 - **Mind Map Link:** https://miro.com/app/board/uXjVLuRwYso=/?share_link_id=202072063563
 - **Initial Architecture Diagram:** https://miro.com/app/board/uXjVLrvqidE=/?share_link_id=902737233623
+- **Use Case and Entity Relationship Diagrams:** https://miro.com/app/board/uXjVLo-psaQ=/?share_link_id=391054770022
+- **UI WireFrames:** https://miro.com/app/board/uXjVLqHPPpU=/?share_link_id=345192680522
 
 ## Technologies Used
 - **Visual Studio 2022**
