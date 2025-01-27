@@ -27,7 +27,7 @@ Code Cowboys Needs and Features List
 - Map navigation to choose the next destination
 - Various destinations to pick from (campsites to heal, event spaces for random effects, monster battles, boss monster battles)
 - Multiple levels that scale up the difficulty as the player progresses
-- Player input that affects the game in various ways (monster stats and visuals, item stats and visuals) (Still discussing how this will work exactly)
+- Player input that affects monster and item visuals
 
 ## Misc. and Optional Features:
 - Tutorial
