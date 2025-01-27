@@ -8,10 +8,16 @@ For example, you may find a ______ (-2 defense) Helmet of ______ (+2 speed). You
 Our core mission is to provide players with a burst of entertainment during their downtime. Designed to be effortlessly accessible, our game invites players to jump in and enjoy instantly. The game's charm lies in its unpredictability, delivering hilarious and engaging outcomes based on player input. This project stems from our collective passion for game design and our desire to enhance our programming and design skills. We believe our game offers a unique experience that sets it apart from anything currently available.
 
 ## Project Planning
+
+### Visuals
 - **Mind Map Link:** https://miro.com/app/board/uXjVLuRwYso=/?share_link_id=202072063563
 - **Initial Architecture Diagram:** https://miro.com/app/board/uXjVLrvqidE=/?share_link_id=902737233623
 - **Use Case and Entity Relationship Diagrams:** https://miro.com/app/board/uXjVLo-psaQ=/?share_link_id=391054770022
 - **UI WireFrames:** https://miro.com/app/board/uXjVLqHPPpU=/?share_link_id=345192680522
+
+### Schedule
+- Here is our current [release plan](Timeline.md) for this project.
+- For contributors' sake, this is our [team schedule](CCMeetingSchedule.pdf). We are most active around these times
 
 ## Technologies Used
 - **Visual Studio 2022**
