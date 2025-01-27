@@ -24,7 +24,7 @@ Chris Brooks: Chris has a stake because he is spending time meeting with us and 
 
 # Personas
 
-Persona 1: Emma Reynolds
+## Persona 1: Emma Reynolds
 
 Hometown: Austin, Texas, USA
 
@@ -36,7 +36,7 @@ Background: Emma grew up in a family of avid gamers and was introduced to gaming
 
 ![Emma](Emma.png)
 
-Persona 2: Carlos Mendoza
+## Persona 2: Carlos Mendoza
 
 Hometown: Bogotá, Colombia
 
@@ -48,7 +48,7 @@ Background: Carlos grew up in a bustling urban area and was introduced to gaming
 
 ![Carlos](Carlos.png)
 
-Persona 3: Aisha Patel
+## Persona 3: Aisha Patel
 
 Hometown: Mumbai, India
 
