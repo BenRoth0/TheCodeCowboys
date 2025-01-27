@@ -14,17 +14,16 @@ After selecting yes, the player sees this prompt
 Inside the chest, you find a _____ (-2 defense) Helmet of ______ (+2 speed)!
 ```
 
-The player names the item accordingly, then receives the following item
+After naming the item accordingly, the player receives:
 
 <table>
   <tr>
     <td>
          <img src="BusinessDocs/Miscellaneous/TheBrittleHelmetOfSwiftness.png">
+         <p><b> The Brittle Helmet of Swiftness </b></p>
     </td>
   </tr>
 </table>
-
-**The Brittle Helmet of Swiftness** 
 
 ## The player encounters an enemy
 
@@ -40,8 +39,7 @@ The player has a sense of humor and now, after filling in the blanks, must fight
   <tr>
     <td>
          <img src="BusinessDocs/Miscellaneous/LazyDrunkOrc.png">
+         <p><b> A Lazy Drunk Orc </b></p>
     </td>
   </tr>
 </table>
-
-**A Lazy Drunk Orc**
