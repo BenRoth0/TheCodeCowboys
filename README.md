@@ -48,5 +48,6 @@ Our crew consists of just three members:
 - Ben Roth
 - Kaleb Lindon
 - Kyle Blair
+- Jose Fernandez
 
 Learn more about each of us [here](CONTRIBUTORS.md)
