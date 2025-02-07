@@ -18,4 +18,8 @@
     <Folder Include="Support\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PromptQuest\PromptQuest.csproj" />
+  </ItemGroup>
+
 </Project>
