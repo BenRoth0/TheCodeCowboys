@@ -9,7 +9,6 @@ namespace PromptQuest.Controllers
  
     public class GameController: Controller
     {
-        private PlayerModel _player;
         private readonly ILogger<GameController> _logger;
         public GameController(ILogger<GameController> logger)
         {
