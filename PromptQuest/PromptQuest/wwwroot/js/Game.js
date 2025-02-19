@@ -142,7 +142,7 @@
 			document.getElementById("enemy-image").src = enemy.imageUrl;
 			document.getElementById("enemy-image").alt = enemy.name;
 			document.getElementById("enemy-hp").textContent = enemy.currentHealth + "/" + enemy.maxHealth + " HP";
-			document.getElementById("enemy-attack").textContent = enemy.attack+"";
+			document.getElementById("enemy-attack").textContent = enemy.attack;
 
 			return enemy;
 		} catch (error) {
