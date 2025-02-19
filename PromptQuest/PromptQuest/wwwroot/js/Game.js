@@ -17,7 +17,7 @@
 			playerAttack: parseInt(document.querySelector("[data-player-attack]").getAttribute("data-player-attack")),
 			enemyName: enemy.name,
 			enemyHealth: enemy.currentHealth,
-			enemyAttack: enemy.attack
+			enemyAttack: enemy.attack,
 			enemyMaxHealth: enemy.maxHealth,
 			enemyDefense: enemy.defense
 		};
@@ -153,7 +153,7 @@
 			document.getElementById("enemy-image").alt = enemy.name;
 			document.getElementById("enemy-hp").textContent = enemy.currentHealth + "/" + enemy.maxHealth + " HP";
 			document.getElementById("enemy-attack").textContent = enemy.attack;
-
+			document.getElementById("enemy-defense").textContent = enemy.defense;
 			return enemy;
 		} catch (error) {
 			console.error("Error loading enemy:", error);
