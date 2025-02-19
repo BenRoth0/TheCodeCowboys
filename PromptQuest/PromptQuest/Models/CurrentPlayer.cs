@@ -2,7 +2,7 @@
 {
 	public static class CurrentPlayer
 	{
-		public static PlayerModel _player = new PlayerModel { Name = "Test Player", MaxHealth = 10, CurrentHealth = 10 };
+		public static PlayerModel _player;
 
 		public static void SetPlayer(PlayerModel player) 
 		{
