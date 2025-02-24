@@ -1,3 +1,7 @@
+@{
+	ViewData["Title"] = "Game";
+}
+
 <div class="container-fluid BackgroundColorDark text-center">
 	<!--Dialog box row-->
 	<div class="row justify-content-center" style="margin-top:20vh;">
@@ -62,5 +66,12 @@
 	</div>
 
 </div>
+
+<script>
+	history.pushState(null, null, window.location.href);
+	window.onpopstate = function() {
+			history.go(1);
+	};
+</script>
 
 <script src="~/js/Game.js"></script>

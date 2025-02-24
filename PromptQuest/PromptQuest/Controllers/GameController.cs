@@ -1,16 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using PromptQuest.Models;
 using PromptQuest.Services;
-using System;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace PromptQuest.Controllers {
 
 	public class GameController:Controller {
 		private readonly ILogger<GameController> _logger;
-		private readonly GameService _gameService;
-		public GameController(ILogger<GameController> logger,GameService gameService) {
+		private readonly IGameService _gameService;
+		public GameController(ILogger<GameController> logger, IGameService gameService) {
 			_logger = logger;
 			_gameService = gameService;
 		}
@@ -21,16 +18,16 @@ namespace PromptQuest.Controllers {
 		}
 
 		[HttpPost]
-		public IActionResult CreateCharacter(PlayerModel player) {
+		public IActionResult CreateCharacter(Player player) {
 			// Default stats for now.
 			player.MaxHealth = 10;
 			player.CurrentHealth = 10;
 			player.HealthPotions = 2;
 			player.Attack = 1;
-			if(ModelState.IsValid) {// Character created succesfully
-				_gameService.UpdatePlayer(player);// Add player to the game state.
-				// Start combat right away, for now.
-				_gameService.StartCombat();
+			if(ModelState.IsValid) { // Character created succesfully
+				_gameService.ResetGameState(); // Wipe any session data becuase they are starting a new character
+				_gameService.UpdatePlayer(player); // Add player to the game state.
+				_gameService.StartCombat(); // Start combat right away, for now.
 				return RedirectToAction("Game");
 			}
 			else {
@@ -45,30 +42,21 @@ namespace PromptQuest.Controllers {
 
 		[HttpGet]
 		public JsonResult GetGameState() {
-			GameStateModel gameState = _gameService.GetGameStateModel();
+			GameState gameState = _gameService.GetGameState();
 			// Return the entire game state.
 			return Json(gameState);
 		}
 
 		[HttpPost]
-		public JsonResult PlayerAttack() {
-			CombatResult combatResult = _gameService.PlayerAttack();
-			// Return only what could change as a result of this action.
-			return Json(combatResult);
+		public IActionResult PlayerAction(string action) {
+			PQActionResult ActionResult = _gameService.ExecutePlayerAction(action);
+			return Json(ActionResult);
 		}
 
 		[HttpPost]
-		public JsonResult PlayerUseHealthPotion() {
-			CombatResult combatResult = _gameService.PlayerUseHealthPotion();
-			// Return only what could change as a result of this action.
-			return Json(combatResult);
-		}
-
-		[HttpPost]
-		public JsonResult EnemyAttack() {
-			CombatResult combatResult = _gameService.EnemyAttack();
-			// Return only what could change as a result of this action.
-			return Json(combatResult);
+		public IActionResult EnemyAction(string action) {
+			PQActionResult ActionResult = _gameService.ExecuteEnemyAction();
+			return Json(ActionResult);
 		}
 	}
 }

@@ -3,153 +3,121 @@ using System.Threading.Tasks;
 using PromptQuest.Models;
 
 namespace PromptQuest.Services {
-	public class GameService {
+
+	public interface IGameService {
+		GameState GetGameState();
+		void ResetGameState();
+		void UpdatePlayer(Player player);
+		void StartCombat();
+		PQActionResult ExecutePlayerAction(string action);
+		PQActionResult ExecuteEnemyAction();
+	}
+
+	public class GameService:IGameService{
 		private readonly IHttpContextAccessor _httpContextAccessor;
+		private readonly CombatService _combatService;
 		private const string GameStateSessionKey = "GameState";
 
 		public GameService(IHttpContextAccessor httpContextAccessor) {
 			_httpContextAccessor = httpContextAccessor;
+			_combatService = new CombatService();
 		}
 
-		private GameStateModel GetGameState() {
+		#region Game State and Session Management Methods
+
+		/// <summary> Get the game state stored inside current session. </summary>
+		private GameState GetSession() {
 			var session = _httpContextAccessor.HttpContext.Session;
 			var gameStateJson = session.GetString(GameStateSessionKey);
-			return gameStateJson != null ? JsonSerializer.Deserialize<GameStateModel>(gameStateJson) : new GameStateModel();
+			return gameStateJson != null ? JsonSerializer.Deserialize<GameState>(gameStateJson) : new GameState();
 		}
 
-		private void SetGameState(GameStateModel gameStateModel) {
+		/// <summary> Update the game state stored inside current session. </summary>
+		private void UpdateSession(GameState gameState) {
 			var session = _httpContextAccessor.HttpContext.Session;
-			var gameStateJson = JsonSerializer.Serialize(gameStateModel);
+			var gameStateJson = JsonSerializer.Serialize(gameState);
 			session.SetString(GameStateSessionKey,gameStateJson);
 		}
 
-		#region Get Methods
-		/// <summary>Returns the entire game state. Used for loading the game view.</summary>
-		public GameStateModel GetGameStateModel() {
-			return GetGameState();
+		/// <summary> Resets the current game state and updates the session.  </summary>
+		public void ResetGameState() {
+			var session = _httpContextAccessor.HttpContext.Session;
+			session.Remove(GameStateSessionKey);
+			var newGameState = new GameState();
+			UpdateSession(newGameState);
 		}
+
+		#endregion Game State and Session Management Methods - End
+
+		#region Get Methods
+
+		/// <summary>Returns the current gamestate. Used for loading the game view.</summary>
+		public GameState GetGameState() {
+			return GetSession();
+		}
+
 		#endregion Get Methods - End
 
 		#region Update Methods
-		/// <summary>Updates the player. Also functions as a create player method if one does not exist yet.</summary>
-		public void UpdatePlayer(PlayerModel playerModel) {
-			GameStateModel gameStateModel = GetGameState();
-			// Overide current playerModel with the new one.
-			gameStateModel.PlayerModel = playerModel;
-			SetGameState(gameStateModel);
+		/// <summary>Updates the current player character. Also functions as a create character method if one does not exist yet.</summary>
+		public void UpdatePlayer(Player playerModel) {
+			// Get current gamestate from the session
+			GameState gameState = GetSession();
+			// Override current playerModel with the new one.
+			gameState.Player = playerModel;
+			// Update current gamesate in the session
+			UpdateSession(gameState);
 		}
-		#endregion Update Methods
+		#endregion Update Methods - End
 
-		#region Combat
+		#region Game Flow Methods
 
-		/// <summary>Initiates combat between the player and a default enemy.</summary>
+		/// <summary>Initiates combat with a default enemy.</summary>
 		public void StartCombat() {
-			// Retrieve current game state from session.
-			GameStateModel gameStateModel = GetGameState();
-			// Let the view know that combat has started.
-			gameStateModel.inCombat = true;
-			// Generate a default enemy.
-			gameStateModel.EnemyModel=GetDefaultEnemy();
-			// Update session.
-			SetGameState(gameStateModel);
+			// Get current gamestate from the session
+			GameState gameState = GetSession();
+			// Initiate combat
+			_combatService.StartCombat(gameState);
+			// Update current gamesate in the session
+			UpdateSession(gameState);
 		}
 
-		#region Player Actions
-		/// <summary>Calculates the damage that the player does to the enemy, updates the game state, then returns a CombatResult.</summary>
-		public CombatResult PlayerAttack() {
-			// Retrieve current game state from session.
-			GameStateModel gameStateModel = GetGameState();
-			// Calculate damage as attack - defense.
-			int damage = gameStateModel.PlayerModel.Attack - gameStateModel.EnemyModel.Defense;
-			// If attack is less than one make it one.
-			if(damage < 1) {
-				damage = 1;
+		#endregion Game Flow Methods - End
+
+		#region Action Routing Methods
+
+		/// <summary>Execute a player action based on the action string.</summary>
+		public PQActionResult ExecutePlayerAction(string action) {
+			// Get current gamestate from the session
+			GameState gameState = GetSession();
+			// Determine which action it is and execute it, then return a PQActionResult
+			PQActionResult actionResult;
+			switch(action.ToLower()) {
+				case "attack":
+					actionResult = _combatService.PlayerAttack(gameState);
+					break;
+				case "heal":
+					actionResult = _combatService.PlayerUseHealthPotion(gameState);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(action),action,null);
 			}
-			// Update enemy health.
-			gameStateModel.EnemyModel.CurrentHealth -= damage;
-			// Return the result to the user.
-			// Check if enemy died.
-			if(gameStateModel.EnemyModel.CurrentHealth < 1) {
-				gameStateModel.inCombat = false;// Enemy is dead, combat has ended.
-			}
-			// Update session.
-			SetGameState(gameStateModel);
-			CombatResult combatResult = new CombatResult();
-			combatResult.EnemyHealth = gameStateModel.EnemyModel.CurrentHealth;
-			combatResult.Message = $"You attacked the {gameStateModel.EnemyModel.Name} for {damage} damage";
-			return combatResult;
+			// Update current gamesate in the session
+			UpdateSession(gameState);
+			return actionResult;
 		}
 
-		public CombatResult PlayerUseHealthPotion() {
-			GameStateModel gameStateModel = GetGameState();
-			// If player has no potions, don't let them heal.
-			if(gameStateModel.PlayerModel.HealthPotions <= 0) {
-				return new CombatResult {
-					Message = "You have no Health Potions!",
-					PlayerHealth = gameStateModel.PlayerModel.CurrentHealth,
-					PlayerHealthPotions = gameStateModel.PlayerModel.HealthPotions
-				};
-			}
-			// If player is already at max health, don't let them heal.
-			if(gameStateModel.PlayerModel.CurrentHealth == gameStateModel.PlayerModel.MaxHealth) {
-				return new CombatResult {
-					Message = "You are already at max health!",
-					PlayerHealth = gameStateModel.PlayerModel.CurrentHealth,
-					PlayerHealthPotions = gameStateModel.PlayerModel.HealthPotions
-				};
-			}
-			// Update player health and number of potions.
-			gameStateModel.PlayerModel.HealthPotions -= 1;
-			gameStateModel.PlayerModel.CurrentHealth += 5;
-			// If the potion put the player's health above maximum, set it to maximum.
-			if(gameStateModel.PlayerModel.CurrentHealth > gameStateModel.PlayerModel.MaxHealth) {
-				gameStateModel.PlayerModel.CurrentHealth = gameStateModel.PlayerModel.MaxHealth;
-			}
-			SetGameState(gameStateModel);
-			return new CombatResult {
-				Message = $"You healed to {gameStateModel.PlayerModel.CurrentHealth} HP!",
-				PlayerHealth = gameStateModel.PlayerModel.CurrentHealth,
-				PlayerHealthPotions = gameStateModel.PlayerModel.HealthPotions
-			};
+		/// <summary>Execute an enemy action.  Does not take an action string because the enemy's action is determined server side. </summary>
+		public PQActionResult ExecuteEnemyAction() {
+			// Get current gamestate from the session
+			GameState gameState = GetSession();
+			// Execute the action and return a PQActionResult
+			PQActionResult actionResult = _combatService.EnemyAttack(gameState); // Enemy only attacks for now.
+			// Update current gamesate in the session
+			UpdateSession(gameState);
+			return actionResult;
 		}
-		#endregion Player Actions - End
 
-		#region Enemy Actions
-		/// <summary>Calculates the damage that the enemy does to the player, updates the game state, then returns a CombatResult.</summary>
-		public CombatResult EnemyAttack() {
-			GameStateModel gameStateModel = GetGameState();
-			// Calculate damage as attack - defense.
-			int damage = gameStateModel.EnemyModel.Attack - gameStateModel.PlayerModel.Defense;
-			// If attack is less than one make it one.
-			if(damage < 1) {
-				damage = 1;
-			}
-			// Update player health.
-			gameStateModel.PlayerModel.CurrentHealth -= damage;
-			// Check if player died.
-			if(gameStateModel.PlayerModel.CurrentHealth < 1) {
-				gameStateModel.inCombat = false;// Player is dead, combat has ended.
-			}
-			// Update session.
-			SetGameState(gameStateModel);
-			// Return the result to the user.
-			CombatResult combatResult = new CombatResult();
-			combatResult.PlayerHealth = gameStateModel.PlayerModel.CurrentHealth;
-			combatResult.Message = $"The {gameStateModel.EnemyModel.Name} attacked you for {damage} damage";
-			return combatResult;
-		}
-		#endregion Enemy Actions - End
-
-		#region Helper Methods
-		/// <summary>Returns a default enemy as a EnemyModel and updates the game state.</summary>
-		private EnemyModel GetDefaultEnemy() {
-			// Default enemy: Ancient Orc
-			var enemyModelDefault = new EnemyModel { Name = "Ancient Orc",ImageUrl = "/images/PlaceholderAncientOrc.png",MaxHealth = 10,CurrentHealth = 10,Attack = 3 };
-			return enemyModelDefault;
-		}
-		#endregion Helper Methods - End
-
-		#endregion Combat - End	
+		#endregion Action Routing Methods - End
 	}
 }
-

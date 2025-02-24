@@ -1,131 +1,130 @@
 ﻿document.addEventListener("DOMContentLoaded", async function () {
-	// "Global" Variable too keep track of the game state so that functions don't have to be passed parameters
+	// "Global" Variable to keep track of the game state locally so that functions don't have to be passed parameters all the time.
 	let gameState;
 
-	// Page loaded, get current game state
+	// Page loaded, get current game state and store it locally.  
 	let response = await fetch("/Game/GetGameState");
 	gameState = await response.json();
-	// Update player display with loaded data.
-	updatePlayerDisplay();
-	if (gameState.inCombat == true) {// Player is in combat
-		updateEnemyDisplay(); // Update enemy displays with loaded data.
-		//addLogEntry("You were attacked by an " + gameState.enemyModel.name + "!");
-		// Player always starts first, this works for now but probably won't work long term.
-		playerTurn();  
+	// Update display with loaded data.  
+	updateDisplay();
+	if (gameState.inCombat == true) {// Player is in combat .
+		//addLogEntry("You were attacked by an " + gameState.enemy.name + "!");  
+		if (gameState.isPlayersTurn == true) {
+			enableCombatButtons();// Start player's turn.
+		}
+		else {
+			executeEnemyAction();
+		}
 	}
-	else {// Player is not in combat, hide combat UI
-		// Disable combat buttons just in case.
-		disableAttackButton();
-		disableHealthPotionButton();
-		// Hide combat UI.
+	else {// Player is not in combat.  
+		// Hide combat UI.  
 		hideCombatUI();
 	}
 
-	// Function to handle player's turn.
-	function playerTurn() {
-		// Let the player make an action now because it is their turn.
-		enableAttackButton();
-		enableHealthPotionButton();
+	// Function that makes an ajax call telling the game engine to process the engine, then updates the local gameState variable with the response.  
+	async function executePlayerAction(action) {
+		await $.ajax({
+			url: '/Game/PlayerAction',
+			type: 'POST',
+			data: { action: action },
+			success: function (response) {
+				let actionResult = response;
+				console.log('Player action (' + action + ') executed successfully:', actionResult);
+				updateLocalGameState(actionResult); // Update local gameState variable with whatever the action changed.  
+				updateDisplay() // Update screen to show whatever the action changed.  
+			},
+			error: function (xhr, status, error) {
+				console.error('Error executing action (' + action + '):', error);
+			}
+		});
+		// Check if player is in combat.
+		if (gameState.inCombat == false) {
+			hideCombatUI(); // They aren't, hide combat UI
+			return;
+		}
+		if (gameState.isPlayersTurn == false) {
+			disableCombatButtons(); // They are, but it's not the player's turn anymore
+			// Add a small delay so that the enemy's turn takes time.  
+			setTimeout(async () => {
+				await executeEnemyAction(); // The enemy action is determined server side.
+			}, 1000);
+			return;
+		}
+		// No need to enable combat buttons here because they are already enabled to allow the player to make this action.
 	}
 
-	// Function to handle player's attack.
-	function playerAttack() {
-		fetch("/Game/PlayerAttack", { method: "POST" })
-			.then(response => response.json())
-			.then(combatResult => {
-				gameState.enemyModel.currentHealth = combatResult.enemyHealth;
-				updateHealthDisplay();
-				addLogEntry(combatResult.message);
-				// Check if combat is over
-				if (gameState.enemyModel.currentHealth < 1) { // No longer in combat
-					addLogEntry("The enemy has been defeated!");
-					// Disable combat buttons just in case.
-					disableAttackButton();
-					disableHealthPotionButton();
-					hideCombatUI();
-				} else { // Still in combat
-					enemyTurn(); // Now it is the enemy's turn.
-				}
-			});
+	// Function that makes an ajax call telling the game engine to process the engine, then updates the local gameState variable with the response.  
+	async function executeEnemyAction() {
+		await $.ajax({
+			url: '/Game/EnemyAction',
+			type: 'POST',
+			success: function (response) {
+				let actionResult = response;
+				console.log('Enemy action executed successfully:', actionResult);
+				updateLocalGameState(actionResult); // Update local gameState variable with whatever the action changed.  
+				updateDisplay() // Update screen to show whatever the action changed.  
+			},
+			error: function (xhr, status, error) {
+				console.error('Error executing action:', error);
+			}
+		});
+		// Check if player is in combat.
+		if (gameState.inCombat == false) {
+			hideCombatUI(); // They are not, hide combat UI
+			return;
+		} 
+		if (gameState.isPlayersTurn == false) {
+			executeEnemyAction();// They are but it is still the enemy's turn.
+			return;
+		}
+		enableCombatButtons(); // They are and now it is their turn.
 	}
 
-	// Function to let the player use a health potion.
-	function playerUseHealthPotion() {
-		fetch("/Game/PlayerUseHealthPotion", { method: "POST" })
-			.then(response => response.json())
-			.then(combatResult => {
-				gameState.playerModel.currentHealth = combatResult.playerHealth;
-				gameState.playerModel.healthPotions = combatResult.playerHealthPotions;
-				updateHealthDisplay();
-				updateHealthPotionDisplay();
-				addLogEntry(combatResult.message);
-			});
+	// Helper function to update the gameState variable with the results from a PQActionResult.  
+	function updateLocalGameState(actionResult) {
+		// Update inCombat state.
+		gameState.inCombat = actionResult.inCombat;
+		// Update isPlayersTurn state.
+		gameState.isPlayersTurn = actionResult.isPlayersTurn;
+		// Update player health.
+		gameState.player.currentHealth = actionResult.playerHealth;
+		// Update player health potions.
+		gameState.player.healthPotions = actionResult.playerHealthPotions;
+		// Update enemy health.
+		gameState.enemy.currentHealth = actionResult.enemyHealth;
+		// Update message log
+		gameState.messageLog.push(actionResult.message);
+		// Log the updated gameState for debugging.
+		console.log('Updated local gameState:', gameState);
 	}
 
-	// Function to handle the enemy's turn
-	function enemyTurn() {
-		// Disable combat buttons because it isn't the player's turn.
-		disableAttackButton();
-		disableHealthPotionButton();
-		// Add a small delay so that the enemy's turn takes time.
-		setTimeout(() => {
-			enemyAttack(); // Enemy attacks blindly for now.
-		}, 1000);
+	//----------- Functions - Display Updates -----------------------------------------------------------------------------------------------------------  
+
+	// Function to update the player's display  
+	function updateDisplay() {
+		// Update Player display.
+		document.getElementById("player-name").textContent = gameState.player.name;
+		document.getElementById("player-image").src = "/images/PlaceholderPlayerPortrait.png"; // Placeholder image for now.  
+		document.getElementById("player-image").alt = gameState.player.name;
+		document.getElementById("player-attack").textContent = gameState.player.attack;
+		document.getElementById("player-defense").textContent = gameState.player.defense;
+		document.getElementById("player-hp").textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP";
+		document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
+		// Update Enemy display.
+		document.getElementById("enemy-name").textContent = gameState.enemy.name;
+		document.getElementById("enemy-image").src = gameState.enemy.imageUrl;
+		document.getElementById("enemy-image").alt = gameState.enemy.name;
+		document.getElementById("enemy-attack").textContent = gameState.enemy.attack;
+		document.getElementById("enemy-defense").textContent = gameState.enemy.defense;
+		document.getElementById("enemy-hp").textContent = gameState.enemy.currentHealth + "/" + gameState.enemy.maxHealth + " HP";
+		// Fill the dialog box with any messages
+		let numMessages = gameState.messageLog.length
+		for (let i = numMessages - 5; i < numMessages; i++) {// Show last 5 messages, not the first 5.
+			addLogEntry(gameState.messageLog[i]);
+		}
 	}
 
-	// Function to handle the enemy's attack
-	function enemyAttack() {
-		fetch("/Game/EnemyAttack", { method: "POST" })
-			.then(response => response.json())
-			.then(combatResult => {
-				gameState.playerModel.currentHealth = combatResult.playerHealth;
-				updateHealthDisplay();
-				addLogEntry(combatResult.message);
-				// Check if combat is over
-				if (gameState.playerModel.currentHealth < 1) {// No longer in combat
-					addLogEntry("You have been defeated!");
-					hideCombatUI();
-				} else {// Still in combat
-					playerTurn(); // Now it is the player's turn.
-				}
-			});
-	}
-
-	//----------- Helper Functions -----------------------------------------------------------------------------------------------------------
-
-	// Function to update the player's display
-	function updatePlayerDisplay() {
-		document.getElementById("player-name").textContent = gameState.playerModel.name;
-		document.getElementById("player-image").src = "/images/PlaceholderPlayerPortrait.png";
-		document.getElementById("player-image").alt = gameState.playerModel.name;
-		document.getElementById("player-attack").textContent = gameState.playerModel.attack;
-		document.getElementById("player-defense").textContent = gameState.playerModel.defense;
-		document.getElementById("player-hp").textContent = gameState.playerModel.currentHealth + "/" + gameState.playerModel.maxHealth + " HP";
-		document.getElementById("player-health-potions").textContent = gameState.playerModel.healthPotions;
-	}
-
-	// Function to update the enemy's display
-	function updateEnemyDisplay() {
-		document.getElementById("enemy-name").textContent = gameState.enemyModel.name;
-		document.getElementById("enemy-image").src = gameState.enemyModel.imageUrl;
-		document.getElementById("enemy-image").alt = gameState.enemyModel.name;
-		document.getElementById("enemy-attack").textContent = gameState.enemyModel.attack;
-		document.getElementById("enemy-defense").textContent = gameState.enemyModel.defense;
-		document.getElementById("enemy-hp").textContent = gameState.enemyModel.currentHealth + "/" + gameState.enemyModel.maxHealth + " HP";
-	}
-
-	// Function to update the health displays when health changes
-	function updateHealthDisplay() {
-		document.getElementById("player-hp").textContent = gameState.playerModel.currentHealth + "/" + gameState.playerModel.maxHealth + " HP";
-		document.getElementById("enemy-hp").textContent = gameState.enemyModel.currentHealth + "/" + gameState.enemyModel.maxHealth + " HP";
-	}
-
-	// Function to update the health potions display
-	function updateHealthPotionDisplay() {
-		document.getElementById("player-health-potions").textContent = gameState.playerModel.healthPotions;
-	}
-
-	// Function to add log entries to the dialog box
+	// Function to add log entries to the dialog box.  
 	function addLogEntry(message) {
 		const dialogBox = document.querySelector(".DialogBox");
 		const logLimit = 5;
@@ -137,44 +136,52 @@
 		dialogBox.appendChild(logDiv);
 	}
 
-	// Function to disable the attack button
-	function disableAttackButton() {
+	// Function to disable the combat buttons and remove their event handlers.  
+	function disableCombatButtons() {
+		// Disable Attack button.  
 		const attackButton = document.getElementById("attack-btn");
-		attackButton.removeEventListener("click", playerAttack);
+		attackButton.removeEventListener("click", handleAttackClick);
 		attackButton.disabled = true;
 		attackButton.classList.add("PQButtonDisabled");
-	}
-
-	// Function to enable the attack button
-	function enableAttackButton() {
-		const attackButton = document.getElementById("attack-btn");
-		attackButton.addEventListener("click", playerAttack);
-		attackButton.disabled = false;
-		attackButton.classList.remove("PQButtonDisabled");
-	}
-
-	// Function to disable the health potion button
-	function disableHealthPotionButton() {
+		// Disable the Use Health Potion button.  
 		const healButton = document.getElementById("health-potion-btn");
-		healButton.removeEventListener("click", playerUseHealthPotion);
+		healButton.removeEventListener("click", handleHealClick);
 		healButton.disabled = true;
 		healButton.classList.add("PQButtonDisabled");
 	}
 
-	// Function to enable the health potion button.
-	function enableHealthPotionButton() {
+	// Function to enable the combat buttons and add their event handlers.  
+	function enableCombatButtons() {
+		// Enable Attack button.  
+		const attackButton = document.getElementById("attack-btn");
+		attackButton.addEventListener("click", handleAttackClick);
+		attackButton.disabled = false;
+		attackButton.classList.remove("PQButtonDisabled");
+		// Enable the Use Health Potion button.  
 		const healButton = document.getElementById("health-potion-btn");
-		healButton.addEventListener("click", playerUseHealthPotion);
+		healButton.addEventListener("click", handleHealClick);
 		healButton.disabled = false;
 		healButton.classList.remove("PQButtonDisabled");
 	}
 
-	// Function to hide the enemy display.
+	// Wrapper for Attack button click event handler
+	async function handleAttackClick() {
+		await executePlayerAction('attack');
+	}
+
+	// Wrapper for Use Health Potion button click event handler
+	async function handleHealClick() {
+		await executePlayerAction('heal');
+	}
+
+	// Function to hide the Combat UI.  
 	function hideCombatUI() {
-		// Hide the enemy display.
+		// Just in case.
+		disableCombatButtons();
+		// Hide the enemy display.  
 		const enemyDisplay = document.getElementById("enemy-display");
 		enemyDisplay.style.display = "none";
-		// Hide the combat buttons display.
+		// Hide the combat buttons display.  
 		const combatButtonsDisplay = document.getElementById("combat-buttons-display");
 		combatButtonsDisplay.style.display = "none";
 	}
