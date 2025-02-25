@@ -54,7 +54,7 @@ namespace PromptQuest.Controllers {
 		}
 
 		[HttpPost]
-		public IActionResult EnemyAction(string action) {
+		public IActionResult EnemyAction() {
 			PQActionResult ActionResult = _gameService.ExecuteEnemyAction();
 			return Json(ActionResult);
 		}

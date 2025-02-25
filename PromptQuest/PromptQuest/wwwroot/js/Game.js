@@ -5,6 +5,10 @@
 	// Page loaded, get current game state and store it locally.  
 	let response = await fetch("/Game/GetGameState");
 	gameState = await response.json();
+	// Check if the user doesn't have a character
+	if (gameState.player == null) {// new player or session expired
+		window.location.href = "/"; // boot them to the Main Menu.
+	}
 	// Update display with loaded data.  
 	updateDisplay();
 	if (gameState.inCombat == true) {// Player is in combat .
@@ -34,7 +38,7 @@
 				updateDisplay() // Update screen to show whatever the action changed.  
 			},
 			error: function (xhr, status, error) {
-				console.error('Error executing action (' + action + '):', error);
+				console.error('Error executing player action (' + action + '):', error);
 			}
 		});
 		// Check if player is in combat.
@@ -65,7 +69,7 @@
 				updateDisplay() // Update screen to show whatever the action changed.  
 			},
 			error: function (xhr, status, error) {
-				console.error('Error executing action:', error);
+				console.error('Error executing enemy action:', error);
 			}
 		});
 		// Check if player is in combat.

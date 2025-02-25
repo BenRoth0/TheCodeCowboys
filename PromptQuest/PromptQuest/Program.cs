@@ -11,7 +11,7 @@ builder.Services.AddSession(options =>// Add session services
 	// All data in the session (game state, user data, etc.) is stored on the server.
 	// To match up the session to the user a unique session ID is created with each session
 	// and stored in a session cookie (a small text file) and sent to the client's browser.
-	options.IdleTimeout = TimeSpan.FromMinutes(1); // Session timeout
+	options.IdleTimeout = TimeSpan.FromMinutes(10); // Session timeout
 	// Cookie can only be accessed via HTTP requests, not by client-side scripts (for enhanced security).
 	options.Cookie.HttpOnly = true; 
 	// Indicates that the cookie is required for the basic functionality of the site and will be stored even if the user has not consented to non-essential cookies.

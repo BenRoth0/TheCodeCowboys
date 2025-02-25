@@ -16,11 +16,6 @@ namespace PromptQuest.Controllers {
 		public IActionResult Index() {
 			// Fetch the game state for the current session.
 			GameState gameState = _gameService.GetGameState();
-			// Check if there's already a player character stored in the session.
-			if(gameState.Player != null) {
-				// They already have a character, bypass the main menu resume where they left off.
-				return RedirectToAction("Game","Game");
-			}
 			// They're a new player, show the main menu
 			return View();
 		}
