@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using PromptQuest.Services;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -24,6 +26,20 @@ builder.Services.AddHttpContextAccessor(); // Add HttpContextAccessor for access
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<ICombatService, CombatService>();
 
+// Add authentication services
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+	options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddGoogle(options =>
+{
+	options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+	options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,7 +55,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession(); // Enable session middleware
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
