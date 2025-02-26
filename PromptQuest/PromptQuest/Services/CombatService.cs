@@ -11,12 +11,12 @@ namespace PromptQuest.Services {
 
 	public class CombatService : ICombatService{
 
-		/// <summary>Initiates combat between the player and a default enemy and updates the game state. </summary>
+		/// <summary>Initiates combat between the player and an enemy and updates the game state. </summary>
 		public void StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
-			gameState.Enemy = GetDefaultEnemy();
-			string message = $"You were attacked by an {gameState.Enemy.Name}!"; // Let the user know that combat started.
+			gameState.Enemy = GetEnemy();
+			string message = $"The {gameState.Enemy.Name} attacked!"; // Let the user know that combat started.
 			gameState.MessageLog.Add(message); // This gets loaded into the view without a PQActionResult because GetGameState() is called after this method.
 		}
 
@@ -123,14 +123,40 @@ namespace PromptQuest.Services {
 		#region Helper Methods
 
 		/// <summary>Generatees a default Enemy, updates the game state, then returns the Enemy.</summary>
-		private Enemy GetDefaultEnemy() {
-			// Default enemy: Ancient Orc
+		private Enemy GetEnemy()
+		{
 			Enemy enemy = new Enemy();
-			enemy.Name = "Ancient Orc";
-			enemy.ImageUrl = "/images/PlaceholderAncientOrc.png";
-			enemy.MaxHealth = 10;
-			enemy.CurrentHealth = 10;
-			enemy.Attack = 3;
+			Random random = new Random();
+			int enemyType = random.Next(1, 4); // Generates a number between 1 and 3
+
+			switch (enemyType)
+			{
+				case 1:
+					enemy.Name = "Ancient Orc";
+					enemy.ImageUrl = "/images/PlaceholderAncientOrc.png";
+					enemy.MaxHealth = 10;
+					enemy.CurrentHealth = 10;
+					enemy.Attack = 2;
+					enemy.Defense = 1;
+					break;
+				case 2:
+					enemy.Name = "Decrepit Centaur";
+					enemy.ImageUrl = "/images/PlaceholderDecrepitCentaur.png";
+					enemy.MaxHealth = 10;
+					enemy.CurrentHealth = 10;
+					enemy.Attack = 3;
+					enemy.Defense = 0;
+					break;
+				case 3:
+					enemy.Name = "Rotting Zombie";
+					enemy.ImageUrl = "/images/PlaceholderRottingZombie.png";
+					enemy.MaxHealth = 8;
+					enemy.CurrentHealth = 8;
+					enemy.Attack = 2;
+					enemy.Defense = 2;
+					break;
+			}
+
 			return enemy;
 		}
 
