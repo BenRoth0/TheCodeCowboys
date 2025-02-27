@@ -13,7 +13,7 @@ namespace PromptQuest.Services {
 		PQActionResult ExecuteEnemyAction();
 	}
 
-	public class GameService:IGameService{
+	public class GameService : IGameService {
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly CombatService _combatService;
 		private const string GameStateSessionKey = "GameState";
@@ -36,7 +36,7 @@ namespace PromptQuest.Services {
 		private void UpdateSession(GameState gameState) {
 			var session = _httpContextAccessor.HttpContext.Session;
 			var gameStateJson = JsonSerializer.Serialize(gameState);
-			session.SetString(GameStateSessionKey,gameStateJson);
+			session.SetString(GameStateSessionKey, gameStateJson);
 		}
 
 		/// <summary> Resets the current game state and updates the session.  </summary>
@@ -82,6 +82,19 @@ namespace PromptQuest.Services {
 			UpdateSession(gameState);
 		}
 
+		//public void SpawnNewEnemy() {
+		//	GameState gameState = GetGameState();
+
+		//	// Create a new enemy
+		//	gameState.Enemy = _combatService.GetEnemy();
+
+		//	// Ensure combat is re-enabled
+		//	gameState.InCombat = true;
+		//	gameState.IsPlayersTurn = true;
+
+		//	UpdateSession(gameState);
+		//}
+
 		#endregion Game Flow Methods - End
 
 		#region Action Routing Methods
@@ -100,7 +113,7 @@ namespace PromptQuest.Services {
 					actionResult = _combatService.PlayerUseHealthPotion(gameState);
 					break;
 				default:
-					throw new ArgumentOutOfRangeException(nameof(action),action,null);
+					throw new ArgumentOutOfRangeException(nameof(action), action, null);
 			}
 			// Update current gamesate in the session
 			UpdateSession(gameState);
@@ -113,7 +126,7 @@ namespace PromptQuest.Services {
 			GameState gameState = GetSession();
 			// Execute the action and return a PQActionResult
 			PQActionResult actionResult = _combatService.EnemyAttack(gameState); // Enemy only attacks for now.
-			// Update current gamesate in the session
+																																					 // Update current gamesate in the session
 			UpdateSession(gameState);
 			return actionResult;
 		}
