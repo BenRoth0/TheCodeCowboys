@@ -1,10 +1,8 @@
 ﻿using PromptQuest.Models;
 
-namespace PromptQuest.Services
-{
+namespace PromptQuest.Services {
 
-	public interface ICombatService
-	{
+	public interface ICombatService {
 		void StartCombat(GameState gameState);
 		PQActionResult PlayerAttack(GameState gameState);
 		PQActionResult PlayerUseHealthPotion(GameState gameState);
@@ -12,12 +10,10 @@ namespace PromptQuest.Services
 		Enemy GetEnemy();
 	}
 
-	public class CombatService : ICombatService
-	{
+	public class CombatService : ICombatService {
 
 		/// <summary>Initiates combat between the player and an enemy and updates the game state. </summary>
-		public void StartCombat(GameState gameState)
-		{
+		public void StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
 			gameState.Enemy = GetEnemy();
@@ -28,8 +24,7 @@ namespace PromptQuest.Services
 		#region Player Action Methods
 
 		/// <summary> Calculates the damage that the player does to the enemy, updates the game state, then returns an ActionResult.</summary>
-		public PQActionResult PlayerAttack(GameState gameState)
-		{
+		public PQActionResult PlayerAttack(GameState gameState) {
 			// Calculate damage as attack - defense.
 			int damage = gameState.Player.Attack - gameState.Enemy.Defense;
 			// If attack is less than one make it one.
@@ -40,8 +35,7 @@ namespace PromptQuest.Services
 			// Return the result to the user.
 			string message = $"You attacked the {gameState.Enemy.Name} for {damage} damage";
 			// Check if enemy died.
-			if (gameState.Enemy.CurrentHealth < 1)
-			{
+			if (gameState.Enemy.CurrentHealth < 1) {
 				gameState.InCombat = false; // Enemy is dead, combat has ended.
 				gameState.IsPlayersTurn = false; // Zero this field out because combat is over.
 				message += $", you have defeated the {gameState.Enemy.Name}."; // Let them know in the same message.
@@ -56,13 +50,11 @@ namespace PromptQuest.Services
 		}
 
 		/// <summary>Calculates the amount healed by a Health Potion, updates the game state, then returns a PQActionResult.</summary>
-		public PQActionResult PlayerUseHealthPotion(GameState gameState)
-		{
+		public PQActionResult PlayerUseHealthPotion(GameState gameState) {
 			PQActionResult actionResult;
 			string message;
 			// If player has no potions, don't let them heal.
-			if (gameState.Player.HealthPotions <= 0)
-			{
+			if (gameState.Player.HealthPotions <= 0) {
 				// Return an action result with a message describing what happened.
 				message = "You have no Health Potions!";
 				gameState.MessageLog.Add(message);
@@ -71,8 +63,7 @@ namespace PromptQuest.Services
 				return actionResult;
 			}
 			// If player is already at max health, don't let them heal.
-			if (gameState.Player.CurrentHealth == gameState.Player.MaxHealth)
-			{
+			if (gameState.Player.CurrentHealth == gameState.Player.MaxHealth) {
 				// Return an action result with a message describing what happened.
 				message = "You are already at max health!";
 				gameState.MessageLog.Add(message);
@@ -85,8 +76,7 @@ namespace PromptQuest.Services
 			gameState.Player.CurrentHealth += 5;
 			message = $"You healed to {gameState.Player.CurrentHealth} HP!";
 			// If the potion put the player's health above maximum, set it to maximum.
-			if (gameState.Player.CurrentHealth > gameState.Player.MaxHealth)
-			{
+			if (gameState.Player.CurrentHealth > gameState.Player.MaxHealth) {
 				gameState.Player.CurrentHealth = gameState.Player.MaxHealth;
 				message = $"You healed to max HP!"; // Overwrite current message.
 			}
@@ -104,8 +94,7 @@ namespace PromptQuest.Services
 		#region Enemy Action Methods
 
 		/// <summary>Calculates the damage that the enemy does to the player, updates the game state, then returns a PQActionResult.</summary>
-		public PQActionResult EnemyAttack(GameState gameState)
-		{
+		public PQActionResult EnemyAttack(GameState gameState) {
 			// Calculate damage as attack - defense.
 			int damage = gameState.Enemy.Attack - gameState.Player.Defense;
 			// If attack is less than one make it one.
@@ -116,8 +105,7 @@ namespace PromptQuest.Services
 			// Return an action result with a message describing what happened.
 			string message = $"The {gameState.Enemy.Name} attacked you for {damage} damage";
 			// Check if player died.
-			if (gameState.Player.CurrentHealth < 1)
-			{
+			if (gameState.Player.CurrentHealth < 1) {
 				gameState.InCombat = false; // Player is dead, combat has ended.
 				gameState.IsPlayersTurn = false; // Zero this field out because combat is over.
 				message += ", you have been defeated."; // Let them know in the same message.
@@ -136,13 +124,11 @@ namespace PromptQuest.Services
 		#region Helper Methods
 
 		/// <summary>Generatees an Enemy, updates the game state, then returns the Enemy.</summary>
-		public Enemy GetEnemy()
-		{
+		public Enemy GetEnemy() {
 			Enemy enemy = new Enemy();
 			Random random = new Random();
 			int enemyType = random.Next(1, 4); // Generates a number between 1 and 3
-			switch (enemyType)
-			{
+			switch (enemyType) {
 				case 1:
 					enemy.Name = "Ancient Orc";
 					enemy.ImageUrl = "/images/PlaceholderAncientOrc.png";
