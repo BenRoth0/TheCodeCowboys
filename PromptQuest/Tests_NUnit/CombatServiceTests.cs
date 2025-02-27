@@ -259,6 +259,24 @@ namespace PromptQuest.Tests.Services {
 			Assert.That(_gameState.IsPlayersTurn,Is.True);
 		}
 
+		[Test]
+		public void GetEnemy_ShouldReturnDifferentEnemiesAfterMultipleCalls()
+		{
+			// Arrange
+			HashSet<string> enemyNames = new HashSet<string>();
+
+			// Act
+			for (int i = 0; i < 10; i++)
+			{
+				Enemy enemy = _combatService.GetEnemy();
+				enemyNames.Add(enemy.Name);
+			}
+
+			// Assert
+			// Check that for 10 enemies there are at least two different enemies within the bunch
+			Assert.Greater(enemyNames.Count, 1, "GetEnemy should return different enemies after multiple calls.");
+		}
+
 		#endregion Enemy Attack Tests - End
 	}
 }
