@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
 using PromptQuest.Services;
-using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,18 +24,19 @@ builder.Services.AddHttpContextAccessor(); // Add HttpContextAccessor for access
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<ICombatService, CombatService>();
 
-// Add authentication services
+// Add Google authentication services
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-	options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-	options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+	options.DefaultAuthenticateScheme = "Application";
+	options.DefaultSignInScheme = "External";
 })
-.AddCookie()
+.AddCookie("Application")
+.AddCookie("External")
 .AddGoogle(options =>
 {
 	options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
 	options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+	options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url"); // Map the Google profile picture URL claim
 });
 
 var app = builder.Build();
