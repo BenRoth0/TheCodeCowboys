@@ -211,9 +211,13 @@
 		// Hide the combat buttons display.  
 		const combatButtonsDisplay = document.getElementById("combat-buttons-display");
 		combatButtonsDisplay.style.visibility = "hidden";
-		// Allow player to start the next fight
-		addLogEntry("Enemy defeated! Press [SPACE] to fight the next enemy.");
-		enableNextFightTrigger(); // Wait for space key press
+		// Check if player is still alive
+		if (gameState.player.currentHealth > 0) {
+			// Allow player to start the next fight
+			addLogEntry("Player health is: " + gameState.player.currentHealth); // debug
+			addLogEntry("Enemy defeated! Press [SPACE] to fight the next enemy.");
+			enableNextFightTrigger(); // Wait for space key press
+		}
 	}
 
 	// Function to show the Combat UI.  

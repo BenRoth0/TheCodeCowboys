@@ -82,19 +82,6 @@ namespace PromptQuest.Services {
 			UpdateSession(gameState);
 		}
 
-		//public void SpawnNewEnemy() {
-		//	GameState gameState = GetGameState();
-
-		//	// Create a new enemy
-		//	gameState.Enemy = _combatService.GetEnemy();
-
-		//	// Ensure combat is re-enabled
-		//	gameState.InCombat = true;
-		//	gameState.IsPlayersTurn = true;
-
-		//	UpdateSession(gameState);
-		//}
-
 		#endregion Game Flow Methods - End
 
 		#region Action Routing Methods
