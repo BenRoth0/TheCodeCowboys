@@ -1,7 +1,6 @@
 ﻿// "Global" Variable to keep track of the game state locally so that functions don't have to be passed parameters all the time.
 let gameState;
 document.addEventListener("DOMContentLoaded", async function () {
-
 	// Page loaded, get current game state and store it locally.  
 	let response = await fetch("/Game/GetGameState");
 	gameState = await response.json();
@@ -118,30 +117,30 @@ function updateLocalGameState(actionResult) {
 
 //----------- Functions - Display Updates -----------------------------------------------------------------------------------------------------------  
 
-	// Function to update the player's display  
-	function updateDisplay() {
-		// Update Player display.
-		document.querySelectorAll(".player-name").forEach(el => { el.textContent = gameState.player.name; });
-		document.querySelectorAll(".player-image").forEach(el => { el.src = "/images/PlaceholderPlayerPortrait.png"; }); // Placeholder image for now.
-		document.querySelectorAll(".player-image").forEach(el => { el.alt = gameState.player.name; });
-		document.querySelectorAll(".player-attack").forEach(el => { el.textContent = gameState.player.attack; });
-		document.querySelectorAll(".player-defense").forEach(el => { el.textContent = gameState.player.defense; });
-		document.querySelectorAll(".player-hp").forEach(el => { el.textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP"; });
-		document.getElementById("player-hp").textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP";
-		document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
-		// Update Enemy display.
-		document.getElementById("enemy-name").textContent = gameState.enemy.name;
-		document.getElementById("enemy-image").src = gameState.enemy.imageUrl;
-		document.getElementById("enemy-image").alt = gameState.enemy.name;
-		document.getElementById("enemy-attack").textContent = gameState.enemy.attack;
-		document.getElementById("enemy-defense").textContent = gameState.enemy.defense;
-		document.getElementById("enemy-hp").textContent = gameState.enemy.currentHealth + "/" + gameState.enemy.maxHealth + " HP";
-		// Fill the dialog box with any messages
-		let numMessages = gameState.messageLog.length
-		for (let i = numMessages - 5; i < numMessages; i++) {// Show last 5 messages, not the first 5.
-			addLogEntry(gameState.messageLog[i]);
-		}
+// Function to update the player's display  
+function updateDisplay() {
+	// Update Player display.
+	document.querySelectorAll(".player-name").forEach(el => { el.textContent = gameState.player.name; });
+	document.querySelectorAll(".player-image").forEach(el => { el.src = "/images/PlaceholderPlayerPortrait.png"; }); // Placeholder image for now.
+	document.querySelectorAll(".player-image").forEach(el => { el.alt = gameState.player.name; });
+	document.querySelectorAll(".player-attack").forEach(el => { el.textContent = gameState.player.attack; });
+	document.querySelectorAll(".player-defense").forEach(el => { el.textContent = gameState.player.defense; });
+	document.querySelectorAll(".player-hp").forEach(el => { el.textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP"; });
+	document.getElementById("player-hp").textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP";
+	document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
+	// Update Enemy display.
+	document.getElementById("enemy-name").textContent = gameState.enemy.name;
+	document.getElementById("enemy-image").src = gameState.enemy.imageUrl;
+	document.getElementById("enemy-image").alt = gameState.enemy.name;
+	document.getElementById("enemy-attack").textContent = gameState.enemy.attack;
+	document.getElementById("enemy-defense").textContent = gameState.enemy.defense;
+	document.getElementById("enemy-hp").textContent = gameState.enemy.currentHealth + "/" + gameState.enemy.maxHealth + " HP";
+	// Fill the dialog box with any messages
+	let numMessages = gameState.messageLog.length
+	for (let i = numMessages - 5; i < numMessages; i++) {// Show last 5 messages, not the first 5.
+		addLogEntry(gameState.messageLog[i]);
 	}
+}
 
 // Function to add log entries to the dialog box.  
 function addLogEntry(message) {
