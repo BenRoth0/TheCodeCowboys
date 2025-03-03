@@ -1,6 +1,7 @@
 ﻿// "Global" Variable to keep track of the game state locally so that functions don't have to be passed parameters all the time.
 let gameState;
 document.addEventListener("DOMContentLoaded", async function () {
+
 	// Page loaded, get current game state and store it locally.  
 	let response = await fetch("/Game/GetGameState");
 	gameState = await response.json();
@@ -117,6 +118,7 @@ function updateLocalGameState(actionResult) {
 
 //----------- Functions - Display Updates -----------------------------------------------------------------------------------------------------------  
 
+// Function to update the player's display  
 // Function to update the player's display  
 function updateDisplay() {
 	// Update Player display.
