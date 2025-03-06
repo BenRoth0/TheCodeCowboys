@@ -3,22 +3,18 @@ using PromptQuest.Services;
 using PromptQuest.Models;
 using NUnit.Framework.Internal;
 
-namespace PromptQuest.Tests.Services
-{
+namespace PromptQuest.Tests.Services {
 	[TestFixture]
-	public class CombatServiceTests
-	{
+	public class CombatServiceTests {
 		private ICombatService _combatService;
 		private GameState _gameState;
 
 		[SetUp]
-		public void SetUp()
-		{
+		public void SetUp() {
 			// Initialize CombatService and GameState.
 			_combatService = new CombatService();
 			// Test game state just in case, so that player or enemy can't throw null reference exceptions.
-			_gameState = new GameState
-			{
+			_gameState = new GameState {
 				Player = new Player { Name = "TestPlayer" },
 				Enemy = new Enemy { Name = "TestEnemy" }
 			};
@@ -27,8 +23,7 @@ namespace PromptQuest.Tests.Services
 		#region Player Attack Tests
 
 		[Test]
-		public void PlayerAttack_ShouldDealDamageToEnemy()
-		{
+		public void PlayerAttack_ShouldDealDamageToEnemy() {
 			// Arrange
 			_combatService.StartCombat(_gameState);
 			_gameState.Enemy.CurrentHealth = 10;
@@ -51,8 +46,7 @@ namespace PromptQuest.Tests.Services
 		}
 
 		[Test]
-		public void PlayerAttack_ShouldDealDamageToEnemyMinusDefense()
-		{
+		public void PlayerAttack_ShouldDealDamageToEnemyMinusDefense() {
 			// Arrange
 			_combatService.StartCombat(_gameState);
 			_gameState.Enemy.CurrentHealth = 10;
@@ -75,8 +69,7 @@ namespace PromptQuest.Tests.Services
 		}
 
 		[Test]
-		public void PlayerAttack_ShouldDealMinimumOfOneDamageToEnemy()
-		{
+		public void PlayerAttack_ShouldDealMinimumOfOneDamageToEnemy() {
 			// Arrange
 			_combatService.StartCombat(_gameState);
 			_gameState.Enemy.CurrentHealth = 10;
@@ -103,8 +96,7 @@ namespace PromptQuest.Tests.Services
 		#region Player Health Potions Tests 
 
 		[Test]
-		public void PlayerUseHealthPotion_ShouldHealPlayerByFive()
-		{
+		public void PlayerUseHealthPotion_ShouldHealPlayerByFive() {
 			// Arrange
 			_gameState.Player.HealthPotions = 2;
 			_gameState.Player.CurrentHealth = 3;
@@ -127,8 +119,7 @@ namespace PromptQuest.Tests.Services
 		}
 
 		[Test]
-		public void PlayerUseHealthPotion_ShouldNotHealPlayerPastMax()
-		{
+		public void PlayerUseHealthPotion_ShouldNotHealPlayerPastMax() {
 			// Arrange
 			_gameState.Player.HealthPotions = 2;
 			_gameState.Player.CurrentHealth = 7;
@@ -151,8 +142,7 @@ namespace PromptQuest.Tests.Services
 		}
 
 		[Test]
-		public void PlayerUseHealthPotion_ShouldNotHealPlayerAtMax()
-		{
+		public void PlayerUseHealthPotion_ShouldNotHealPlayerAtMax() {
 			// Arrange
 			_gameState.Player.HealthPotions = 2;
 			_gameState.Player.CurrentHealth = 10;
@@ -175,8 +165,7 @@ namespace PromptQuest.Tests.Services
 		}
 
 		[Test]
-		public void PlayerUseHealthPotion_ShouldNotHealPlayerWithZeroPotions()
-		{
+		public void PlayerUseHealthPotion_ShouldNotHealPlayerWithZeroPotions() {
 			// Arrange
 			_gameState.Player.HealthPotions = 0;
 			_gameState.Player.CurrentHealth = 5;
@@ -203,8 +192,7 @@ namespace PromptQuest.Tests.Services
 		#region Enemy Attack Tests - End
 
 		[Test]
-		public void EnemyAttack_ShouldDealDamageToPlayer()
-		{
+		public void EnemyAttack_ShouldDealDamageToPlayer() {
 			// Arrange
 			_gameState.Player.CurrentHealth = 10;
 			_gameState.Player.MaxHealth = 10;
@@ -226,8 +214,7 @@ namespace PromptQuest.Tests.Services
 		}
 
 		[Test]
-		public void EnemyAttack_ShouldDealDamageToPlayerMinusDefense()
-		{
+		public void EnemyAttack_ShouldDealDamageToPlayerMinusDefense() {
 			// Arrange
 			_combatService.StartCombat(_gameState);
 			_gameState.Player.CurrentHealth = 10;
@@ -250,8 +237,7 @@ namespace PromptQuest.Tests.Services
 		}
 
 		[Test]
-		public void EnemyAttack_ShouldDealMinimumOfOneDamageToPlayer()
-		{
+		public void EnemyAttack_ShouldDealMinimumOfOneDamageToPlayer() {
 			// Arrange
 			_combatService.StartCombat(_gameState);
 			_gameState.Player.CurrentHealth = 10;
@@ -274,14 +260,12 @@ namespace PromptQuest.Tests.Services
 		}
 
 		[Test]
-		public void GetEnemy_ShouldReturnDifferentEnemiesAfterMultipleCalls()
-		{
+		public void GetEnemy_ShouldReturnDifferentEnemiesAfterMultipleCalls() {
 			// Arrange
 			HashSet<string> enemyNames = new HashSet<string>();
 
 			// Act
-			for (int i = 0; i < 10; i++)
-			{
+			for (int i = 0; i < 10; i++) {
 				Enemy enemy = _combatService.GetEnemy();
 				enemyNames.Add(enemy.Name);
 			}
@@ -295,8 +279,7 @@ namespace PromptQuest.Tests.Services
 
 		#region  Respawn Player Tests
 		[Test]
-		public void RespawnPlayerShouldEndTurnAndCombatAndHeal()
-		{
+		public void RespawnPlayerShouldEndTurnAndCombatAndHeal() {
 			// Arrange
 			_combatService.StartCombat(_gameState);
 			_gameState.Player.CurrentHealth = 0;
