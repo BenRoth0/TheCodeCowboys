@@ -15,6 +15,8 @@
 		public bool InCombat { get; set; } = false;
 		///<summary> Whether or not it is the player's turn. </summary>
 		public bool IsPlayersTurn {get; set;} = false;
+
+		public bool TutorialFlag { get; set; } = true;
 	}
 
 	/// <summary> A partial model of the GameStateModel returned to the view so that it can update what the action changed.  This way we don't have to return the entire GameStateModel. </summary>
