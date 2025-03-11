@@ -6,7 +6,6 @@ let attackButton = document.getElementById("attack-btn");
 async function startTutorial() {
 	await respawnPlayer()
 	await spawnNewEnemy()
-
 	tutorialModal = new bootstrap.Modal(document.getElementById('tutorialModal'));// set tutorialModal to the right modal
 	tutorialCounter = 1
 	potionButton.style.visibility = "hidden";
@@ -16,7 +15,6 @@ async function startTutorial() {
 		tutorialIncrement();//the increment function will add and remove listenrs, hide elements, and keep track of which portion of the tutorial they are on.
 		
 	})
-	//showRespawnModal();
 }
 function showTutorialModal(title, message) {
 	let textbox = document.getElementById('tutorialText');

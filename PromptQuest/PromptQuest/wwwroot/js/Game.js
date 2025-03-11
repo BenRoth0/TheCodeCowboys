@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 		// Hide combat UI.  
 		hideCombatUI();
 	}
-	let flagresponse = await fetch("/Game/GetTutorialFlag");
-	tutorialflag=await flagresponse.json()
+	let flagresponse = await fetch("/Game/IsTutorial"); // get the tutorial flag
+	tutorialflag=await flagresponse.json()//if in the tutorial: start the tutorial
 	if (tutorialflag) {
 		startTutorial()
 	}

@@ -16,7 +16,7 @@ namespace PromptQuest.Services {
 		PQActionResult ExecutePlayerAction(string action);
 		PQActionResult ExecuteEnemyAction();
 		void StartNewGame();
-		public bool GetTutorialFlag();
+		public bool IsTutorial();
 		public void SetTutorialFlag(bool Flag);
 	}
 
@@ -62,7 +62,7 @@ namespace PromptQuest.Services {
 			}
 			return gameState;
 		}
-		public bool GetTutorialFlag(){
+		public bool IsTutorial(){
 			return _sessionService.GetTutorialFlag();
 		}
 		public void SetTutorialFlag(bool Flag)

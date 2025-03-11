@@ -55,9 +55,9 @@ namespace PromptQuest.Controllers {
 			return Json(gameState);
 		}
 		[HttpGet]
-		public JsonResult GetTutorialFlag()
+		public JsonResult IsTutorial()
 		{
-			bool flag = _gameService.GetTutorialFlag();
+			bool flag = _gameService.IsTutorial();
 			// Return the entire game state.
 			return Json(flag);
 		}
