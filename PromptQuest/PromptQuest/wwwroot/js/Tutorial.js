@@ -1,8 +1,8 @@
-﻿// "Global" Variable to keep track of the game state locally so that functions don't have to be passed parameters all the time.
+﻿// "Global" tutorial variables
 let tutorialModal;
 let tutorialCounter;
-let potionButton = document.getElementById("health-potion-btn");
-let attackButton = document.getElementById("attack-btn");
+const potionButton = document.getElementById("health-potion-btn");
+const attackButton = document.getElementById("attack-btn");
 async function startTutorial() {
 	await respawnPlayer()
 	await spawnNewEnemy()
