@@ -32,8 +32,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 	if (tutorialflag) {
 		startTutorial()
 	}
-	addLogEntry(tutorialflag);
-	
 });
 
 // Function that makes an ajax call telling the game engine to process the player's action, then updates the local gameState variable with the response.  
