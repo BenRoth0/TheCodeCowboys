@@ -31,11 +31,21 @@
 				<form asp-controller="Game" asp-action="CreateCharacter" method="post">
 					<div class="form-group row">
 						<div class="col d-flex justify-content-center">
-							<input type="text" minlength="1" maxlength="25" class="form-control" id="name" name="name" style="color: white; margin-bottom:22px; background-color:transparent; border: 2px solid white; width:392px; height:52px;" placeholder="Enter Character's Name"/>
+							<input type="text" minlength="1" maxlength="25" class="form-control" id="name" name="name" style="color: white; background-color:transparent; border: 2px solid white; width:392px; height:52px;" placeholder="Enter Character's Name"/>
 						</div>
 					</div>
 					<div class="row" style="margin-bottom:22px;">
 						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+					<div class="form-group row">
+						<div class="col d-flex justify-content-center">
+							<select asp-for="Class" class="form-control" id="classSelect" onchange="updatePlayerImage()" style="margin-bottom:22px; background-color:transparent; border: 2px solid white; width:392px; height:52px;">
+								<option value="Warrior">Warrior</option>
+								<option value="Mage">Mage</option>
+								<option value="Archer">Archer</option>
+							</select>
+							<span asp-validation-for="Class" class="text-danger"></span>
+						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col">
