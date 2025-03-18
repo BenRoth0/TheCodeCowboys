@@ -16,7 +16,6 @@ function LoadItems() {
 	for (i = 0; i < defaultItems.length; i++) {
 		item = defaultItems[i];
 		image = document.createElement("img");
-		// image.className = "item";
 		image.src = item.image;
 		image.alt = item.name;
 		document.getElementById("inventory-slot-" + (i + 1)).appendChild(image);
