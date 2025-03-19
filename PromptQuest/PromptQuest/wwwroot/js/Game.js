@@ -93,9 +93,9 @@ function updateLocalGameState(actionResult) {
 	// Update isLocationComplete
 	gameState.isLocationComplete = actionResult.isLocationComplete;
 	//Update player ATK with item
-	gameState.player.attack = actionResult.playerAdjustedATK;
+	gameState.player.item.atk = actionResult.playerItemATK;
 	//Update player DEF with item
-	gameState.player.defense = actionResult.playerAdjustedDEF;
+	gameState.player.item.def = actionResult.playerItemDEF;
 	// Log the updated gameState for debugging.
 	console.log('Updated local gameState:', gameState);
 

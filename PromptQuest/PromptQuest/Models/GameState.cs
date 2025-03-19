@@ -40,8 +40,8 @@
 		///<summary> Whether or not the player has completed the current area </summary>
 		public bool IsLocationComplete{ get; set; } = false;
 
-		public int PlayerAdjustedATK { get; set; } = 0;
-		public int PlayerAdjustedDEF { get; set; } = 0;
+		public int PlayerItemATK { get; set; } = 0;
+		public int PlayerItemDEF { get; set; } = 0;
 	}
 
 	/// <summary> Extension methods for the GameState model. </summary>
@@ -57,8 +57,8 @@
 			actionResult.IsPlayersTurn = gameState.IsPlayersTurn;
 			actionResult.PlayerLocation = gameState.PlayerLocation;
 			actionResult.IsLocationComplete = gameState.IsLocationComplete;
-			actionResult.PlayerAdjustedATK = gameState.Player.Attack + gameState.Player.item.ATK;
-			actionResult.PlayerAdjustedDEF = gameState.Player.Defense + gameState.Player.item.DEF;
+			actionResult.PlayerItemATK = gameState.Player.item.ATK;
+			actionResult.PlayerItemDEF = gameState.Player.item.DEF;
 			return actionResult;
 		}
 	}
