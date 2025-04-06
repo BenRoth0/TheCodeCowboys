@@ -25,6 +25,8 @@ namespace Tests_BDD {
 
 		[Given(@"I am on the inventory tab")]
 		public void GivenIAmOnTheInventoryTab() {
+			// Start a new game
+			PromptQuestTestMethods.StartNewGame(webDriver,skipTutorial: true);
 			// Navigate to the inventory tab in the application
 			IWebElement menuButton = webDriver.FindElement(By.XPath("//button[normalize-space(text()='Menu')]"));
 			menuButton.Click();
