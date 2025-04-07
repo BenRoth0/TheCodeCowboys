@@ -12,9 +12,9 @@
 
 <div class="pq-container">
 	<!-- Menu Button -->
-	<button class="pq-button" id="pq-modal-open" style="top:0; right:0; height: 7vmin; width: 14vmin;"> Menu </button>
+	<button class="pq-button" id="pq-modal-open" style="top:0; right:0; height: 7vmin; width: 14vmin; max-height: 10vh"> Menu </button>
 	<!-- Login Display -->
-	<div class="login-display" style="top: 0; left: 0; height: 8vmin; width: 20vmin;">
+	<div class="login-display" style="top: 0; left: 0; height: 8vmin; width: 25vmin; max-height: 10vh">
 		@if (isUserLoggedIn)
 		{
 			<img src="@userProfileImage"/>
@@ -26,33 +26,33 @@
 		}
 	</div>
 	<!-- Dialog Box -->
-	<div class="dialog-box pq-center-element-x" style="top: 25%; left: 50%; height: 20vmin; width: 100vmin;"></div>
+	<div class="dialog-box pq-center-element-x" style="bottom: 67%; left: 50%; height: 7rem; width: 45rem; max-height: 25vh; max-width: 100vw; min-height: 15vh; min-width: 50vw;"></div>
 	<!-- Player Display -->
-	<div class="pq-container" id="player-display" style="bottom: 0; left: 0; width: 50vmin; height: 50vmin;">
-		<div class="player-name" style="top: 2%; left: 4%;"></div>
+	<div class="pq-container" id="player-display" style="bottom: 0; left: 0; width: 18rem; height: 18rem; max-height: 65vh; max-width:45vw; min-height: 30vh; min-width: 30vw;">
+		<div class="player-name" style="top: 1%; left: 4%; font-size: 1.25rem;"></div>
 		<img class="player-image" src="~/images/LoadingImage.png" style="top: 10%; left: 3%; height: 75%; width: auto;" />
 		<img class="player-potions-icon" src="~/images/PotionIcon.png" alt="Potion Icon" style="top: 70%; left: 76%; height: 15%; width: auto;">
-		<div class="player-potions stat-text" id="player-health-potions" style="top: 74%; left: 89%;"></div>
+		<div class="player-potions stat-text" id="player-health-potions" style="top: 74%; left: 89%; font-size: 1.25rem;"></div>
 		<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 3%; height: 15%; width: auto;">
-		<span class="player-attack stat-text" id="player-attack" style="bottom: 1%; left: 15%;">0</span>
+		<span class="player-attack stat-text" id="player-attack" style="bottom: 1%; right: 82%; font-size: 1.25rem;">0</span>
 		<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 25%; height: 15%; width: auto;">
-		<span class="player-defense stat-text" id="player-defense" style="bottom: 1%; left: 38%;">0</span>
-		<span class="player-hp stat-text" id="player-hp" style="bottom: 3%; right: 25%;"></span>
+		<span class="player-defense stat-text" id="player-defense" style="bottom: 1%; left: 38%; font-size: 1.25rem;">0</span>
+		<span class="player-hp stat-text" id="player-hp" style="bottom: 3%; right: 25%; font-size: 1.25rem;"></span>
 	</div>
 	<!-- Action Buttons Display -->
-	<div class="pq-center-element-x" id="action-button-display" style="bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
-		<button class="pq-button" id="attack-btn" style="margin-bottom:2vmin; width: 100%;">Attack</button>
-		<button class="pq-button" id="health-potion-btn" style="margin-bottom:2vmin; width: 100%;">Use Potion</button>
+	<div class="pq-center-element-x" id="action-button-display" style="bottom: 0; left: 50%; height: 15rem; width: 8rem; max-height: 65vh; max-width:20vw;">
+		<button class="pq-button" id="attack-btn" style="margin-bottom:2vmin; width: 100%; font-size: 1rem;">Attack</button>
+		<button class="pq-button" id="health-potion-btn" style="margin-bottom:2vmin; width: 100%; font-size: 1rem;">Use Potion</button>
 	</div>
 	<!-- Enemy Display -->
-	<div class="pq-container" id="enemy-display" style="bottom: 0; right: 0; width: 50vmin; height: 50vmin;">
-		<div class="enemy-name" id="enemy-name" style="top: 2%; right: 4%;"></div>
+	<div class="pq-container" id="enemy-display" style="bottom: 0; right: 0; width: 18rem; height: 18rem; max-height: 65vh; max-width:45vw; min-height: 30vh; min-width: 30vw;">
+		<div class="enemy-name" id="enemy-name" style="top: 1%; right: 4%; font-size: 1.25rem"></div>
 		<img class="enemy-image" id="enemy-image" src="~/images/LoadingImage.png" style="top: 10%; right: 3%; height: 75%; width: auto;" />
 		<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 62%; height: 15%; width: auto;">
-		<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 1%; right: 62%;"></span>
+		<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 1%; right: 62%; font-size: 1.25rem"></span>
 		<img class="enemy-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; right: 40%; height: 15%; width: auto;">
-		<span class="enemy-defense stat-text" id="enemy-defense" style="bottom: 1%; right: 38%;"></span>
-		<span class="enemy-hp stat-text" id="enemy-hp" style="bottom: 3%; right: 5%;"></span>
+		<span class="enemy-defense stat-text" id="enemy-defense" style="bottom: 1%; right: 38%; font-size: 1.25rem"></span>
+		<span class="enemy-hp stat-text" id="enemy-hp" style="bottom: 3%; right: 5%; font-size: 1.25rem"></span>
 	</div>
 </div>
 
@@ -80,9 +80,9 @@
 			<button class="pq-tab" id="map-button" style="top:-4.5vmin; left:14vmin; height: 4vmin; width: 12vmin;" onclick="switchTab('map')"> Map </button>
 			<!-- Inventory window -->
 			<div id="inventory-tab" class="pq-container tab-content" >
-				<div id="equipped-item" class="pq-inventory-slot" style="top:5%; height:15%; left:5%;"></div>
-				<div id="equip-button" class="pq-inventory-slot" style="top:25%; height:10%; left:5%; color:white;">Equip Item</div>
-				<div class="pq-inventory-display pq-container" style="top:0; right:0; height: 60%; width: 75%; border:white solid 2px">
+				<div id="equipped-item" class="pq-inventory-slot" style="top:5%; height:18%; width: auto; left:5%;"></div>
+				<div id="equip-button" class="pq-inventory-slot" style="top:25%; height:8%; width: 12%; left:4%; color:white; font-size: .85rem;">Equip Item</div>
+				<div class="pq-inventory-display pq-container pq-border" style="top:0; right:0; height: 60%; width: 75%;">
 					<div id="item-name" class="pq-font" style="top:5%; right: 0; height:15%; width:45%; font-size:4vmin;"></div>
 					<img id="item-image" src="~/images/PlaceholderItem1.png" class="pq-center-element-y" style="top:50%; left:5%; height:auto; width:40%; display:none; border-radius:10px;">
 					<img id="shield-icon" src="~/images/ShieldIcon.png" style="bottom:10%; right: 40%; height:20%; width:auto; display:none;">

@@ -20,7 +20,8 @@ html, body {
 	width: 100vw;
 	background-color: var(--background-color-primary);
 	margin: 0;
-	font-size: 16pt;
+	font-size: clamp(2vh, 18pt, 3.7vh); /* Minimum size is 16px, maximum is 32px */
+	transform: scale(1.0);
 }
 
 body {
@@ -207,14 +208,14 @@ body {
 
 /*---------- Reusable Login Display ------------------------------------------------------------------------------------*/
 
-.login-display img {
+.login-display > img {
 	border-radius: 50%;
 	height: 100%;
 }
 
-.login-display a {
+.login-display > a {
 	display: inline-block;
-	font-size: var(--pq-font-normal);
+	font-size: .8rem;
 	margin-left: .5vmin;
 }
 
@@ -249,12 +250,12 @@ body {
 /*--------------------- Buttons ---------------------------*/
 
 .pq-button {
-	padding: 10px;
+	padding: clamp(.5vh, 10px, 1vh);
 	background-color: var(--background-color-primary);
 	font-size: var(--pq-font-normal);
 	color: var(--pq-font-color);
 	border: var(--pq-border);
-	border-radius: 10px;
+	border-radius: clamp(.1vh, 10px, 1vh);
 	/*For when the butotn is applied to an anchor tag*/
 	text-decoration: none;
 	cursor: pointer;
