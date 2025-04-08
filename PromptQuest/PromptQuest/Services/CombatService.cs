@@ -17,10 +17,17 @@ namespace PromptQuest.Services {
 		public string StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
-			gameState.Enemy = GetEnemy();
 			gameState.Player.HealthPotions = 2; // Set player's health potions to 2 when combat starts (Temporary)
-			string message = $"The {gameState.Enemy.Name} attacked!"; // Let the user know that combat started.
-		  return message;
+			if (gameState.PlayerLocation != 10) {
+				gameState.Enemy = GetEnemy();
+				string message = $"The {gameState.Enemy.Name} attacked!"; // Let the user know that combat started.
+				return message;
+			} else {
+				// If the player is in the boss room, spawn a boss.
+				gameState.Enemy = GetBoss();
+				string message = $"You have encounterd the {gameState.Enemy.Name}! Defeat the boss! "; // Let the user know that combat started.
+				return message;
+			}
 		}
 
 		/// <summary>Respawns the player by resetting their health and potions, and updates the game state.</summary>
@@ -145,6 +152,17 @@ namespace PromptQuest.Services {
 			return enemy;
 		}
 
+		/// <summary>Generatees an Enemy, updates the game state, then returns the Enemy.</summary>
+		public Enemy GetBoss() {
+			Enemy boss = new Enemy();
+			boss.Name = "Dark Orc Warlock";
+			boss.ImageUrl = "/images/OrcWarlock.png";
+			boss.MaxHealth = 25;
+			boss.CurrentHealth = 25;
+			boss.Attack = 5;
+			boss.Defense = 4;
+			return boss;
+		}
 		#endregion Helper Methods - End
 	}
 }
