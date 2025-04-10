@@ -48,8 +48,8 @@ namespace PromptQuest.Tests_BDD.StepDefinitions {
 			DefenseStatSteps steps = new DefenseStatSteps();
 			_combatService.StartCombat(_gameState);
 		}
-		[When("the user attacks the enemy")]
-		public void WhenTheUserAttacksTheEnemy() {
+		[When("the enemy is attacked by the user")]
+		public void WhenTheEnemyIsAttackedByTheUser() {
 			_resultMessage = _combatService.PlayerAttack(_gameState);
 		}
 		[Then("the enemy should receive damage equal to the user's attack minus enemy defense")]
