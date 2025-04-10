@@ -28,11 +28,11 @@ namespace PromptQuest.Controllers {
 			player.Attack = 3;
 			player.Defense = 1;
 			player.Class = player.Class;
-			_gameService.SetTutorialFlag(true);
 			if(ModelState.IsValid) { // Character created succesfully
 				_gameService.StartNewGame(); // Start a new game. If the user already has one it will be overwritten.
 				_gameService.CreateCharacter(player); // Add character to the game state.
 				_gameService.StartCombat(); // Start combat right away, for now.
+				_gameService.SetTutorialFlag(true);
 				return RedirectToAction("Game");
 			}
 			else {

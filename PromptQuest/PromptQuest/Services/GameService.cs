@@ -41,12 +41,20 @@ namespace PromptQuest.Services {
 
 		/// <summary> Adds a new game state to the session, and if the user is logged in, then it is also added to the database with nothing but the user's id. If the user already has a GameState it will be overwritten.</summary>
 		public void StartNewGame() {
-			GameState gameState = new GameState();
+			GameState gameState = GetGameState();
 			if(_databaseService.IsAuthenticatedUser()) {
-				//User is logged in. store their id in the gamestate and add it to the database.
-				//This will overwrite their last game with the new blank one because updates are done on the basis of Google Id.
+				//Check if user already has a saved game
+				string userGoogleId = _databaseService.GetUserGoogleId();
+				if (gameState!=null) {
+					//They do. Delete it.
+					_databaseService.DeleteGameState(userGoogleId);
+				}
+				gameState = new GameState();
+				gameState.Player = new Player(); // Avoids null references later.
+				gameState.Enemy = new Enemy(); // Avoids null references later.
+				//User is logged in. So, store their id in the gamestate and add it to the database.
 				gameState.UserGoogleId = _databaseService.GetUserGoogleId();
-				_databaseService.AddOrUpdateGameState(gameState);
+				_databaseService.SaveGameState(gameState);
 			}
 			//User isn't logged in. Only add the new GameState to the session.
 			_sessionService.UpdateGameState(gameState);
@@ -79,7 +87,7 @@ namespace PromptQuest.Services {
 		private void UpdateGameState(GameState gameState) {
 			if(_databaseService.IsAuthenticatedUser()) {
 				// User is logged in, so update the current gamestate in the database.
-				_databaseService.AddOrUpdateGameState(gameState);
+				_databaseService.SaveGameState(gameState);
 			}
 			// User is not logged in, so only update the current gamestate in the session.
 			_sessionService.UpdateGameState(gameState);
@@ -99,18 +107,15 @@ namespace PromptQuest.Services {
 		#endregion Game State and Session Management Methods - End
 
 		#region Update Methods
-		/// <summary>Saves the player character to the game state. overwrites the current player character if called multiple times.</summary>
+		/// <summary>Saves the player character to the game state. Deletes the old character and sets this as the new one.</summary>
 		public void CreateCharacter(Player player) {
 			// Get current gamestate
 			GameState gameState = GetGameState();
 			if(_databaseService.IsAuthenticatedUser()) {
-				// Check if user already has a character.
-				if(gameState.Player != null) {
-					// Delete old character.
-					_databaseService.DeletePlayer(gameState.Player.PlayerId);
-				}
+				// Delete saved character (shouldn't be null)
+				_databaseService.DeletePlayer(gameState.Player.PlayerId);
 			}
-			// Add new character to the game state.
+			// Add new character.
 			gameState.Player = player;
 			// Update current gamesate
 			UpdateGameState(gameState);
@@ -124,7 +129,7 @@ namespace PromptQuest.Services {
 		}
 		public Item GetItem(){
 			GameState gameState = GetGameState();
-			return gameState.Player.item;
+			return gameState.Player.Item;
 		}
 		#endregion Get Methods - End
 
@@ -203,10 +208,10 @@ namespace PromptQuest.Services {
 		public PQActionResult EquipItem(string itemName, int itemATK, int itemDEF, string itemIMG)
 		{
 			GameState gameState = GetGameState();
-			gameState.Player.item.name = itemName;
-			gameState.Player.item.ATK = itemATK;
-			gameState.Player.item.DEF = itemDEF;
-			gameState.Player.item.IMG = itemIMG;
+			gameState.Player.Item.Name = itemName;
+			gameState.Player.Item.Attack = itemATK;
+			gameState.Player.Item.Defense = itemDEF;
+			gameState.Player.Item.ImageSrc = itemIMG;
 			UpdateGameState(gameState);
 			PQActionResult pQActionResult = gameState.ToPQActionResult();
 			pQActionResult.Message = "Equipped the "+itemName;

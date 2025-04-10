@@ -42,7 +42,7 @@ namespace PromptQuest.Tests.Services {
 			_gameService.StartNewGame();
 
 			// Assert
-			_mockDatabaseService.Verify(db => db.AddOrUpdateGameState(It.Is<GameState>(gs => gs.UserGoogleId == userGoogleId)),Times.Once);
+			_mockDatabaseService.Verify(db => db.SaveGameState(It.Is<GameState>(gs => gs.UserGoogleId == userGoogleId)),Times.Once);
 			_mockSessionService.Verify(session => session.UpdateGameState(It.IsAny<GameState>()),Times.Once);
 		}
 

@@ -16,6 +16,6 @@ namespace PromptQuest.Models {
 		[Required]
 		public string Class { get; set; } = "";
 		//equipped item
-		public Item item { get; set; } = new Item();
+		public Item Item { get; set; } = new Item();
 	}
 }

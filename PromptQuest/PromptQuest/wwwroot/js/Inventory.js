@@ -27,7 +27,7 @@ async function LoadItems() {
 	for (let i = 0; i < defaultItems.length; i++) {
 		let item = defaultItems[i];
 		let image = document.createElement("img");
-		image.src = item.image;
+		image.src = item.imageSrc;
 		image.alt = item.name;
 		document.getElementById("inventory-slot-" + (i + 1)).appendChild(image);
 		image.addEventListener("click", (function () {
@@ -36,9 +36,9 @@ async function LoadItems() {
 		}));
 	}
 	let response = await fetch("/Game/GetEquippedItem");
-	itemmdl = await response.json();
+	item = await response.json();
 	
-	equippedItem=new Item(itemmdl.name, itemmdl.atk, itemmdl.def, itemmdl.img)
+	equippedItem = new Item(item.name, item.atack, item.defense, item.imageSrc)
 	displayEquipped()
 	document.getElementById("equip-button").removeEventListener("click",equipSelectedItem);// just in case, had issues of stacking
 	document.getElementById("equip-button").addEventListener("click",equipSelectedItem);
@@ -49,7 +49,7 @@ function displayEquipped() {
 		equipped.removeChild(equipped.firstChild);
 	}
 	let image = document.createElement("img");
-	image.src = equippedItem.image;
+	image.src = equippedItem.imageSrc;
 	image.alt = equippedItem.name;
 	document.getElementById("equipped-item").appendChild(image);
 	image.addEventListener("click", (function () {
