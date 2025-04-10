@@ -20,15 +20,15 @@ namespace Tests_BDD.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Game page zoom functionality")]
-    public partial class GamePageZoomFunctionalityFeature
+    [NUnit.Framework.DescriptionAttribute("Game page zoom")]
+    public partial class GamePageZoomFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Game page zoom functionality", "\tAs a user I want the game page elements to scale when I zoom in or out for bette" +
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Game page zoom", "\tAs a user I want the game page elements to scale when I zoom in or out for bette" +
                 "r usability and visibility", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "GamePageZoom.feature"
@@ -83,12 +83,12 @@ namespace Tests_BDD.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Zooming in increases display sizes")]
-        public async System.Threading.Tasks.Task ZoomingInIncreasesDisplaySizes()
+        [NUnit.Framework.DescriptionAttribute("Zoom In")]
+        public async System.Threading.Tasks.Task ZoomIn()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Zooming in increases display sizes", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Zoom In", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -122,12 +122,12 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Zooming out decreases display sizes")]
-        public async System.Threading.Tasks.Task ZoomingOutDecreasesDisplaySizes()
+        [NUnit.Framework.DescriptionAttribute("Zooming Out")]
+        public async System.Threading.Tasks.Task ZoomingOut()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Zooming out decreases display sizes", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Zooming Out", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -194,6 +194,45 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 26
  await testRunner.AndAsync("the action button display will reach a maximum", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Minimum Zoom")]
+        public async System.Threading.Tasks.Task MinimumZoom()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Minimum Zoom", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 28
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 29
+ await testRunner.GivenAsync("I am on the game page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 30
+ await testRunner.WhenAsync("I zoom out my browser an excessive amount", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 31
+ await testRunner.ThenAsync("the player display will reach a minimum", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 32
+ await testRunner.AndAsync("the enemy display will reach a minimum", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 33
+ await testRunner.AndAsync("the dialog box will reach a minimum", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 34
+ await testRunner.AndAsync("the action button display will reach a minimum", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
