@@ -21,7 +21,7 @@ namespace PromptQuest.Tests_BDD.StepDefinitions {
 				Class = "Warrior",
 			};
 		}
-
+		#region User Attacked By Enemy
 		[Given("the user is on the game page")]
 		public void GivenTheUserIsOnTheGamePage() {
 			DefenseStatSteps steps = new DefenseStatSteps();
@@ -41,5 +41,24 @@ namespace PromptQuest.Tests_BDD.StepDefinitions {
 			int actualDamage = _gameState.Player.MaxHealth - _gameState.Player.CurrentHealth;
 			Assert.AreEqual(expectedDamage, actualDamage, _resultMessage);
 		}
+		#endregion
+		#region User Attacks Enemy
+		[Given("the user is in combat with an enemy")]
+		public void GivenTheUserIsInCombatWithAnEnemy() {
+			DefenseStatSteps steps = new DefenseStatSteps();
+			_combatService.StartCombat(_gameState);
+		}
+		[When("the user attacks the enemy")]
+		public void WhenTheUserAttacksTheEnemy() {
+			_resultMessage = _combatService.PlayerAttack(_gameState);
+		}
+		[Then("the enemy should receive damage equal to the user's attack minus enemy defense")]
+		public void ThenTheEnemyShouldReceiveDamageEqualToTheUsersAttackMinusEnemyDefense() {
+			int expectedDamage = _gameState.Player.Attack + _gameState.Player.item.ATK - _gameState.Enemy.Defense;
+			if (expectedDamage < 1) expectedDamage = 1;
+			int actualDamage = _gameState.Enemy.MaxHealth - _gameState.Enemy.CurrentHealth;
+			Assert.AreEqual(expectedDamage, actualDamage, _resultMessage);
+		}
+		#endregion
 	}
 }
