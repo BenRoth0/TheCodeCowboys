@@ -167,8 +167,8 @@ namespace PromptQuest.Services {
 			Enemy boss = new Enemy();
 			boss.Name = "Dark Orc Warlock";
 			boss.ImageUrl = "/images/OrcWarlock.png";
-			boss.MaxHealth = 25;
-			boss.CurrentHealth = 25;
+			boss.MaxHealth = 20;
+			boss.CurrentHealth = 20;
 			boss.Attack = 5;
 			boss.Defense = 4;
 			return boss;
