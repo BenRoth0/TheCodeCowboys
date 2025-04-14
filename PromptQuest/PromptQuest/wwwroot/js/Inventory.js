@@ -1,100 +1,87 @@
-﻿//----------------------------------------------------------------------- Item Creation -----------------------------------------------------------------------
-const defaultItem1 = new Item("Jeweled Helmet", 0, 2, "/images/PlaceholderItem1.png");
-const defaultItem2 = new Item("Fiery Sword", 4, 0, "/images/PlaceholderItem2.png");
-const defaultItem3 = new Item("Frozen Shield", 1, 3, "/images/PlaceholderItem3.png");
-const defaultItem4 = new Item("Warded Sword", 3, 2, "/images/PlaceholderItem4.png");
-const defaultItems = [defaultItem1, defaultItem2, defaultItem3, defaultItem4];
-let selectedItem = new Item("None", 0, 0, "/images/PromptQuestLogo.png");
-let equippedItem = new Item("None", 0, 0, "/images/PromptQuestLogo.png");
-// This function will produce an item object when called
-function Item(name, attack, defense, image) {
-	this.name = name;
-	this.attack = attack;
-	this.defense = defense;
-	this.image = image;
-}
-// This function will call the Item function to create new items and add them to the defaultItems array for testing
-async function LoadItems() {
-	// Clear existing items in inventory slots
-	for (let i = 1; i <= 20; i++) {
-		let slot = document.getElementById("inventory-slot-" + i);
-		while (slot.firstChild) {
-			slot.removeChild(slot.firstChild);
+﻿// "Global" Variables for the selected and equipped items
+let selectedItemIndex = 0;
+let equippedItemId = 0;
+function UpdateInventoryDisplay() {
+		// Fill Equipped item slot
+		const equippedItem = gameState.player.items.find(i => i.itemId === gameState.player.itemEquippedIndex); // Grab the equipped item
+		//Clear out equipped item slot
+		const equippedItemSlot = document.getElementById("equipped-item");
+		while (equippedItemSlot.firstChild) {
+			equippedItemSlot.removeChild(equippedItemSlot.firstChild);
 		}
+		if (equippedItem != null) {
+			const image = document.createElement("img");
+			image.src = equippedItem.imageSrc;
+			image.alt = equippedItem.name;
+			equippedItemSlot.appendChild(image);
+			//Set up the select behavior
+			image.addEventListener("click", () => {
+				selectItem(equippedItem);
+			});
+		}
+		// Set up the equip button
+		const equipButton = document.getElementById("equip-button");
+		equipButton.removeEventListener("click", equipItem);
+		equipButton.addEventListener("click", equipItem);
+		// Fill unequipped inventory slots
+		// Clear existing inventory slots
+		for (let i = 1; i <= 20; i++) {
+			const slot = document.getElementById("inventory-slot-" + i);
+			while (slot.firstChild) {
+				slot.removeChild(slot.firstChild);
+			}
+		}
+		const items = gameState.player.items; // Grab the players items
+		let slotCount = 1;
+		// Populate inventory slots with items from the server
+		items.forEach((item, index) => {
+			//If item is equipped don't put it into the inventory
+			if (item.itemId == equippedItem?.itemId??0) {
+				return; //bail
+			}
+			//Create img tag and insert it into the slot
+			const image = document.createElement("img");
+			image.src = item.imageSrc;
+			image.alt = item.name;
+			const slot = document.getElementById("inventory-slot-" + (index + 1));
+			slot.appendChild(image);
+			//Store the items Id in the slot
+			slot.setAttribute("data-item-id", item.itemId);
+			//Set up select behavior for the slot
+			image.addEventListener("click", () => {
+				selectItem(item);
+			});
+		});
 	}
 
-	// Add items to inventory slots
-	for (let i = 0; i < defaultItems.length; i++) {
-		let item = defaultItems[i];
-		let image = document.createElement("img");
-		image.src = item.imageSrc;
-		image.alt = item.name;
-		document.getElementById("inventory-slot-" + (i + 1)).appendChild(image);
-		image.addEventListener("click", (function () {
-			// Display item stats
-			selectItem(i);
-		}));
+async function equipItem() {
+	const equippedItem = gameState.player.items.find(i => i.itemId === gameState.player.itemIdEquipped); // Grab the equipped item
+	// If the equipped item is the selected item, or there is no selected item then do nothing.
+	if (selectedItemIndex === equippedItem.itemId || selectedItemIndex == 0) {
+		return;
 	}
-	let response = await fetch("/Game/GetEquippedItem");
-	item = await response.json();
-	
-	equippedItem = new Item(item.name, item.atack, item.defense, item.imageSrc)
-	displayEquipped()
-	document.getElementById("equip-button").removeEventListener("click",equipSelectedItem);// just in case, had issues of stacking
-	document.getElementById("equip-button").addEventListener("click",equipSelectedItem);
-}
-function displayEquipped() {
-	let equipped = document.getElementById("equipped-item");
-	while (equipped.firstChild) {
-		equipped.removeChild(equipped.firstChild);
-	}
-	let image = document.createElement("img");
-	image.src = equippedItem.imageSrc;
-	image.alt = equippedItem.name;
-	document.getElementById("equipped-item").appendChild(image);
-	image.addEventListener("click", (function () {
-		selectItem(-1);
-	}));
-}
-
-async function equipSelectedItem() {
-	equippedItem = selectedItem;
-	displayEquipped()
 	await $.ajax({
 		url: '/Game/EquipItem',
 		type: 'POST',
-		data: {
-			itemName: equippedItem.name,
-			itemATK: equippedItem.attack,
-			itemDEF: equippedItem.defense,
-			itemIMG: equippedItem.image,
-		},
+		data: { itemIndex: selectedItemIndex },
 		success: function (response) {
-			let actionResult = response;
-			console.log('Player equipped (' + equippedItem.name + ')successfully:', actionResult);
-			updateLocalGameState(actionResult); // Update local gameState variable with whatever the action changed.  
-			updateDisplay() // Update screen to show whatever the action changed.
-			addLogEntry(actionResult.message);
+			loadGame(); //Refresh the local gamestate and all displays
 		},
 		error: function (xhr, status, error) {
-			console.error('Error equipping new item', error);
+			console.error('Error equipping item: ', error);
 		}
 	});
 }
 
-function selectItem(id) {
-	if (id == -1) {
-		selectedItem = equippedItem;
-	}
-	else {
-		selectedItem = defaultItems[id];
-	}
-	
+// Function to select an item and display its stats
+function selectItem(item) {
+	//Save the items Id so we can use it later
+	selectedItemIndex = item.itemId;
 	// Display item stats
-	document.getElementById("item-name").innerHTML = selectedItem.name;
-	document.getElementById("item-attack").innerHTML = selectedItem.attack;
-	document.getElementById("item-defense").innerHTML = selectedItem.defense;
-	document.getElementById("item-image").src = selectedItem.image;
+	document.getElementById("item-name").textContent = item.name;
+	document.getElementById("item-attack").textContent = item.attack;
+	document.getElementById("item-defense").textContent = item.defense;
+	document.getElementById("item-image").src = item.imageSrc;
 	// Show the elements
 	document.getElementById("item-name").style.display = "block";
 	document.getElementById("item-attack").style.display = "block";
@@ -102,17 +89,12 @@ function selectItem(id) {
 	document.getElementById("item-image").style.display = "block";
 	document.getElementById("shield-icon").style.display = "block";
 	document.getElementById("sword-icon").style.display = "block";
-	// Reset the border color of all slots
+	//Remove the highlight on any other item slots
 	for (let i = 1; i <= 20; i++) {
 		document.getElementById("inventory-slot-" + i).style.borderColor = "";
 	}
-	document.getElementById("equipped-item").style.borderColor = ""
-	// Highlight the inventory slot
-	if (id == -1) {
-		document.getElementById("equipped-item").style.borderColor = "#ffdc4a"
-	}
-	else {
-		document.getElementById("inventory-slot-" + (id + 1)).style.borderColor = "#ffdc4a";
-	}
-	
+	document.getElementById("equipped-item").style.borderColor = "";
+	// Highlight the selected inventory slot
+	const selectedSlot = document.querySelector(`[data-item-id="${selectedItemIndex}"]`);
+	if (selectedSlot) selectedSlot.style.borderColor = "#ffdc4a";
 }

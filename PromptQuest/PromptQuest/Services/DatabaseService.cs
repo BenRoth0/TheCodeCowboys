@@ -25,7 +25,7 @@ namespace PromptQuest.Services {
 		public GameState GetGameState(string userGoogleId) {
 			return _dbContext.GameStates
 					.Include(gs => gs.Player)
-					.ThenInclude(p => p.Item)
+					.ThenInclude(p => p.Items)
 					.Include(gs => gs.Enemy)
 					.FirstOrDefault(gs => gs.UserGoogleId == userGoogleId);
 		}

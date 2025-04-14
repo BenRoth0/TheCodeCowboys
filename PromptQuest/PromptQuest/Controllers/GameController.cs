@@ -82,11 +82,12 @@ namespace PromptQuest.Controllers {
 		}
 
 		[HttpPost]
-		public IActionResult EquipItem(string itemName, int itemATK, int itemDEF, string itemIMG)
+		public IActionResult EquipItem(int itemIndex)
 		{
-			PQActionResult ActionResult = _gameService.EquipItem(itemName, itemATK, itemDEF, itemIMG);
+			PQActionResult ActionResult = _gameService.EquipItem(itemIndex);
 			return Json(ActionResult);
 		}
+
 		[HttpPost]
 		public IActionResult EnemyAction() {
 			PQActionResult ActionResult = _gameService.ExecuteEnemyAction();
@@ -124,12 +125,7 @@ namespace PromptQuest.Controllers {
 			Map map = _gameService.GetMap();
 			return Json(map);
 		}
-		[HttpGet]
-		public JsonResult GetEquippedItem()
-		{
-			Item item = _gameService.GetItem();
-			return Json(item);
-		}
+
 		[HttpGet]
 		public IActionResult SkipToBoss()
 		{

@@ -108,8 +108,9 @@ function updateDisplay() {
 	document.querySelectorAll(".player-name").forEach(el => { el.textContent = gameState.player.name; });
 	document.querySelectorAll(".player-image").forEach(el => { el.src = "/images/" + gameState.player.class + ".png"; }); // Placeholder image for now.
 	document.querySelectorAll(".player-image").forEach(el => { el.alt = gameState.player.name; });
-	document.querySelectorAll(".player-attack").forEach(el => { el.textContent = gameState.player.attack+gameState.player.item.atk; });
-	document.querySelectorAll(".player-defense").forEach(el => { el.textContent = gameState.player.defense + gameState.player.item.def; });
+	const equippedItem = gameState.player.items.find(i => i.itemId === gameState.player.itemIdEquipped);
+	document.querySelectorAll(".player-attack").forEach(el => { el.textContent = gameState.player.attack + equippedItem?.attack??0; });
+	document.querySelectorAll(".player-defense").forEach(el => { el.textContent = gameState.player.defense + equippedItem?.defense??0; });
 	document.querySelectorAll(".player-hp").forEach(el => { el.textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP"; });
 	document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
 	if (gameState.inCombat) {
@@ -131,6 +132,8 @@ function updateDisplay() {
 	else {
 		disableCombatButtons();
 	}
+	// Show the players items in the inventory
+	UpdateInventoryDisplay();
 }
 
 // Function to add log entries to the dialog box.  

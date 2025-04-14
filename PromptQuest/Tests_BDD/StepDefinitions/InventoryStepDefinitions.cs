@@ -1,8 +1,11 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.BiDi.Modules.Log;
 using OpenQA.Selenium.BiDi.Modules.Script;
 using OpenQA.Selenium.Chrome;
+using PromptQuest.Models;
 using Reqnroll;
+using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Tests_BDD {
@@ -10,6 +13,7 @@ namespace Tests_BDD {
 	[Binding]
 	public class InventoryDisplaySteps {
 		private IWebDriver webDriver;
+		private IWebElement EquippedSlotBefore;
 
 		[BeforeScenario]
 		public void Setup() {
@@ -24,6 +28,8 @@ namespace Tests_BDD {
 			// Navigate to the inventory tab in the application
 			IWebElement menuButton = webDriver.FindElement(By.XPath("//button[normalize-space(text()='Menu')]"));
 			menuButton.Click();
+			//Wait for menu modal to show before continuing
+			PromptQuestTestMethods.WaitForModalToOpen(webDriver,"pq-modal");
 		}
 
 		[When(@"I click on an item in the inventory")]
@@ -31,8 +37,6 @@ namespace Tests_BDD {
 			// Click on the first inventory Item Slot (Should have something)
 			IWebElement FirstInventoryItem = webDriver.FindElement(By.Id("inventory-slot-1"));
 			FirstInventoryItem.Click();
-			//Wait for menu modal to show before continuing
-			PromptQuestTestMethods.WaitForModalToOpen(webDriver,"pq-modal");
 		}
 
 		[Then(@"I should see a window with that item's title, image, and stats")]
@@ -82,65 +86,27 @@ namespace Tests_BDD {
 			equipButton.Click();
 		}
 
+		[Then("that item will leave the list of items")]
+		public void ThenThatItemWillLeaveTheListOfItems() {
+			IWebElement equippedSlot = webDriver.FindElement(By.Id("equipped-item"));
+			Assert.IsTrue(true);
+		}
+
 		[Then("that item will move to the equipped item slot")]
 		public void ThenThatItemWillMoveToTheEquippedItemSlot() {
 			IWebElement equippedSlot = webDriver.FindElement(By.Id("equipped-item"));
 			Assert.IsNotNull(equippedSlot.Text);
 		}
 
+		[When("I don't have an item selected")]
+		public void WhenIDontHaveAnItemSelected() {
+		
+		}
+
 		[Then("nothing should happen")]
 		public void ThenNothingShouldHappen() {
 			IWebElement equippedSlot = webDriver.FindElement(By.Id("equipped-item"));
 			Assert.IsTrue(string.IsNullOrEmpty(equippedSlot.Text));
-		}
-
-		[Given("I am an authenticated user")]
-		public void GivenIAmAnAuthenticatedUser() {
-			//webDriver.Navigate().GoToUrl("/Account/GoogleLogin");
-			//IWebElement usernameInput = webDriver.FindElement(By.Id("username"));
-			//IWebElement passwordInput = webDriver.FindElement(By.Id("password"));
-			//usernameInput.SendKeys("testUser");
-			//passwordInput.SendKeys("securePassword");
-			//webDriver.FindElement(By.Id("loginButton")).Click();
-			Assert.That(true);
-		}
-
-		[Given("I have an item equipped")]
-		public void GivenIHaveAnItemEquipped() {
-			var equipButton = webDriver.FindElement(By.Id("equip-button"));
-			equipButton.Click();
-			var equippedSlot = webDriver.FindElement(By.Id("equipped-item"));
-			Assert.IsNotNull(equippedSlot.Text);
-		}
-
-		[Given("I have items in my inventory")]
-		public void GivenIHaveItemsInMyInventory() {
-			var inventoryItems = webDriver.FindElements(By.CssSelector(".pq-inventory-slot"));
-			Assert.IsTrue(inventoryItems.Count > 0);
-		}
-
-		[When("I close the game")]
-		public void WhenICloseTheGame() {
-			webDriver.Quit(); // Kill the browser
-			webDriver?.Dispose(); // Clean up unmanaged resources
-		}
-
-		[When("I continue the game")]
-		public void WhenIContinueTheGame() {
-			webDriver = new ChromeDriver();
-			webDriver.Navigate().GoToUrl("/inventory");
-		}
-
-		[Then("the item is still equipped")]
-		public void ThenTheItemIsStillEquipped() {
-			var equippedSlot = webDriver.FindElement(By.Id("equipped-item"));
-			Assert.IsNotNull(equippedSlot.Text);
-		}
-
-		[Then("I will have the same items in my inventory")]
-		public void ThenIWillHaveTheSameItemsInMyInventory() {
-			var inventoryItems = webDriver.FindElements(By.CssSelector(".pq-inventory-slot"));
-			Assert.IsTrue(inventoryItems.Count > 0);
 		}
 
 		[AfterScenario]

@@ -15,13 +15,11 @@ namespace PromptQuest.Services {
 		void RespawnPlayer();
 		PQActionResult ExecutePlayerAction(string action);
 		PQActionResult ExecuteEnemyAction();
-		PQActionResult EquipItem(string itemName, int itemATK, int itemDEF, string itemIMG);
 		PQActionResult SkipToBoss();
 		void StartNewGame();
 		public bool IsTutorial();
 		public void SetTutorialFlag(bool Flag);
 		public Map GetMap();
-		public Item GetItem();
 	}
 
 	public class GameService : IGameService {
@@ -127,10 +125,6 @@ namespace PromptQuest.Services {
 		public Map GetMap() {
 			return _mapService.GetMap();
 		}
-		public Item GetItem(){
-			GameState gameState = GetGameState();
-			return gameState.Player.Item;
-		}
 		#endregion Get Methods - End
 
 		#region Game Flow Methods
@@ -201,23 +195,24 @@ namespace PromptQuest.Services {
 			pQActionResult.Message = message;
 			return pQActionResult;
 		}
-		/// <summary>
-		/// equips an item to the player, altering their stats
-		/// </summary>
-		/// <returns></returns>
-		public PQActionResult EquipItem(string itemName, int itemATK, int itemDEF, string itemIMG)
+
+		#region Inventory functions (could be placed in its own service at some point when there is more of them)
+		/// <summary> equips the item with the given itemId </summary>
+		public PQActionResult EquipItem(int itemIndex)
 		{
 			GameState gameState = GetGameState();
-			gameState.Player.Item.Name = itemName;
-			gameState.Player.Item.Attack = itemATK;
-			gameState.Player.Item.Defense = itemDEF;
-			gameState.Player.Item.ImageSrc = itemIMG;
+			gameState.Player.IndexEquippedItem=itemIndex;
 			UpdateGameState(gameState);
 			PQActionResult pQActionResult = gameState.ToPQActionResult();
-			pQActionResult.Message = "Equipped the "+itemName;
+			Item equippedItem = gameState.Player.Items[gameState.Player.IndexEquippedItem];
+			if(equippedItem == null) {
+				throw new Exception("Item does not exist."); //This shouldn't happen.
+			}
+			pQActionResult.Message = "Equipped the "+equippedItem.Name;
 			return pQActionResult;
-
 		}
+
+		#endregion
 
 		/// <summary>Execute an enemy action.  Does not take an action string because the enemy's action is determined server side. </summary>
 		public PQActionResult ExecuteEnemyAction() {
@@ -225,7 +220,7 @@ namespace PromptQuest.Services {
 			GameState gameState = GetGameState();
 			// Execute the action and return a PQActionResult
 			string message = _combatService.EnemyAttack(gameState); // Enemy only attacks for now.
-																																					 // Update current gamesate
+			// Update current gamesate
 			UpdateGameState(gameState);
 		  PQActionResult pQActionResult = gameState.ToPQActionResult();
 			pQActionResult.Message = message;

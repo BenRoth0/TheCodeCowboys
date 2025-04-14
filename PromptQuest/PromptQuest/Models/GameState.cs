@@ -57,8 +57,6 @@
 			actionResult.IsPlayersTurn = gameState.IsPlayersTurn;
 			actionResult.PlayerLocation = gameState.PlayerLocation;
 			actionResult.IsLocationComplete = gameState.IsLocationComplete;
-			actionResult.PlayerItemATK = gameState.Player.Item.Attack;
-			actionResult.PlayerItemDEF = gameState.Player.Item.Defense;
 			return actionResult;
 		}
 	}

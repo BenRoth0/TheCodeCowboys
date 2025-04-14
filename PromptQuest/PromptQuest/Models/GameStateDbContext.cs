@@ -16,7 +16,7 @@ namespace PromptQuest.Models {
 			modelBuilder.Entity<GameState>().HasOne(gs => gs.Enemy).WithOne().HasForeignKey<GameState>(gs => gs.EnemyId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
 			//Players table
 			modelBuilder.Entity<Player>().HasKey(p => p.PlayerId);
-			modelBuilder.Entity<Player>().HasOne(p => p.Item).WithOne().HasForeignKey<Item>(i => i.PlayerId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
+			modelBuilder.Entity<Player>().HasMany(p => p.Items).WithOne().HasForeignKey(i => i.PlayerId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
 			//Enemies table
 			modelBuilder.Entity<Enemy>().HasKey(e => e.EnemyId);
 			//Items table
