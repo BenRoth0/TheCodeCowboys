@@ -54,17 +54,17 @@ namespace PromptQuest.Services {
 			// Check if enemy died.
 			if (gameState.Enemy.CurrentHealth <= 0) {
 				gameState.InCombat = false; // Enemy is dead, combat has ended.
-				gameState.IsPlayersTurn = false; // Zero this field out because combat is over.
+				gameState.IsPlayersTurn = true; // Zero this field out because combat is over.
 				gameState.IsLocationComplete = true; // Player has completed the current area.
 				message += $", you have defeated the {gameState.Enemy.Name}."; // Let them know in the same message.
 				if (gameState.PlayerLocation == 10) {
-					// Generate a boss item for the player that is auto-equipped for now.
+					// Generate a boss item for the player
 					Item bossItem = new Item();
-					bossItem.name = "Orc Warlock's Staff";		//TODO    This item should go to inventory and not auto-equip but it works
-					bossItem.ATK = 5;
-					bossItem.DEF = 4;
-					bossItem.IMG = "/images/DarkStaff.png";
-					gameState.Player.item = bossItem;
+					bossItem.Name = "Orc Warlock's Staff";		//TODO    This item should go to inventory and not auto-equip but it works
+					bossItem.Attack = 5;
+					bossItem.Defense = 4;
+					bossItem.ImageSrc = "/images/DarkStaff.png";
+					gameState.Player.Items.Add(bossItem);
 				}
 				return message;
 			}

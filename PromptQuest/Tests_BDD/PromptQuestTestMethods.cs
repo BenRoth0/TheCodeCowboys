@@ -59,7 +59,7 @@ namespace Tests_BDD {
 			IWebElement menuButton = webDriver.FindElement(By.XPath("//button[normalize-space(text()='Menu')]"));
 			menuButton.Click();
 			// Wait for the menu modal to show
-			PromptQuestTestMethods.WaitForModalToOpen(webDriver, "pq-modal");
+			WaitForElementToLoad(webDriver, "pq-modal");
 			// Make sure the inventory tab is selected
 			IWebElement inventoryTab = webDriver.FindElement(By.Id("inventory-button"));
 			inventoryTab.Click();
@@ -88,17 +88,17 @@ namespace Tests_BDD {
 			// Navigate to the game page
 			webDriver.Navigate().GoToUrl("https://localhost:7186/Game/SkipToBoss");
 			// Defeat the room's enemy
-			PromptQuestTestMethods.ClearRoom(webDriver);
+			ClearRoom(webDriver);
 			// Click the menu button
 			IWebElement menuButton = webDriver.FindElement(By.XPath("//button[normalize-space(text()='Menu')]"));
 			menuButton.Click();
 			// Wait for the menu modal to show
-			PromptQuestTestMethods.WaitForModalToOpen(webDriver, "pq-modal");
+			WaitForElementToLoad(webDriver, "pq-modal");
 			// Click the map tab
 			IWebElement mapTab = webDriver.FindElement(By.Id("map-button"));
 			mapTab.Click();
 			// Wait for the map modal to show
-			PromptQuestTestMethods.WaitForModalToOpen(webDriver, "map-tab");
+			WaitForElementToLoad(webDriver, "map-tab");
 			// Click the tenth room with attribute data-node-id="10"
 			IWebElement tenthNode = webDriver.FindElement(By.XPath("//div[@data-node-id='10']"));
 			tenthNode.Click();
@@ -106,7 +106,7 @@ namespace Tests_BDD {
 			IWebElement closeButton = webDriver.FindElement(By.Id("pq-modal-close"));
 			closeButton.Click();
 			// Wait for the boss to spawn
-			PromptQuestTestMethods.WaitForModalToOpen(webDriver, "attack-btn");
+			WaitForElementToLoad(webDriver, "attack-btn");
 		}
 	}
 }

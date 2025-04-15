@@ -226,6 +226,7 @@ namespace PromptQuest.Services {
 			GameState gameState = GetGameState();
 			// Move the player to the room before the boss.
 			_mapService.MovePlayer(gameState, 9);
+			_combatService.StartCombat(gameState);//Make sure combat starts when they get there or you could get stuck their.
 			// Update current gamesate
 			UpdateGameState(gameState);
 			PQActionResult pQActionResult = gameState.ToPQActionResult();
