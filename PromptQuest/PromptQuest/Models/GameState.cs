@@ -19,6 +19,8 @@
 		public int PlayerLocation { get; set; } = 1;
 		///<summary> Whether or not the player has completed the current area </summary>
 		public bool IsLocationComplete{ get; set; } = false;
+		///<summary> The current floor the player is on. </summary>
+		public int Floor { get; set; } = 1;
 	}
 
 	/// <summary> A partial model of the GameStateModel returned to the view so that it can update what the action changed.  This way we don't have to return the entire GameStateModel. </summary>
