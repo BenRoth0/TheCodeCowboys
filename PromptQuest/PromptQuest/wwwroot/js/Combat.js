@@ -60,9 +60,6 @@ async function enableCombatButtons() {
 // Wrapper for Attack button click event handler
 async function handleAttackClick() {
 	await executePlayerAction('attack');
-	if (abilityCD > 0) {
-		abilityCD = abilityCD - 1;
-	}
 }
 
 // Wrapper for Use Health Potion button click event handler
