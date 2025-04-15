@@ -29,6 +29,7 @@ async function loadGame() {
 
 // Function that makes an ajax call telling the game engine to process the player's action, then updates the local gameState variable with the response.  
 async function executePlayerAction(action) {
+
 	await $.ajax({
 		url: '/Game/PlayerAction',
 		type: 'POST',
@@ -128,6 +129,7 @@ function updateDisplay() {
 	else {
 		disableCombatButtons();
 	}
+
 }
 
 // Function to add log entries to the dialog box.  

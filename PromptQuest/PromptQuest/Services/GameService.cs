@@ -127,6 +127,7 @@ namespace PromptQuest.Services {
 			}
 			// Initiate combat
 			_combatService.StartCombat(gameState);
+			_sessionService.SetAbilityCD(0);
 			// Update current gamesate
 			UpdateGameState(gameState);
 		}
@@ -164,12 +165,27 @@ namespace PromptQuest.Services {
 			switch(action.ToLower()) {
 				case "attack":
 					message += _combatService.PlayerAttack(gameState);
+					_sessionService.DecrementAbilityCD();
 					break;
 				case "heal":
 					message += _combatService.PlayerUseHealthPotion(gameState);
 					break;
 				case "move":
 					_mapService.MovePlayer(gameState);
+					break;
+				case "ability":
+					message += _combatService.PlayerAbility(gameState);
+					var CD = 0;
+					switch(gameState.Player.Class.ToLower())// switch to set CD of active ability
+					{
+						case "warrior":
+							CD = 3;
+							break;
+						default:
+							CD = 0;
+							break;
+					}
+					_sessionService.SetAbilityCD(CD);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(action), action, null);

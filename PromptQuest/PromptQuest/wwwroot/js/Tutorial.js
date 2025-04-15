@@ -3,12 +3,14 @@ let tutorialModal;
 let tutorialCounter;
 const potionButton = document.getElementById("health-potion-btn");
 const attackButton = document.getElementById("attack-btn");
+const abilityButton = document.getElementById("ability-btn");
 async function startTutorial() {
 	await respawnPlayer()
 	await spawnNewEnemy()
 	tutorialModal = new bootstrap.Modal(document.getElementById('tutorialModal'));// set tutorialModal to the right modal
 	tutorialCounter = 1
 	potionButton.style.visibility = "hidden";
+	abilityButton.style.visibility = "hidden";//disabled the ability button for the tutorial
 	showTutorialModal("Welcome to the Tutorial", "Hello and welcome to PromptQuest!");//show the tutorial
 	disableCombatButtons();
 	$("#tutorialModal").on('hidden.bs.modal', function () {//increments the 'steps' of the tutorial when the modal is closed
@@ -79,10 +81,12 @@ async function tutorialStep5() {
 async function endTutorial() {
 	attackButton.style.visibility = "visible";
 	potionButton.style.visibility = "visible";
+	abilityButton.style.visibility = "visible";
 	attackButton.removeEventListener("click", tutorialStep2);
 	attackButton.removeEventListener("click", tutorialStep3);
 	attackButton.removeEventListener("click", tutorialStep4);
 	attackButton.removeEventListener("click", tutorialStep5);
+
 	tutorialCounter = 100;
 	tutorialModal.hide();
 	if (gameState.isPlayersTurn == true) {

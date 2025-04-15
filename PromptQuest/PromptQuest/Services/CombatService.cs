@@ -8,6 +8,7 @@ namespace PromptQuest.Services {
 		string PlayerUseHealthPotion(GameState gameState);
 		string EnemyAttack(GameState gameState);
 		void RespawnPlayer(GameState gameState);
+		string PlayerAbility(GameState gameState);
 		Enemy GetEnemy();
 	}
 
@@ -99,12 +100,32 @@ namespace PromptQuest.Services {
 			// Healing does not end the player's turn.
 			return message;
 		}
-
+		public string PlayerAbility(GameState gameState)
+		{
+			switch (gameState.Player.Class.ToLower())
+			{
+				case "warrior"://attack for double power, uses the attack function
+					string message= "You performed a powerful attack: ";
+					int savedATK = gameState.Player.Attack;
+					int savedItemATK = gameState.Player.item.ATK;
+					gameState.Player.Attack = gameState.Player.Attack * 2;
+					gameState.Player.item.ATK = gameState.Player.item.ATK * 2;
+					message += PlayerAttack(gameState);
+					gameState.Player.Attack = savedATK;
+					gameState.Player.item.ATK = savedItemATK;
+					return message;
+					break;
+				default:
+					message = $"Your Class seems to not be real?";
+					return message;
+					break;
+			}
+		}
 		#endregion  Player Action Methods - End
 
-		#region Enemy Action Methods
+			#region Enemy Action Methods
 
-		/// <summary>Calculates the damage that the enemy does to the player, updates the game state, then returns a message.</summary>
+			/// <summary>Calculates the damage that the enemy does to the player, updates the game state, then returns a message.</summary>
 		public string EnemyAttack(GameState gameState) {
 			// Get the player's equipped item
 			Item item = gameState.Player.ItemEquipped;

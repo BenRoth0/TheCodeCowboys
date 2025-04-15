@@ -1,4 +1,5 @@
-﻿async function spawnNewEnemy() {
+﻿let abilityCD = 0;
+async function spawnNewEnemy() {
 	// Tell the server to start combat and wait for it to be done
 	await fetch("/Game/StartCombat", { method: "POST" });
 	// Game state changed, grab it
@@ -22,10 +23,15 @@ function disableCombatButtons() {
 	healButton.removeEventListener("click", handleHealClick);
 	healButton.disabled = true;
 	healButton.classList.add("PQButtonDisabled");
+	// Disable the Use Ability button.
+	const abilityButton = document.getElementById("ability-btn");
+	abilityButton.removeEventListener("click", handleAbilityClick);
+	abilityButton.disabled = true;
+	abilityButton.classList.add("PQButtonDisabled");
 }
 
 // Function to enable the combat buttons and add their event handlers.  
-function enableCombatButtons() {
+async function enableCombatButtons() {
 	// Enable Attack button.  
 	const attackButton = document.getElementById("attack-btn");
 	attackButton.addEventListener("click", handleAttackClick);
@@ -36,16 +42,42 @@ function enableCombatButtons() {
 	healButton.addEventListener("click", handleHealClick);
 	healButton.disabled = false;
 	healButton.classList.remove("PQButtonDisabled");
+	// Enable the Use Ability button.
+	const abilityButton = document.getElementById("ability-btn");
+	abilityButton.addEventListener("click", handleAbilityClick);
+	abilityButton.disabled = false;
+	abilityButton.classList.remove("PQButtonDisabled");
+	let response = await fetch("/Game/GetAbilityCD");
+	abilityCD = await response.json();
+	if (abilityCD == 0) {
+		abilityButton.innerHTML = "Ability (Ready!)"
+	}
+	else {
+		abilityButton.innerHTML = "Ability (CD: "+abilityCD+")"
+	}
 }
 
 // Wrapper for Attack button click event handler
 async function handleAttackClick() {
 	await executePlayerAction('attack');
+	if (abilityCD > 0) {
+		abilityCD = abilityCD - 1;
+	}
 }
 
 // Wrapper for Use Health Potion button click event handler
 async function handleHealClick() {
 	await executePlayerAction('heal');
+}
+
+// Wrapper for Use Ability button click event handler
+async function handleAbilityClick() {
+	if (abilityCD == 0) {
+		await executePlayerAction('ability');
+	}
+	else {
+		addLogEntry("Your Ability is on Cooldown: "+abilityCD+ " turns remaining.")
+	}
 }
 
 function enableNextFightTrigger() {

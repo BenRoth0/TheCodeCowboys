@@ -10,12 +10,16 @@ namespace PromptQuest.Services {
 		public void UpdateGameState(GameState gameState);
 		public bool GetTutorialFlag();
 		public void SetTutorialFlag(bool TutorialFlag);
+		public void SetAbilityCD(int CD);
+		public int GetAbilityCD();
+		public void DecrementAbilityCD();
 	}
 
 	public class SessionService:ISessionService {
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private const string GameStateSessionKey = "GameState";
 		private const string TutorialFlagSessionKey = "TutorialFlag";
+		private const string AbilityCDSessionKey = "AbilityCD";
 
 		public SessionService(IHttpContextAccessor httpContextAccessor) {
 			_httpContextAccessor = httpContextAccessor;
@@ -50,6 +54,30 @@ namespace PromptQuest.Services {
 			var session = _httpContextAccessor.HttpContext.Session;
 			var tutorialFlagJson = JsonSerializer.Serialize(TutorialFlag);
 			session.SetString(TutorialFlagSessionKey, tutorialFlagJson);
+		}
+
+		public void SetAbilityCD(int CD)
+		{
+			var session = _httpContextAccessor.HttpContext.Session;
+			var abilityCDJson = JsonSerializer.Serialize(CD);
+			session.SetString(AbilityCDSessionKey, abilityCDJson);
+		}
+		public int GetAbilityCD()
+		{
+			var session = _httpContextAccessor.HttpContext.Session;
+			var abilityCDJson = session.GetString(AbilityCDSessionKey);
+			if (abilityCDJson != null)
+			{
+				return JsonSerializer.Deserialize<int>(abilityCDJson);
+			}
+			return 0;
+		}
+		public void DecrementAbilityCD()
+		{
+			var CD = GetAbilityCD();
+			if(CD>0){
+				SetAbilityCD(CD - 1);
+			}
 		}
 	}
 }
