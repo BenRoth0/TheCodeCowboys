@@ -6,7 +6,7 @@
 		/// <summary> Foreign Key </summary>
 		public int? PlayerId { get; set; }
 		///<summary> The current user's player character. </summary>
-		public Player Player { get; set; }
+		public Player Player { get; set; } = new Player();
 		/// <summary> Foreign Key </summary>
 		public int? EnemyId { get; set; }
 		///<summary> The current enemy that the player is fighting. </summary>

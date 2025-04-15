@@ -104,21 +104,23 @@ namespace PromptQuest.Migrations
                     b.Property<int>("Defense")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Equipped")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ImageSrc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ItemId");
 
-                    b.HasIndex("PlayerId")
-                        .IsUnique();
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Items");
                 });
@@ -179,15 +181,14 @@ namespace PromptQuest.Migrations
             modelBuilder.Entity("PromptQuest.Models.Item", b =>
                 {
                     b.HasOne("PromptQuest.Models.Player", null)
-                        .WithOne("Item")
-                        .HasForeignKey("PromptQuest.Models.Item", "PlayerId")
+                        .WithMany("Items")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PromptQuest.Models.Player", b =>
                 {
-                    b.Navigation("Item")
-                        .IsRequired();
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

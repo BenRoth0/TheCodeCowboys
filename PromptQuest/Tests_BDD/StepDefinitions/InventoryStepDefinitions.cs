@@ -29,14 +29,7 @@ namespace Tests_BDD {
 			IWebElement menuButton = webDriver.FindElement(By.XPath("//button[normalize-space(text()='Menu')]"));
 			menuButton.Click();
 			//Wait for menu modal to show before continuing
-			PromptQuestTestMethods.WaitForModalToOpen(webDriver,"pq-modal");
-		}
-
-		[When(@"I click on an item in the inventory")]
-		public void WhenIClickOnAnItemInTheInventory() {
-			// Click on the first inventory Item Slot (Should have something)
-			IWebElement FirstInventoryItem = webDriver.FindElement(By.Id("inventory-slot-1"));
-			FirstInventoryItem.Click();
+			PromptQuestTestMethods.WaitForElementToLoad(webDriver,"pq-modal");
 		}
 
 		[Then(@"I should see a window with that item's title, image, and stats")]

@@ -41,7 +41,7 @@ namespace PromptQuest.Services {
 		/// <summary> Calculates the damage that the player does to the enemy, updates the game state, then returns a message.</summary>
 		public string PlayerAttack(GameState gameState) {
 			// Get the player's equipped item
-			Item item = gameState.Player.Items.First(i => i.ItemId == gameState.Player.ItemIdEquipped);
+			Item item = gameState.Player.ItemEquipped;
 			// Calculate damage as attack - defense.
 			int damage = gameState.Player.Attack +item.Attack- gameState.Enemy.Defense;
 			// If attack is less than one make it one.
@@ -107,7 +107,7 @@ namespace PromptQuest.Services {
 		/// <summary>Calculates the damage that the enemy does to the player, updates the game state, then returns a message.</summary>
 		public string EnemyAttack(GameState gameState) {
 			// Get the player's equipped item
-			Item item = gameState.Player.Items.First(i => i.ItemId == gameState.Player.ItemIdEquipped);
+			Item item = gameState.Player.ItemEquipped;
 			// Calculate damage as attack - defense.
 			int damage = gameState.Enemy.Attack - gameState.Player.Defense-item.Defense;
 			// If attack is less than one make it one.

@@ -10,16 +10,17 @@ namespace PromptQuest.Services {
 		GameState GetGameState();
 
 		bool DoesUserHaveSavedGame();
-		void CreateCharacter(Player player);
 		void StartCombat();
 		void RespawnPlayer();
 		PQActionResult ExecutePlayerAction(string action);
 		PQActionResult ExecuteEnemyAction();
 		PQActionResult SkipToBoss();
-		void StartNewGame();
+		void EquipItem(int itemIndex);
+		void StartNewGame(Player player);
 		public bool IsTutorial();
 		public void SetTutorialFlag(bool Flag);
 		public Map GetMap();
+		 List<Item> GetDefaultItems();
 	}
 
 	public class GameService : IGameService {
@@ -38,24 +39,20 @@ namespace PromptQuest.Services {
 		#region Game State and Session Management Methods
 
 		/// <summary> Adds a new game state to the session, and if the user is logged in, then it is also added to the database with nothing but the user's id. If the user already has a GameState it will be overwritten.</summary>
-		public void StartNewGame() {
+		public void StartNewGame(Player player) {
 			GameState gameState = GetGameState();
-			if(_databaseService.IsAuthenticatedUser()) {
-				//Check if user already has a saved game
+			if(DoesUserHaveSavedGame()) {
+				//They do. Delete it.
 				string userGoogleId = _databaseService.GetUserGoogleId();
-				if (gameState!=null) {
-					//They do. Delete it.
-					_databaseService.DeleteGameState(userGoogleId);
-				}
-				gameState = new GameState();
-				gameState.Player = new Player(); // Avoids null references later.
-				gameState.Enemy = new Enemy(); // Avoids null references later.
-				//User is logged in. So, store their id in the gamestate and add it to the database.
-				gameState.UserGoogleId = _databaseService.GetUserGoogleId();
-				_databaseService.SaveGameState(gameState);
+				_databaseService.DeleteGameState(userGoogleId); //All other deletes should cascade from this.
 			}
-			//User isn't logged in. Only add the new GameState to the session.
-			_sessionService.UpdateGameState(gameState);
+			//Create fresh game state
+			gameState = new GameState();
+			gameState.Player = player;
+			gameState.Enemy = new Enemy(); // Avoids null references later.
+			//Store their id in the gamestate (blank if user isn't authenticated).
+			gameState.UserGoogleId = _databaseService.GetUserGoogleId();
+			UpdateGameState(gameState);
 		}
 
 		/// <summary> Gets the current game state from the database for logged in users, and from the session for not logged in users.</summary>
@@ -71,6 +68,10 @@ namespace PromptQuest.Services {
 			else {
 				// UnAuthenticated users get their data from the current session.
 				gameState = _sessionService.GetGameState();
+			}
+			//Add default Items if they have none
+			if(gameState != null && gameState.Player.Items.Count == 0) {
+				gameState.Player.Items.AddRange(GetDefaultItems());
 			}
 			return gameState;
 		}
@@ -103,22 +104,6 @@ namespace PromptQuest.Services {
 		}
 
 		#endregion Game State and Session Management Methods - End
-
-		#region Update Methods
-		/// <summary>Saves the player character to the game state. Deletes the old character and sets this as the new one.</summary>
-		public void CreateCharacter(Player player) {
-			// Get current gamestate
-			GameState gameState = GetGameState();
-			if(_databaseService.IsAuthenticatedUser()) {
-				// Delete saved character (shouldn't be null)
-				_databaseService.DeletePlayer(gameState.Player.PlayerId);
-			}
-			// Add new character.
-			gameState.Player = player;
-			// Update current gamesate
-			UpdateGameState(gameState);
-		}
-		#endregion Update Methods - End
 
 		#region Get Methods
 
@@ -198,18 +183,27 @@ namespace PromptQuest.Services {
 
 		#region Inventory functions (could be placed in its own service at some point when there is more of them)
 		/// <summary> equips the item with the given itemId </summary>
-		public PQActionResult EquipItem(int itemIndex)
+		public void EquipItem(int itemIndex)
 		{
 			GameState gameState = GetGameState();
-			gameState.Player.IndexEquippedItem=itemIndex;
-			UpdateGameState(gameState);
-			PQActionResult pQActionResult = gameState.ToPQActionResult();
-			Item equippedItem = gameState.Player.Items[gameState.Player.IndexEquippedItem];
-			if(equippedItem == null) {
-				throw new Exception("Item does not exist."); //This shouldn't happen.
+			//Mark currently equipped item as unequipped if there is one.
+			Item item=gameState.Player.Items.FirstOrDefault(i => i.Equipped);
+			if(item!=null) {
+				item.Equipped=false;
 			}
-			pQActionResult.Message = "Equipped the "+equippedItem.Name;
-			return pQActionResult;
+			//Mark new item as equipped.
+			item=gameState.Player.Items[itemIndex];
+			item.Equipped=true;
+			UpdateGameState(gameState);
+		}
+
+		public List<Item> GetDefaultItems() {
+			return new List<Item> { //Default items
+				new Item { Name = "Jeweled Helmet", Attack = 0, Defense = 2, ImageSrc = "/images/PlaceholderItem1.png", },
+				new Item { Name = "Fiery Sword", Attack = 4, Defense = 0, ImageSrc = "/images/PlaceholderItem2.png", },
+				new Item { Name = "Frozen Shield", Attack = 1, Defense = 3, ImageSrc = "/images/PlaceholderItem3.png", },
+				new Item { Name = "Warded Sword", Attack = 3, Defense = 2, ImageSrc = "/images/PlaceholderItem4.png", }
+			};
 		}
 
 		#endregion

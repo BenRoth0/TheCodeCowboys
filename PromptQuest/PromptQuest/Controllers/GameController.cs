@@ -29,10 +29,9 @@ namespace PromptQuest.Controllers {
 			player.Defense = 1;
 			player.Class = player.Class;
 			if(ModelState.IsValid) { // Character created succesfully
-				_gameService.StartNewGame(); // Start a new game. If the user already has one it will be overwritten.
-				_gameService.CreateCharacter(player); // Add character to the game state.
+				_gameService.StartNewGame(player); // Start a new game. If the user already has one it will be overwritten.
 				_gameService.StartCombat(); // Start combat right away, for now.
-				_gameService.SetTutorialFlag(true);
+				_gameService.SetTutorialFlag(true); // New game, so start the tutorial.
 				return RedirectToAction("Game");
 			}
 			else {
@@ -59,6 +58,7 @@ namespace PromptQuest.Controllers {
 			return Json(gameState);
 		}
 		[HttpGet]
+
 		public JsonResult IsTutorial()
 		{
 			bool flag = _gameService.IsTutorial();
@@ -82,10 +82,9 @@ namespace PromptQuest.Controllers {
 		}
 
 		[HttpPost]
-		public IActionResult EquipItem(int itemIndex)
+		public void EquipItem(int itemIndex)
 		{
-			PQActionResult ActionResult = _gameService.EquipItem(itemIndex);
-			return Json(ActionResult);
+			_gameService.EquipItem(itemIndex);
 		}
 
 		[HttpPost]
@@ -98,6 +97,7 @@ namespace PromptQuest.Controllers {
 		public void StartCombat() {
 			_gameService.StartCombat();
 		}
+
 		[HttpPost]
 		public IActionResult EndTutorial()
 		{

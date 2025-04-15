@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PromptQuest.Models;
 
 namespace PromptQuest.Services {
@@ -6,8 +7,6 @@ namespace PromptQuest.Services {
 		GameState GetGameState(string userGoogleId);
 		void SaveGameState(GameState gameState);
 		void DeleteGameState(string userGoogleId);
-		void DeleteItem(int itemId);
-		void DeletePlayer(int playerId);
 		void DeleteEnemy(int enemyId);
 		bool IsAuthenticatedUser();
 		string GetUserGoogleId();
@@ -43,28 +42,12 @@ namespace PromptQuest.Services {
 
 		/// <summary> Deletes the GameState with the given GoogleUserId. If it isn't found, nothing happens. </summary>
 		public void DeleteGameState(string userGoogleId) {
-			var gameState = _dbContext.GameStates.Find(userGoogleId);
+			var gameState = GetGameState(userGoogleId);
 			if(gameState != null) {
+				_dbContext.Items.RemoveRange(gameState.Player.Items); // Manually delete related items because cascade delete be buggin'
+				_dbContext.Players.Remove(gameState.Player);
+				_dbContext.Enemies.Remove(gameState.Enemy);
 				_dbContext.GameStates.Remove(gameState);
-				_dbContext.SaveChanges();
-			}
-		}
-
-
-		/// <summary> Deletes the Item with the given ItemId. If it isn't found, nothing happens. </summary>
-		public void DeleteItem(int itemId) {
-			var item = _dbContext.Items.Find(itemId);
-			if(item != null) {
-				_dbContext.Items.Remove(item);
-				_dbContext.SaveChanges();
-			}
-		}
-
-		/// <summary> Deletes the Player with the given PlayerId. If it isn't found, nothing happens. </summary>
-		public void DeletePlayer(int playerId) {
-			var player = _dbContext.Players.Find(playerId);
-			if(player != null) {
-				_dbContext.Players.Remove(player);
 				_dbContext.SaveChanges();
 			}
 		}

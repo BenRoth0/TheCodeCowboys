@@ -83,7 +83,8 @@ namespace PromptQuest.Migrations
                     ItemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerId = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Equipped = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Attack = table.Column<int>(type: "int", nullable: false),
                     Defense = table.Column<int>(type: "int", nullable: false),
                     ImageSrc = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -116,8 +117,7 @@ namespace PromptQuest.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Items_PlayerId",
                 table: "Items",
-                column: "PlayerId",
-                unique: true);
+                column: "PlayerId");
         }
 
         /// <inheritdoc />

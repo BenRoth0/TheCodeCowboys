@@ -104,7 +104,7 @@ this.ScenarioInitialize(scenarioInfo);
  await testRunner.GivenAsync("I am on the inventory tab", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 6
- await testRunner.WhenAsync("I click on an item in the inventory", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I click on an item", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 7
  await testRunner.ThenAsync("I should see a window with that item\'s title, image, and stats", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");

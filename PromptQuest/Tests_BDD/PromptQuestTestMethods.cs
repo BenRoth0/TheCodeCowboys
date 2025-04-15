@@ -21,6 +21,7 @@ namespace Tests_BDD {
 
 				//Enter a name in the "Name" field
 				IWebElement nameField = webDriver.FindElement(By.Id("name")); // Assuming the 'Name' field has an ID "name"
+				WaitForElementToLoad(webDriver, "name");
 				nameField.Clear();
 				nameField.SendKeys("PlayerName");
 
@@ -30,12 +31,12 @@ namespace Tests_BDD {
 
 				if(skipTutorial) {
 					//Wait for tutorial modal window to show
-					WaitForModalToOpen(webDriver, "tutorialModal");
+					WaitForElementToLoad(webDriver, "tutorialModal");
 					//Click on the "Skip Tutorial" button.
 					IWebElement skipTutorialButton = webDriver.FindElement(By.XPath("//button[normalize-space(text())='Skip Tutorial']"));
 					skipTutorialButton.Click();
 					//Wait for tutorial modal window to hide
-					WaitForModalToClose(webDriver, "tutorialModal");
+					WaitForElementToLoad(webDriver, "tutorialModal");
 				}
 			}
 			catch(NoSuchElementException ex) {
@@ -47,19 +48,11 @@ namespace Tests_BDD {
 		}
 
 		/// <summary> Takes in a IWebDriver object and the id of a modal element and then waits until the modal has opened. </summary>
-		public static void WaitForModalToOpen(IWebDriver webDriver, string modalId) {
+		public static void WaitForElementToLoad(IWebDriver webDriver, string modalId) {
 			//Set timeout time to 10 seconds.
 			WebDriverWait wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(10));
 			wait.Until(d => d.FindElement(By.Id(modalId)).Displayed);
 		}
-
-		/// <summary> Takes in a IWebDriver object and the id of a modal element and then waits until the modal has closed. </summary>
-		public static void WaitForModalToClose(IWebDriver webDriver, string modalId) {
-			//Set timeout time to 10 seconds.
-			WebDriverWait wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(10));
-			wait.Until(d => !d.FindElement(By.Id(modalId)).Displayed);
-		}
-
 		/// <summary> Repeatedly clicks attack until the enemy is defeated. </summary>
 		public static void ClearRoom(IWebDriver webDriver) {
 			// Equip better weapon from inventory
