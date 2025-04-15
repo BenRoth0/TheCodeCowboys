@@ -107,12 +107,13 @@ namespace PromptQuest.Services {
 				case "warrior"://attack for double power, uses the attack function
 					string message= "You performed a powerful attack: ";
 					int savedATK = gameState.Player.Attack;
-					int savedItemATK = gameState.Player.item.ATK;
+					Item item = gameState.Player.ItemEquipped;
+					int savedItemATK = item.Attack;
 					gameState.Player.Attack = gameState.Player.Attack * 2;
-					gameState.Player.item.ATK = gameState.Player.item.ATK * 2;
+					item.Attack= item.Attack * 2;
 					message += PlayerAttack(gameState);
 					gameState.Player.Attack = savedATK;
-					gameState.Player.item.ATK = savedItemATK;
+					item.Attack = savedItemATK;
 					return message;
 					break;
 				default:

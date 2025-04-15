@@ -21,6 +21,7 @@ namespace PromptQuest.Services {
 		public void SetTutorialFlag(bool Flag);
 		public Map GetMap();
 		 List<Item> GetDefaultItems();
+		 public int GetAbilityCD();
 	}
 
 	public class GameService : IGameService {
@@ -109,6 +110,10 @@ namespace PromptQuest.Services {
 
 		public Map GetMap() {
 			return _mapService.GetMap();
+		}
+		public int GetAbilityCD()
+		{
+			return _sessionService.GetAbilityCD();
 		}
 		#endregion Get Methods - End
 
