@@ -1,7 +1,7 @@
 ﻿// "Global" Variables for the selected and equipped items
 let selectedItemIndex = -1;
 
-function LoadItems() {
+function loadItems() {
 	const items = gameState.player.items;
 	console.log(items);
 	// Clear existing inventory slots
@@ -57,7 +57,7 @@ async function equipItem() {
 		data: { itemIndex: selectedItemIndex },
 		success: async function (response) {
 			await loadGame(); //Refresh the local gamestate and all displays
-			LoadItems(); //Refresh the inventory to show new changes
+			loadItems(); //Refresh the inventory to show new changes
 		},
 		error: function (xhr, status, error) {
 			console.error('Error equipping item: ', error);

@@ -48,7 +48,7 @@ function switchTab(tabName) {
 	document.getElementById(tabName + '-tab').classList.add('active-tab');
 	if (tabName === 'inventory') {
 		// Load items into the inventory tab
-		LoadItems();
+		loadItems();
 	}
 	document.getElementById(tabName + '-tab').classList.add('show-tab');
 	if (tabName === 'map') {
