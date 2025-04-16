@@ -11,7 +11,7 @@ namespace PromptQuest.Tests_BDD.StepDefinitions {
 
 		public DefenseStatSteps() {
 			_combatService = new CombatService();
-			_gameState = new PromptQuest.Models.GameState();
+			_gameState = new GameState();
 			_gameState.Player = new Player {
 				CurrentHealth = 10,
 				MaxHealth = 10,
