@@ -41,9 +41,8 @@
 		public int PlayerLocation { get; set; } = 1;
 		///<summary> Whether or not the player has completed the current area </summary>
 		public bool IsLocationComplete{ get; set; } = false;
-
-		public int PlayerItemATK { get; set; } = 0;
-		public int PlayerItemDEF { get; set; } = 0;
+		/// <summary> Player's current floor level </summary>
+		public int Floor { get; set; } = 1;
 	}
 
 	/// <summary> Extension methods for the GameState model. </summary>
@@ -59,6 +58,7 @@
 			actionResult.IsPlayersTurn = gameState.IsPlayersTurn;
 			actionResult.PlayerLocation = gameState.PlayerLocation;
 			actionResult.IsLocationComplete = gameState.IsLocationComplete;
+			actionResult.Floor = gameState.Floor;
 			return actionResult;
 		}
 	}

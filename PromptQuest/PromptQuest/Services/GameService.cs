@@ -21,6 +21,7 @@ namespace PromptQuest.Services {
 		public void SetTutorialFlag(bool Flag);
 		public Map GetMap();
 		 List<Item> GetDefaultItems();
+		public void StartNewFloor();
 	}
 
 	public class GameService : IGameService {
@@ -144,13 +145,17 @@ namespace PromptQuest.Services {
 				}
 			}
 			// Restart the player at the first location.
-			_mapService.MovePlayer(gameState, 1);
+			gameState.PlayerLocation = 1;
 			// Start a new fight.
 			_combatService.StartCombat(gameState);
 			// Update current gamesate in the session
 			UpdateGameState(gameState);
 		}
 
+		public void StartNewFloor() {
+			GameState gameState = GetGameState();
+			_mapService.MovePlayer(gameState);
+		}
 		#endregion Game Flow Methods - End
 
 		#region Action Routing Methods

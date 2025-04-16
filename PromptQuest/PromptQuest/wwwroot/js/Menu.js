@@ -9,8 +9,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 	// Open modal
 	openModalButton.addEventListener("click", () => {
 		modal.style.display = "block";
-		const floorTracker = document.getElementById("floor-tracker");
-		floorTracker.textContent = "Floor " + gameState.floor;
 		if (tabCurrent === "none") {
 			// Inventory is the default tab
 			switchTab('inventory');

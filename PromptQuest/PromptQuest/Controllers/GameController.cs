@@ -132,5 +132,12 @@ namespace PromptQuest.Controllers {
 			_gameService.SkipToBoss();
 			return RedirectToAction("Game");
 		}
+
+		[HttpGet]
+		public IActionResult StartNewFloor()
+		{
+			_gameService.StartNewFloor();
+			return RedirectToAction("Game");
+		}
 	}
 }
