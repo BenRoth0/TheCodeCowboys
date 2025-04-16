@@ -21,7 +21,6 @@ namespace PromptQuest.Services {
 		public void SetTutorialFlag(bool Flag);
 		public Map GetMap();
 		 List<Item> GetDefaultItems();
-		public void StartNewFloor();
 	}
 
 	public class GameService : IGameService {
@@ -152,10 +151,6 @@ namespace PromptQuest.Services {
 			UpdateGameState(gameState);
 		}
 
-		public void StartNewFloor() {
-			GameState gameState = GetGameState();
-			_mapService.MovePlayer(gameState);
-		}
 		#endregion Game Flow Methods - End
 
 		#region Action Routing Methods
