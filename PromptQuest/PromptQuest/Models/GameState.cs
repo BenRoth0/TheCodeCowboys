@@ -42,6 +42,7 @@
 
 		public int PlayerItemATK { get; set; } = 0;
 		public int PlayerItemDEF { get; set; } = 0;
+		public int PlayerAbilityCooldown { get; set; } = 0;
 	}
 
 	/// <summary> Extension methods for the GameState model. </summary>
@@ -57,6 +58,7 @@
 			actionResult.IsPlayersTurn = gameState.IsPlayersTurn;
 			actionResult.PlayerLocation = gameState.PlayerLocation;
 			actionResult.IsLocationComplete = gameState.IsLocationComplete;
+			actionResult.PlayerAbilityCooldown = gameState.Player.AbilityCooldown;
 			return actionResult;
 		}
 	}

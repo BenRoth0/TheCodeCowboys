@@ -15,6 +15,7 @@ namespace PromptQuest.Models {
 		public int Defense { get; set; }
 		public int Attack { get; set; }
 		[Required]
+		public int AbilityCooldown { get; set; } = 0;
 		public string Class { get; set; } = "";
 		/// <summary>The Player's equipped item. Readonly</summary>
 		public Item ItemEquipped => Items.FirstOrDefault(i => i.Equipped)??new Item();

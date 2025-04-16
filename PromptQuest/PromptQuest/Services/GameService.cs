@@ -21,7 +21,7 @@ namespace PromptQuest.Services {
 		public void SetTutorialFlag(bool Flag);
 		public Map GetMap();
 		 List<Item> GetDefaultItems();
-		 public int GetAbilityCD();
+
 	}
 
 	public class GameService : IGameService {
@@ -111,10 +111,7 @@ namespace PromptQuest.Services {
 		public Map GetMap() {
 			return _mapService.GetMap();
 		}
-		public int GetAbilityCD()
-		{
-			return _sessionService.GetAbilityCD();
-		}
+
 		#endregion Get Methods - End
 
 		#region Game Flow Methods
@@ -132,7 +129,6 @@ namespace PromptQuest.Services {
 			}
 			// Initiate combat
 			_combatService.StartCombat(gameState);
-			_sessionService.SetAbilityCD(0);
 			// Update current gamesate
 			UpdateGameState(gameState);
 		}
@@ -170,7 +166,6 @@ namespace PromptQuest.Services {
 			switch(action.ToLower()) {
 				case "attack":
 					message += _combatService.PlayerAttack(gameState);
-					_sessionService.DecrementAbilityCD();
 					break;
 				case "heal":
 					message += _combatService.PlayerUseHealthPotion(gameState);
@@ -180,17 +175,6 @@ namespace PromptQuest.Services {
 					break;
 				case "ability":
 					message += _combatService.PlayerAbility(gameState);
-					var CD = 0;
-					switch(gameState.Player.Class.ToLower())// switch to set CD of active ability
-					{
-						case "warrior":
-							CD = 3;
-							break;
-						default:
-							CD = 0;
-							break;
-					}
-					_sessionService.SetAbilityCD(CD);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(action), action, null);

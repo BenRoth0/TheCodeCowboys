@@ -18,6 +18,7 @@ namespace PromptQuest.Services {
 		public string StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
+			gameState.Player.AbilityCooldown = 0;//Reset CD of player's ability.
 			gameState.Player.HealthPotions = 2; // Set player's health potions to 2 when combat starts (Temporary)
 			if (gameState.PlayerLocation != 10) {
 				gameState.Enemy = GetEnemy();
@@ -52,10 +53,15 @@ namespace PromptQuest.Services {
 			gameState.Enemy.CurrentHealth -= damage;
 			// Return the result to the user.
 			string message = $"You attacked the {gameState.Enemy.Name} for {damage} damage";
+			//decrement Ability Cooldown if it is greater than 0
+			if (gameState.Player.AbilityCooldown > 0)
+			{
+				gameState.Player.AbilityCooldown--;
+			}
 			// Check if enemy died.
 			if (gameState.Enemy.CurrentHealth <= 0) {
 				gameState.InCombat = false; // Enemy is dead, combat has ended.
-				gameState.IsPlayersTurn = true; // Zero this field out because combat is over.
+				gameState.IsPlayersTurn = false; // Zero this field out because combat is over.
 				gameState.IsLocationComplete = true; // Player has completed the current area.
 				message += $", you have defeated the {gameState.Enemy.Name}."; // Let them know in the same message.
 				if (gameState.PlayerLocation == 10) {
@@ -114,6 +120,7 @@ namespace PromptQuest.Services {
 					message += PlayerAttack(gameState);
 					gameState.Player.Attack = savedATK;
 					item.Attack = savedItemATK;
+					gameState.Player.AbilityCooldown = 3;
 					return message;
 					break;
 				default:
@@ -142,7 +149,7 @@ namespace PromptQuest.Services {
 			// Check if player died.
 			if (gameState.Player.CurrentHealth < 1) {
 				gameState.InCombat = false; // Player is dead, combat has ended.
-				gameState.IsPlayersTurn = false; // Zero this field out because combat is over.
+				gameState.IsPlayersTurn = true; // Zero this field out because combat is over.
 				message += ", you have been defeated."; // Let them know in the same message.
 			}
 			// Player didn't die, so now it is their turn.

@@ -47,13 +47,13 @@ async function enableCombatButtons() {
 	abilityButton.addEventListener("click", handleAbilityClick);
 	abilityButton.disabled = false;
 	abilityButton.classList.remove("PQButtonDisabled");
-	let response = await fetch("/Game/GetAbilityCD");
-	abilityCD = await response.json();
+	abilityCD = gameState.player.abilityCooldown;
+
 	if (abilityCD == 0) {
 		abilityButton.innerHTML = "Ability (Ready!)"
 	}
 	else {
-		abilityButton.innerHTML = "Ability (CD: "+abilityCD+")"
+		abilityButton.innerHTML = "Ability (CD: " + abilityCD +")"
 	}
 }
 

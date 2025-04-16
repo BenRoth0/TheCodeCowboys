@@ -132,10 +132,7 @@ namespace PromptQuest.Controllers {
 			_gameService.SkipToBoss();
 			return RedirectToAction("Game");
 		}
-		public IActionResult GetAbilityCD(){
-			int CD = _gameService.GetAbilityCD();
-			return Json(CD);
-		}
+
 		
 	}
 }

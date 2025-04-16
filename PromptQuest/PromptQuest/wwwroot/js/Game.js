@@ -96,7 +96,7 @@ function updateLocalGameState(actionResult) {
 	gameState.isLocationComplete = actionResult.isLocationComplete;
 	// Log the updated gameState for debugging.
 	console.log('Updated local gameState:', gameState);
-
+	gameState.player.abilityCooldown = actionResult.playerAbilityCooldown;
 }
 
 // Function to update the player's display  
