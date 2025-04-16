@@ -1,14 +1,4 @@
-﻿async function loadCampsite() {
-	// Update display
-	updateDisplay();
-	// Gets rid of last combat's messages;
-	clearDialogBox();
-	// Update Map
-	updateMap();
-	// Inform the player about the campsite
-	addLogEntry("Rest at the campsite to heal 30% of your maximum HP and refill Health Potions");
-}
-function enableCampsiteButtons() {
+﻿function enableCampsiteButtons() {
 	// Enable Rest button.
 	const restButton = document.getElementById("rest-btn");
 	restButton.addEventListener("click", handleRestClick);

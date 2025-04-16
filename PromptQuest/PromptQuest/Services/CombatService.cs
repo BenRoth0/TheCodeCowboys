@@ -57,7 +57,7 @@ namespace PromptQuest.Services {
 			// Check if enemy died.
 			if(gameState.Enemy.CurrentHealth <= 0) {
 				gameState.InCombat = false; // Enemy is dead, combat has ended.
-				gameState.IsPlayersTurn = true; // Zero this field out because combat is over.
+				gameState.IsPlayersTurn = false; // Zero this field out because combat is over.
 				gameState.IsLocationComplete = true; // Player has completed the current area.
 				message += $", you have defeated the {gameState.Enemy.Name}."; // Let them know in the same message.
 				if (gameState.PlayerLocation == 10) {

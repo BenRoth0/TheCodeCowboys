@@ -43,7 +43,10 @@ async function executePlayerAction(action) {
 			console.error('Error executing player action (' + action + '):', error);
 		}
 	});
-	if (gameState.isPlayersTurn == false && gameState.inCombat) {
+	if (gameState.inCombat == false) {
+		return;
+	}
+	if (gameState.isPlayersTurn == false) {
 		disableCombatButtons(); // They are, but it's not the player's turn anymore
 		// Add a small delay so that the enemy's turn takes time.  
 		setTimeout(async () => {
@@ -129,6 +132,12 @@ function updateDisplay() {
 		if (gameState.isLocationComplete) {
 			disableCampsiteButtons();
 		}
+		// Gets rid of last combat's messages;
+		clearDialogBox();
+		// Update Map
+		updateMap();
+		// Inform the player about the campsite
+		addLogEntry("Rest at the campsite to heal 30% of your maximum HP and refill Health Potions");
 	}
 	else {
 		hideCombatUI();

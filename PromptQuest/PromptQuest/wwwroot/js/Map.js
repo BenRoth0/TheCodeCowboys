@@ -71,17 +71,8 @@ function updateMap() {
 
 async function movePlayerToNode() {
 	await executePlayerAction('move');
-	if (map.listMapNodes[gameState.playerLocation - 1].nodeType == "Campsite") {
-		updateMap();
-		loadCampsite();
-	}
-	else if (map.listMapNodes[gameState.playerLocation - 1].nodeType == "Event") {
-		updateMap();
-		hideCampsiteUI();
-	}
-	else {
-		updateMap();
+	updateMap();
+	if (map.listMapNodes[gameState.playerLocation - 1].nodeType == "Enemy") {
 		spawnNewEnemy();
-		hideCampsiteUI();
 	}
 }
