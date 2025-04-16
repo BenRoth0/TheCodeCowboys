@@ -19,7 +19,6 @@ namespace PromptQuest.Services {
 		public string StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
-			gameState.Player.HealthPotions = 2; // Set player's health potions to 2 when combat starts (Temporary)
 			if (gameState.PlayerLocation != 10) {
 				gameState.Enemy = GetEnemy(gameState);
 				string message = $"The {gameState.Enemy.Name} attacked!"; // Let the user know that combat started.

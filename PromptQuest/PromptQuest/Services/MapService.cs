@@ -10,14 +10,14 @@ namespace PromptQuest.Services {
 		private static readonly List<MapNode> _mapNodes = new List<MapNode>
 			{
 					new MapNode { MapNodeId = 1 },
-					new MapNode { MapNodeId = 2, NodeType = "Campsite" },
+					new MapNode { MapNodeId = 2,},
 					new MapNode { MapNodeId = 3 },
 					new MapNode { MapNodeId = 4 },
 					new MapNode { MapNodeId = 5, NodeType = "Campsite" },
 					new MapNode { MapNodeId = 6 },
 					new MapNode { MapNodeId = 7 },
-					new MapNode { MapNodeId = 8 },
-					new MapNode { MapNodeId = 9 },
+					new MapNode { MapNodeId = 8, NodeType = "Campsite" },
+					new MapNode { MapNodeId = 9},
 					new MapNode { MapNodeId = 10, NodeType = "Boss" }
 			};
 		private static readonly List<MapEdge> _mapEdges = new List<MapEdge>() {
