@@ -20,8 +20,7 @@ async function loadGame() {
 		startTutorial()
 	}
 	// Update display with loaded data.  
-	updateDisplay(); 
-	updateMap();
+	updateDisplay();
 	if (gameState.isPlayersTurn == false) {
 		executeEnemyAction();
 	}
@@ -81,6 +80,8 @@ async function executeEnemyAction() {
 function updateLocalGameState(actionResult) {
 	// Update inCombat state.
 	gameState.inCombat = actionResult.inCombat;
+	// Update inCampsite state.
+	gameState.inCampsite = actionResult.inCampsite;
 	// Update isPlayersTurn state.
 	gameState.isPlayersTurn = actionResult.isPlayersTurn;
 	// Update player health.
@@ -113,6 +114,7 @@ function updateDisplay() {
 	document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
 	if (gameState.inCombat) {
 		showCombatUI();
+		hideCampsiteUI();
 		// Update Enemy display.
 		document.getElementById("enemy-name").textContent = gameState.enemy.name;
 		document.getElementById("enemy-image").src = gameState.enemy.imageUrl;
@@ -121,8 +123,16 @@ function updateDisplay() {
 		document.getElementById("enemy-defense").textContent = gameState.enemy.defense;
 		document.getElementById("enemy-hp").textContent = gameState.enemy.currentHealth + "/" + gameState.enemy.maxHealth + " HP";
 	}
+	else if (gameState.inCampsite) {
+		hideCombatUI();
+		showCampsiteUI();
+		if (gameState.isLocationComplete) {
+			disableCampsiteButtons();
+		}
+	}
 	else {
 		hideCombatUI();
+		hideCampsiteUI();
 	}
 	if (gameState.isPlayersTurn) {
 		enableCombatButtons();
