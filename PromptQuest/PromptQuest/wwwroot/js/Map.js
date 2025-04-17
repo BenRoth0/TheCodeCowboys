@@ -77,9 +77,6 @@ function updateMap() {
 }
 
 async function movePlayerToNode() {
-	await executePlayerAction('move');
+	await executePlayerAction("move");
 	updateMap();
-	if (map.listMapNodes[gameState.playerLocation - 1].nodeType == "Enemy" || map.listMapNodes[gameState.playerLocation - 1].nodeType == "Boss") {
-		spawnNewEnemy();
-	}
 }

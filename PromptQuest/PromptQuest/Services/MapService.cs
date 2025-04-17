@@ -7,6 +7,7 @@ namespace PromptQuest.Services {
 		public Map GetMap();
 	}
 	public class MapService : IMapService {
+
 		private static readonly List<MapNode> _mapNodes = new List<MapNode>
 			{
 					new MapNode { MapNodeId = 1 },
@@ -51,19 +52,23 @@ namespace PromptQuest.Services {
 				gameState.PlayerLocation = mapNodeId;
 			}
 			gameState.IsLocationComplete = false;
+			// Zero out GameState status
+			gameState.InCombat = false;
+			gameState.InCampsite = false;
+			gameState.InEvent = false;
 			// Check if the player is on a campsite or event node
 			var currentNode = _mapNodes.FirstOrDefault(node => node.MapNodeId == gameState.PlayerLocation);
 			if (currentNode != null && currentNode.NodeType == "Campsite") {
 				gameState.InCampsite = true;
 				return;
 			}
-			else if (currentNode != null && currentNode.NodeType == "Event") {
+			if (currentNode != null && currentNode.NodeType == "Event") {
 				gameState.InEvent = true;
 				return;
 			}
-			// Just in case
-			gameState.InCampsite = false;
-			gameState.InEvent = false;
+			if (currentNode.NodeType == "Enemy" || currentNode.NodeType == "Boss") {
+				gameState.InCombat = true;
+			}
 		}
 
 		public Map GetMap() {

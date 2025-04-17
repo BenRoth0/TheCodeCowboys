@@ -1,4 +1,14 @@
-﻿namespace PromptQuest.Models {
+﻿using Azure;
+using Microsoft.Extensions.Hosting;
+using Microsoft.VisualBasic;
+using Newtonsoft.Json;
+using static PromptQuest.Models.GameState;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Metrics;
+using System.IdentityModel.Tokens.Jwt;
+
+namespace PromptQuest.Models {
 	/// <summary> A model of the state of the game.  Contains all of the relevant information about the game.  </summary>
 	public class GameState {
 		/// <summary> Primary Key. The Google ID of the user that owns this game. </summary>
@@ -11,6 +21,17 @@
 		public int? EnemyId { get; set; }
 		///<summary> The current enemy that the player is fighting. </summary>
 		public Enemy Enemy { get; set; }
+		/// <summary> For storing messages in the db. Contains ListMessages serialized into json </summary>
+		public string StoredMessages { get; set; } = "[]";
+		/// <summary> Not stored directly in the db. Changes made to this are serialized and saved in the db under in the StoredMessages column. </summary>
+		[NotMapped]
+		public List<string> ListMessages {
+			get => JsonConvert.DeserializeObject<List<string>>(StoredMessages) ?? new List<string>();
+			set {
+				var trimmedMessages = value.TakeLast(5).ToList(); // Keep only last 5
+				StoredMessages = JsonConvert.SerializeObject(trimmedMessages);
+			}
+		}
 		///<summary> Whether or not the player is in combat. </summary>
 		public bool InCombat { get; set; } = false;
 		///<summary> Whether or not the player is in a campsite. </summary>
@@ -25,6 +46,7 @@
 		public bool IsLocationComplete { get; set; } = false;
 		///<summary> The current floor the player is on. </summary>
 		public int Floor { get; set; } = 1;
+		public int experience {get; set;}
 	}
 
 	/// <summary> A partial model of the GameStateModel returned to the view so that it can update what the action changed.  This way we don't have to return the entire GameStateModel. </summary>

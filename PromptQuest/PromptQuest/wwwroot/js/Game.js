@@ -1,4 +1,4 @@
-﻿// "Global" Variable to keep track of the game state locally so that functions don't have to be passed parameters all the time.
+﻿// Cached GameState. Each server request returns a diff that is merged into this. Completely refreshed on page relod.
 let gameState;
 let tutorialflag;
 
@@ -21,93 +21,19 @@ async function loadGame() {
 	}
 	// Update display with loaded data.  
 	updateDisplay();
-	if (gameState.isPlayersTurn == false) {
-		executeEnemyAction();
-	}
 }
 
 // Function that makes an ajax call telling the game engine to process the player's action, then updates the local gameState variable with the response.  
 async function executePlayerAction(action) {
-	await $.ajax({
-		url: '/Game/PlayerAction',
-		type: 'POST',
-		data: { action: action },
-		success: function (response) {
-			let actionResult = response;
-			console.log('Player action (' + action + ') executed successfully:', actionResult);
-			updateLocalGameState(actionResult); // Update local gameState variable with whatever the action changed.  
-			addLogEntry(actionResult.message);
-			updateDisplay() // Update screen to show whatever the action changed.
-		},
-		error: function (xhr, status, error) {
-			console.error('Error executing player action (' + action + '):', error);
-		}
-	});
-	if (gameState.inCombat == false) {
-		return;
-	}
-	if (gameState.isPlayersTurn == false) {
-		disableCombatButtons(); // They are, but it's not the player's turn anymore
-		// Add a small delay so that the enemy's turn takes time.  
-		setTimeout(async () => {
-			await executeEnemyAction(); // The enemy action is determined server side.
-		}, 1000);
-		return;
-	}
-	// No need to enable combat buttons here because they are already enabled to allow the player to make this action.
-}
-
-// Function that makes an ajax call telling the game engine to process the enemy's action, then updates the local gameState variable with the response.  
-async function executeEnemyAction() {
-	await $.ajax({
-		url: '/Game/EnemyAction',
-		type: 'POST',
-		success: function (response) {
-			let actionResult = response;
-			console.log('Enemy action executed successfully:', actionResult);
-			updateLocalGameState(actionResult); // Update local gameState variable with whatever the action changed.  
-			addLogEntry(actionResult.message);
-			updateDisplay(); // Update screen to show whatever the action changed.
-		},
-		error: function (xhr, status, error) {
-			console.error('Error executing enemy action:', error);
-		}
-	});
-	if (gameState.isPlayersTurn == false && gameState.inCombat) {
-		executeEnemyAction(); // Enemy continues its turn.
-		return;
-	}
-}
-
-// Helper function to update the gameState variable with the results from a PQActionResult.  
-function updateLocalGameState(actionResult) {
-	// Update inCombat state.
-	gameState.inCombat = actionResult.inCombat;
-	// Update inCampsite state.
-	gameState.inCampsite = actionResult.inCampsite;
-	// Update inEvent state.
-	gameState.inEvent = actionResult.inEvent;
-	// Update isPlayersTurn state.
-	gameState.isPlayersTurn = actionResult.isPlayersTurn;
-	// Update player health.
-	gameState.player.currentHealth = actionResult.playerHealth;
-	// Update player health potions.
-	gameState.player.healthPotions = actionResult.playerHealthPotions;
-	// Update enemy health.
-	gameState.enemy.currentHealth = actionResult.enemyHealth;
-	// Update player location
-	gameState.playerLocation = actionResult.playerLocation;
-	// Update floor
-	gameState.floor = actionResult.floor;
-	// Update isLocationComplete
-	gameState.isLocationComplete = actionResult.isLocationComplete;
-	// Log the updated gameState for debugging.
-	console.log('Updated local gameState:', gameState);
-
+	const response = await fetch(`/Game/PlayerAction?action1=${encodeURIComponent(action)}`, { method: 'Post', });
+	await processResponse(response);
 }
 
 // Function to update the player's display  
 function updateDisplay() {
+	gameState.listMessages.forEach((message) => {
+		addLogEntry(message);
+	});
 	// Update Player display.
 	document.querySelectorAll(".player-name").forEach(el => { el.textContent = gameState.player.name; });
 	document.querySelectorAll(".player-image").forEach(el => { el.src = "/images/" + gameState.player.class + ".png"; }); // Placeholder image for now.
@@ -118,6 +44,13 @@ function updateDisplay() {
 	document.querySelectorAll(".player-hp").forEach(el => { el.textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP"; });
 	document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
 	if (gameState.inCombat) {
+		//Enable/disable combat buttons
+		if (gameState.isPlayersTurn) {
+			enableCombatButtons();
+		}
+		else {
+			disableCombatButtons();
+		}
 		showCombatUI();
 		hideCampsiteUI();
 		hideEventUI();
@@ -163,12 +96,6 @@ function updateDisplay() {
 		hideCampsiteUI();
 		hideEventUI();
 	}
-	if (gameState.isPlayersTurn) {
-		enableCombatButtons();
-	}
-	else {
-		disableCombatButtons();
-	}
 }
 
 // Function to add log entries to the dialog box.  
@@ -186,4 +113,52 @@ function addLogEntry(message) {
 function clearDialogBox() {
 	const dialogBox = document.querySelector(".dialog-box");
 	dialogBox.innerHTML = "";
+}
+
+async function processResponse(response) {
+	if (response.text == null) {
+		return;
+	}
+	if (!response.ok) {
+		throw new Error(`Server error: ${response.status} ${response.statusText}`);
+	}
+	const json = await response.json();
+	console.log(json);
+	mergeDiffIntoCache(gameState, json);
+	updateDisplay();
+}
+
+//This method essentially does the opposite of what GameController.GenerateDiff does then merges it with the cached gameState
+function mergeDiffIntoCache(target, json) {
+	Object.keys(json).forEach(key => {
+		if (key === "PlayerLocation") {
+			let breakpoint = "here";
+		}
+		let newValue = json[key];
+		let normalizedKey = key.charAt(0).toLowerCase() + key.slice(1);
+
+		// Check if target has this key
+		if (target.hasOwnProperty(normalizedKey)) {
+			let existingValue = target[normalizedKey];
+
+			// Handle collections: Replace entire list
+			if (Array.isArray(newValue)) {
+				target[normalizedKey] = newValue;
+			}
+			// Handle nested objects recursively
+			else if (typeof newValue === "object" && newValue !== null) {
+				if (typeof existingValue === "object" && existingValue !== null) {
+					mergeDiffIntoCache(existingValue, newValue);
+				} else {
+					target[normalizedKey] = newValue;
+				}
+			}
+			// Handle primitive values
+			else {
+				target[normalizedKey] = newValue;
+			}
+		} else {
+			target[normalizedKey] = newValue;
+		}
+	});
 }

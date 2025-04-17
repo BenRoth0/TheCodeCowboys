@@ -3,47 +3,37 @@
 namespace PromptQuest.Services {
 
 	public interface ICombatService {
-		string StartCombat(GameState gameState);
-		string PlayerAttack(GameState gameState);
+		void StartCombat(GameState gameState);
+		void PlayerAttack(GameState gameState);
 		string PlayerUseHealthPotion(GameState gameState);
 		string PlayerRest(GameState gameState);
 		string PlayerSkipRest(GameState gameState);
 		string PlayerAccept(GameState gameState);
 		string PlayerDeny(GameState gameState);
 		string EnemyAttack(GameState gameState);
-		void RespawnPlayer(GameState gameState);
 		Enemy GetEnemy(GameState gameState);
 	}
 
 	public class CombatService : ICombatService {
 
 		/// <summary>Initiates combat between the player and an enemy and updates the game state. </summary>
-		public string StartCombat(GameState gameState) {
+		public void StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
 			if(gameState.PlayerLocation != 10) {
 				gameState.Enemy = GetEnemy(gameState);
-				string message = $"The {gameState.Enemy.Name} attacked!"; // Let the user know that combat started.
-				return message;
+				//string message = $"The {gameState.Enemy.Name} attacked!"; // Let the user know that combat started.
+				return;
 			}
-			else {
-				// If the player is in the boss room, spawn a boss.
-				gameState.Enemy = GetBoss(gameState);
-				string message = $"You have encounterd the {gameState.Enemy.Name}! Defeat the boss! "; // Let the user know that combat started.
-				return message;
-			}
+			// If the player is in the boss room, spawn a boss.
+			gameState.Enemy = GetBoss(gameState);
+			//string message = $"You have encounterd the {gameState.Enemy.Name}! Defeat the boss! "; // Let the user know that combat started.
 		}
 
-		/// <summary>Respawns the player by resetting their health and potions, and updates the game state.</summary>
-		public void RespawnPlayer(GameState gameState) {
-			gameState.Player.CurrentHealth = gameState.Player.MaxHealth; // Reset health to max
-			gameState.InCombat = false; // Player is no longer in combat
-			gameState.IsPlayersTurn = false; // It is not the player's turn
-		}
 		#region Player Action Methods
 
 		/// <summary> Calculates the damage that the player does to the enemy, updates the game state, then returns a message.</summary>
-		public string PlayerAttack(GameState gameState) {
+		public void PlayerAttack(GameState gameState) {
 			// Get the player's equipped item
 			Item item = gameState.Player.ItemEquipped;
 			// Calculate damage as attack - defense.
@@ -54,13 +44,13 @@ namespace PromptQuest.Services {
 			// Update enemy health.
 			gameState.Enemy.CurrentHealth -= damage;
 			// Return the result to the user.
-			string message = $"You attacked the {gameState.Enemy.Name} for {damage} damage";
+			//string message = $"You attacked the {gameState.Enemy.Name} for {damage} damage";
 			// Check if enemy died.
 			if(gameState.Enemy.CurrentHealth <= 0) {
 				gameState.InCombat = false; // Enemy is dead, combat has ended.
 				gameState.IsPlayersTurn = false; // Zero this field out because combat is over.
 				gameState.IsLocationComplete = true; // Player has completed the current area.
-				message += $", you have defeated the {gameState.Enemy.Name}."; // Let them know in the same message.
+				//message += $", you have defeated the {gameState.Enemy.Name}."; // Let them know in the same message.
 				if(gameState.PlayerLocation == 10) {
 					// Generate a boss item for the player
 					if(gameState.Floor == 1) {
@@ -91,11 +81,12 @@ namespace PromptQuest.Services {
 						gameState.Player.Items.Add(bossItem);
 					}
 				}
-				return message;
+				return; 
 			}
 			// Enemy didn't die, so now it is their turn.
-			gameState.IsPlayersTurn = false;
-			return message;
+			//Thread.Sleep(1000);//1 second delay
+			EnemyAttack(gameState); // Enemy only attacks back for now
+			//gameState.IsPlayersTurn = false;
 		}
 
 		/// <summary>Calculates the amount healed by a Health Potion, updates the game state, then returns a message.</summary>

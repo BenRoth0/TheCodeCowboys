@@ -4,8 +4,6 @@ let tutorialCounter;
 const potionButton = document.getElementById("health-potion-btn");
 const attackButton = document.getElementById("attack-btn");
 async function startTutorial() {
-	await respawnPlayer()
-	await spawnNewEnemy()
 	tutorialModal = new bootstrap.Modal(document.getElementById('tutorialModal'));// set tutorialModal to the right modal
 	tutorialCounter = 1
 	potionButton.style.visibility = "hidden";

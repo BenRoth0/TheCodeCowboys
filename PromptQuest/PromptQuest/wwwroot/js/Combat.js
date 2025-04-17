@@ -1,18 +1,4 @@
-﻿async function spawnNewEnemy() {
-	// Tell the server to start combat and wait for it to be done
-	await fetch("/Game/StartCombat", { method: "POST" });
-	// Game state changed, grab it
-	let response = await fetch("/Game/GetGameState");
-	gameState = await response.json();
-	// Update display
-	updateDisplay();
-	// Gets rid of last combat's messages;
-	clearDialogBox();
-	// Hide the campsite UI
-	hideCampsiteUI();
-}
-
-// Function to disable the combat buttons and remove their event handlers.  
+﻿// Function to disable the combat buttons and remove their event handlers.  
 function disableCombatButtons() {
 	// Disable Attack button.  
 	const attackButton = document.getElementById("attack-btn");
@@ -88,12 +74,8 @@ function hideRespawnModal() {
 
 // Function to respawn the player
 async function respawnPlayer() {
-	await fetch("/Game/Respawn", { method: "POST" });
-	// Game state changed, grab it
-	let response = await fetch("/Game/GetGameState");
-	gameState = await response.json();
-	// Update display
-	updateDisplay();
+	const response = await fetch("/Game/Respawn", { method: "POST" });
+	await processResponse(response);
 	hideRespawnModal();
 }
 

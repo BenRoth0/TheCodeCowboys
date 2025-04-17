@@ -2,9 +2,7 @@
 let selectedItemIndex = -1;
 
 async function loadItems() {
-	await loadGame(); //Refresh the local gamestate and all displays
 	const items = gameState.player.items;
-	console.log(items);
 	// Clear existing inventory slots
 	for (let i = 1; i <= 20; i++) {
 		const slot = document.getElementById("inventory-slot-" + i);
@@ -52,17 +50,9 @@ async function equipItem() {
 	if (selectedItemIndex == -1) {
 		return;
 	}
-	await $.ajax({
-		url: '/Game/EquipItem',
-		type: 'POST',
-		data: { itemIndex: selectedItemIndex },
-		success: async function (response) {
-			await loadItems(); //Refresh the inventory to show new changes
-		},
-		error: function (xhr, status, error) {
-			console.error('Error equipping item: ', error);
-		}
-	});
+	const response = await fetch(`/Game/EquipItem?itemIndex=${selectedItemIndex}`, { method: 'Post', });
+	await processResponse(response);
+	await loadItems(); //Refresh the inventory to show new changes
 }
 
 // Function to select an item and display its stats
