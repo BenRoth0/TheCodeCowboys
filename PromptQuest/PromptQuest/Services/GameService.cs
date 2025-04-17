@@ -20,8 +20,7 @@ namespace PromptQuest.Services {
 		public bool IsTutorial();
 		public void SetTutorialFlag(bool Flag);
 		public Map GetMap();
-		 List<Item> GetDefaultItems();
-
+		List<Item> GetDefaultItems();
 	}
 
 	public class GameService : IGameService {
@@ -51,7 +50,7 @@ namespace PromptQuest.Services {
 			gameState = new GameState();
 			gameState.Player = player;
 			gameState.Enemy = new Enemy(); // Avoids null references later.
-			//Store their id in the gamestate (blank if user isn't authenticated).
+																		 //Store their id in the gamestate (blank if user isn't authenticated).
 			gameState.UserGoogleId = _databaseService.GetUserGoogleId();
 			UpdateGameState(gameState);
 		}
@@ -146,7 +145,7 @@ namespace PromptQuest.Services {
 				}
 			}
 			// Restart the player at the first location.
-			_mapService.MovePlayer(gameState, 1);
+			gameState.PlayerLocation = 1;
 			// Start a new fight.
 			_combatService.StartCombat(gameState);
 			// Update current gamesate in the session
@@ -170,6 +169,18 @@ namespace PromptQuest.Services {
 				case "heal":
 					message += _combatService.PlayerUseHealthPotion(gameState);
 					break;
+				case "rest":
+					message += _combatService.PlayerRest(gameState); // Currently in _combatService, may change later
+					break;
+				case "skip-rest":
+					message += _combatService.PlayerSkipRest(gameState); // Currently in _combatService, may change later
+					break;
+				case "accept":
+					message += _combatService.PlayerAccept(gameState); // Currently in _combatService, may change later
+					break;
+				case "deny":
+					message += _combatService.PlayerDeny(gameState); // Currently in _combatService, may change later
+					break;
 				case "move":
 					_mapService.MovePlayer(gameState);
 					break;
@@ -188,17 +199,16 @@ namespace PromptQuest.Services {
 
 		#region Inventory functions (could be placed in its own service at some point when there is more of them)
 		/// <summary> equips the item with the given itemId </summary>
-		public void EquipItem(int itemIndex)
-		{
+		public void EquipItem(int itemIndex) {
 			GameState gameState = GetGameState();
 			//Mark currently equipped item as unequipped if there is one.
-			Item item=gameState.Player.Items.FirstOrDefault(i => i.Equipped);
-			if(item!=null) {
-				item.Equipped=false;
+			Item item = gameState.Player.Items.FirstOrDefault(i => i.Equipped);
+			if(item != null) {
+				item.Equipped = false;
 			}
 			//Mark new item as equipped.
-			item=gameState.Player.Items[itemIndex];
-			item.Equipped=true;
+			item = gameState.Player.Items[itemIndex];
+			item.Equipped = true;
 			UpdateGameState(gameState);
 		}
 
@@ -219,20 +229,20 @@ namespace PromptQuest.Services {
 			GameState gameState = GetGameState();
 			// Execute the action and return a PQActionResult
 			string message = _combatService.EnemyAttack(gameState); // Enemy only attacks for now.
-			// Update current gamesate
+																															// Update current gamesate
 			UpdateGameState(gameState);
-		  PQActionResult pQActionResult = gameState.ToPQActionResult();
+			PQActionResult pQActionResult = gameState.ToPQActionResult();
 			pQActionResult.Message = message;
 			return pQActionResult;
 		}
 
-		public PQActionResult SkipToBoss() {				// This is a skip to the boss for testing purposes
-			// Get current gamestate
+		public PQActionResult SkipToBoss() {        // This is a skip to the boss for testing purposes
+																								// Get current gamestate
 			GameState gameState = GetGameState();
 			// Move the player to the room before the boss.
 			_mapService.MovePlayer(gameState, 9);
 			_combatService.StartCombat(gameState);//Make sure combat starts when they get there or you could get stuck their.
-			// Update current gamesate
+																						// Update current gamesate
 			UpdateGameState(gameState);
 			PQActionResult pQActionResult = gameState.ToPQActionResult();
 			pQActionResult.Message = "You have been teleported to the room before the boss.";

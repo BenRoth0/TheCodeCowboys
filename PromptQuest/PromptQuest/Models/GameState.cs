@@ -13,12 +13,18 @@
 		public Enemy Enemy { get; set; }
 		///<summary> Whether or not the player is in combat. </summary>
 		public bool InCombat { get; set; } = false;
+		///<summary> Whether or not the player is in a campsite. </summary>
+		public bool InCampsite { get; set; } = false;
+		///<summary> Whether or not the player is in an event. </summary>
+		public bool InEvent { get; set; } = false;
 		///<summary> Whether or not it is the player's turn. </summary>
-		public bool IsPlayersTurn {get; set;} = false;
+		public bool IsPlayersTurn { get; set; } = false;
 		///<summary> The mapNodeId of the mapNode the player is currently at. </summary>
 		public int PlayerLocation { get; set; } = 1;
 		///<summary> Whether or not the player has completed the current area </summary>
-		public bool IsLocationComplete{ get; set; } = false;
+		public bool IsLocationComplete { get; set; } = false;
+		///<summary> The current floor the player is on. </summary>
+		public int Floor { get; set; } = 1;
 	}
 
 	/// <summary> A partial model of the GameStateModel returned to the view so that it can update what the action changed.  This way we don't have to return the entire GameStateModel. </summary>
@@ -33,16 +39,21 @@
 		public int EnemyHealth { get; set; } = 0;
 		///<summary> Whether or not the player is in combat. </summary>
 		public bool InCombat { get; set; } = false;
+		///<summary> Whether or not the player is in a campsite. </summary>
+		public bool InCampsite { get; set; } = false;
+		///<summary> Whether or not the player is in an event. </summary>
+		public bool InEvent { get; set; } = false;
 		///<summary> Whether or not it is the player's turn. </summary>
-		public bool IsPlayersTurn {get; set;} = false;
+		public bool IsPlayersTurn { get; set; } = false;
 		///<summary> The mapNodeId of the mapNode the player is currently at. </summary>
 		public int PlayerLocation { get; set; } = 1;
 		///<summary> Whether or not the player has completed the current area </summary>
-		public bool IsLocationComplete{ get; set; } = false;
 
-		public int PlayerItemATK { get; set; } = 0;
-		public int PlayerItemDEF { get; set; } = 0;
 		public int PlayerAbilityCooldown { get; set; } = 0;
+		public bool IsLocationComplete { get; set; } = false;
+		/// <summary> Player's current floor level </summary>
+		public int Floor { get; set; } = 1;
+
 	}
 
 	/// <summary> Extension methods for the GameState model. </summary>
@@ -55,10 +66,13 @@
 			actionResult.PlayerHealthPotions = gameState.Player.HealthPotions;
 			actionResult.EnemyHealth = gameState.Enemy.CurrentHealth;
 			actionResult.InCombat = gameState.InCombat;
+			actionResult.InCampsite = gameState.InCampsite;
+			actionResult.InEvent = gameState.InEvent;
 			actionResult.IsPlayersTurn = gameState.IsPlayersTurn;
 			actionResult.PlayerLocation = gameState.PlayerLocation;
 			actionResult.IsLocationComplete = gameState.IsLocationComplete;
 			actionResult.PlayerAbilityCooldown = gameState.Player.AbilityCooldown;
+			actionResult.Floor = gameState.Floor;
 			return actionResult;
 		}
 	}

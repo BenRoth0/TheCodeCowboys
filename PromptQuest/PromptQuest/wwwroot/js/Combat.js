@@ -8,7 +8,9 @@ async function spawnNewEnemy() {
 	// Update display
 	updateDisplay();
 	// Gets rid of last combat's messages;
-	clearDialogBox()
+	clearDialogBox();
+	// Hide the campsite UI
+	hideCampsiteUI();
 }
 
 // Function to disable the combat buttons and remove their event handlers.  
@@ -66,7 +68,6 @@ async function handleAttackClick() {
 async function handleHealClick() {
 	await executePlayerAction('heal');
 }
-
 // Wrapper for Use Ability button click event handler
 async function handleAbilityClick() {
 	if (abilityCD == 0) {

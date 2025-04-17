@@ -6,19 +6,19 @@ namespace PromptQuest.Services {
 		public void MovePlayer(GameState gameState, int mapNodeId = 0);
 		public Map GetMap();
 	}
-	public class MapService:IMapService {
+	public class MapService : IMapService {
 		private static readonly List<MapNode> _mapNodes = new List<MapNode>
 			{
 					new MapNode { MapNodeId = 1 },
 					new MapNode { MapNodeId = 2 },
-					new MapNode { MapNodeId = 3 },
+					new MapNode { MapNodeId = 3, NodeType = "Event" },
 					new MapNode { MapNodeId = 4 },
-					new MapNode { MapNodeId = 5 },
+					new MapNode { MapNodeId = 5, NodeType = "Campsite" },
 					new MapNode { MapNodeId = 6 },
 					new MapNode { MapNodeId = 7 },
-					new MapNode { MapNodeId = 8 },
-					new MapNode { MapNodeId = 9 },
-					new MapNode { MapNodeId = 10 }
+					new MapNode { MapNodeId = 8, NodeType = "Campsite" },
+					new MapNode { MapNodeId = 9},
+					new MapNode { MapNodeId = 10, NodeType = "Boss" }
 			};
 		private static readonly List<MapEdge> _mapEdges = new List<MapEdge>() {
 					new MapEdge { MapNodeIdStart = 1, MapNodeIdEnd = 2 },
@@ -31,16 +31,18 @@ namespace PromptQuest.Services {
 					new MapEdge { MapNodeIdStart = 8, MapNodeIdEnd = 9 },
 					new MapEdge { MapNodeIdStart = 9, MapNodeIdEnd = 10 }
 				};
-		private static readonly Map _map = new Map() { ListMapNodes = _mapNodes,ListMapEdges = _mapEdges };
+		private static readonly Map _map = new Map() { ListMapNodes = _mapNodes, ListMapEdges = _mapEdges };
 
 		// Moves the player to the mapNode with the given mapNodeId, if mapNodeId isn't provided, the player's location (mapNodeId) increases by 1.
 		public void MovePlayer(GameState gameState, int mapNodeId = 0) {
 			// Check if the player has reached the end of the map.
 			int mapNodeIdFinal = _mapNodes.Max(x => x.MapNodeId);
+			gameState.IsLocationComplete = false;
 			if(gameState.PlayerLocation == mapNodeIdFinal) {
-				return;
+				gameState.PlayerLocation = 1; // Reset the player location to the first room.
+				gameState.Floor++; // Increment the floor number.
 			}
-			if(mapNodeId == 0) {
+			else if(mapNodeId == 0) {
 				//Move forward one location. Only works for now because map is linear.
 				gameState.PlayerLocation++;
 			}
@@ -49,7 +51,19 @@ namespace PromptQuest.Services {
 				gameState.PlayerLocation = mapNodeId;
 			}
 			gameState.IsLocationComplete = false;
-			return;
+			// Check if the player is on a campsite or event node
+			var currentNode = _mapNodes.FirstOrDefault(node => node.MapNodeId == gameState.PlayerLocation);
+			if (currentNode != null && currentNode.NodeType == "Campsite") {
+				gameState.InCampsite = true;
+				return;
+			}
+			else if (currentNode != null && currentNode.NodeType == "Event") {
+				gameState.InEvent = true;
+				return;
+			}
+			// Just in case
+			gameState.InCampsite = false;
+			gameState.InEvent = false;
 		}
 
 		public Map GetMap() {
