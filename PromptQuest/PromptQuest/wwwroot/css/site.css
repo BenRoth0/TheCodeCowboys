@@ -256,6 +256,13 @@ body {
 
 /*--------------------- Buttons ---------------------------*/
 
+/*Automatically applies to buttons that are have disabled=true*/
+button:disabled {
+	background-color: var(--background-color-highlight);
+	cursor: not-allowed;
+	opacity: 0.2;
+}
+
 .pq-button {
 	padding: 10px;
 	background-color: var(--background-color-primary);
@@ -293,12 +300,6 @@ body {
 
 .modal-header .btn-close {
 	filter: invert(1); /* Invert the color to make it white */
-}
-
-.PQButtonDisabled {
-	background-color: grey;
-	cursor: not-allowed;
-	opacity: 0.1;
 }
 
 /*---------------------- Border ----------------------------*/

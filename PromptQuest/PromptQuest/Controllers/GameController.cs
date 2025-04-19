@@ -80,32 +80,32 @@ namespace PromptQuest.Controllers {
 
 		[HttpPost]
 		public JsonResult PlayerAction(string action1) {
-			Action actionMovePlayer = new Action(() => { _gameService.ExecutePlayerAction(action1); });
-			return ProcessRequest(actionMovePlayer);
+			Action action = new Action(() => { _gameService.ExecutePlayerAction(action1); });
+			return ProcessRequest(action);
 		}
 
 		[HttpPost]
 		public JsonResult EquipItem(int itemIndex) {
-			Action actionMovePlayer = new Action(() => { _gameService.EquipItem(itemIndex); });
-			return ProcessRequest(actionMovePlayer);
+			Action action = new Action(() => { _gameService.EquipItem(itemIndex); });
+			return ProcessRequest(action);
 		}
 
 		[HttpPost]
 		public JsonResult EndTutorial() {
-			Action actionMovePlayer = new Action(() => { _gameService.SetTutorialFlag(false); });
-			return ProcessRequest(actionMovePlayer);
+			Action action = new Action(() => { _gameService.SetTutorialFlag(false); });
+			return ProcessRequest(action);
 		}
 
 		[HttpPost]
 		public JsonResult Respawn() {
-			Action actionMovePlayer = new Action(() => { _gameService.RespawnPlayer(); });
-			return ProcessRequest(actionMovePlayer);
+			Action action = new Action(() => { _gameService.RespawnPlayer(); });
+			return ProcessRequest(action);
 		}
 
 		[HttpGet]
 		public JsonResult MovePlayerToNextLocation() {
-			Action actionMovePlayer = new Action(() => { _gameService.ExecutePlayerAction("move"); });
-			return ProcessRequest(actionMovePlayer);
+			Action action = new Action(() => { _gameService.ExecutePlayerAction("move"); });
+			return ProcessRequest(action);
 		}
 
 		[HttpGet]
@@ -120,9 +120,9 @@ namespace PromptQuest.Controllers {
 			return RedirectToAction("Game");
 		}
 
-		public JsonResult ProcessRequest(Action actionRequest) {
+		public JsonResult ProcessRequest(Action action) {
 			GameState gameStateBefore = _gameService.GetGameState(); //Take a snapshot of the current GameState before any changes
-			actionRequest.Invoke(); //Perform the requested action
+			action.Invoke(); //Perform the requested action
 			GameState gameStateAfter = _gameService.GetGameState(); //Take a snapshot of the current GameState after any changes
 			JsonResult jsonResult = Json(GenerateDiff(gameStateBefore,gameStateAfter));//Generate a diff and convert into json
 			return jsonResult;

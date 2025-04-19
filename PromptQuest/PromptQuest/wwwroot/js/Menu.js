@@ -46,12 +46,5 @@ function switchTab(tabName) {
 	document.getElementById(tabName +'-button').classList.add('pq-tab-current');
 	// Show the selected tab
 	document.getElementById(tabName + '-tab').classList.add('active-tab');
-	if (tabName === 'inventory') {
-		// Load items into the inventory tab
-		loadItems();
-	}
 	document.getElementById(tabName + '-tab').classList.add('show-tab');
-	if (tabName === 'map') {
-		updateMap();
-	}
 }

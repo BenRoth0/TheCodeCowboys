@@ -11,7 +11,7 @@
 }
 
 <div class="pq-container">
-	<img class="bg-image" id="bg-image" src="~/images/campsite.png" style="visibility: hidden; position: absolute; top: 50%; left: 50%; height: 50%; width: auto; transform: translate(-50%, -10%);" />
+	<img class="bg-image" id="bg-image" src="~/images/campsite.png" style="display:none; position: absolute; top: 50%; left: 50%; height: 50%; width: auto; transform: translate(-50%, -10%);" />
 	<!-- Menu Button -->
 	<button class="pq-button" id="pq-modal-open" style="top:0; right:0; height: 7vmin; width: 14vmin;"> Menu </button>
 	<!-- Login Display -->
@@ -29,7 +29,7 @@
 	<!-- Dialog Box -->
 	<div class="dialog-box pq-center-element-x" style="top: 25%; left: 50%; height: 20vmin; width: 100vmin;"></div>
 	<!-- Player Display -->
-	<div class="pq-container" id="player-display" style="bottom: 0; left: 0; width: 50vmin; height: 50vmin;">
+	<div class="pq-container" id="player-display" style="display:none;bottom: 0; left: 0; width: 50vmin; height: 50vmin;">
 		<div class="player-name" style="top: 2%; left: 4%;"></div>
 		<img class="player-image" src="~/images/LoadingImage.png" style="top: 10%; left: 3%; height: 75%; width: auto;" />
 		<img class="player-potions-icon" src="~/images/PotionIcon.png" alt="Potion Icon" style="top: 70%; left: 76%; height: 15%; width: auto;">
@@ -41,22 +41,22 @@
 		<span class="player-hp stat-text" id="player-hp" style="bottom: 3%; right: 25%;"></span>
 	</div>
 	<!-- Action Buttons Display -->
-	<div class="pq-center-element-x" id="action-button-display" style="bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
+	<div class="pq-center-element-x" id="action-button-display" style="display:none;bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
 		<button class="pq-button" id="attack-btn" style="margin-bottom:2vmin; width: 100%;">Attack</button>
 		<button class="pq-button" id="health-potion-btn" style="margin-bottom:2vmin; width: 100%;">Use Potion</button>
 	</div>
 	<!-- Campsite Buttons Display -->
-	<div class="pq-center-element-x" id="campsite-button-display" style="visibility: hidden; bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
-		<button class="pq-button PQButtonDisabled" id="rest-btn" style="margin-bottom:2vmin; width: 100%;">Rest</button>
-		<button class="pq-button PQButtonDisabled" id="skip-rest-btn" style="margin-bottom:2vmin; width: 100%;">Sleep is For the Weak</button>
+	<div class="pq-center-element-x" id="campsite-button-display" style="display:none;bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
+		<button class="pq-button" id="rest-btn" style="margin-bottom:2vmin; width: 100%;">Rest</button>
+		<button class="pq-button" id="skip-rest-btn" style="margin-bottom:2vmin; width: 100%;">Sleep is For the Weak</button>
 	</div>
 	<!-- Event Buttons Display -->
-	<div class="pq-center-element-x" id="event-button-display" style="visibility: hidden; bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
-		<button class="pq-button PQButtonDisabled" id="accept-btn" style="margin-bottom:2vmin; width: 100%;">Accept</button>
-		<button class="pq-button PQButtonDisabled" id="deny-btn" style="margin-bottom:2vmin; width: 100%;">Deny</button>
+	<div class="pq-center-element-x" id="event-button-display" style="display:none;bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
+		<button class="pq-button" id="accept-btn" style="margin-bottom:2vmin; width: 100%;">Accept</button>
+		<button class="pq-button" id="deny-btn" style="margin-bottom:2vmin; width: 100%;">Deny</button>
 	</div>
 	<!-- Enemy Display -->
-	<div class="pq-container" id="enemy-display" style="bottom: 0; right: 0; width: 50vmin; height: 50vmin;">
+	<div class="pq-container" id="enemy-display" style="display:none; bottom: 0; right: 0; width: 50vmin; height: 50vmin;">
 		<div class="enemy-name" id="enemy-name" style="top: 2%; right: 4%;"></div>
 		<img class="enemy-image" id="enemy-image" src="~/images/LoadingImage.png" style="top: 10%; right: 3%; height: 75%; width: auto;" />
 		<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 62%; height: 15%; width: auto;">
@@ -157,11 +157,8 @@
 	</div>
 </div>
 
-<script src="~/js/Tutorial.js"></script>
-<script src="~/js/Game.js"></script>
-<script src="~/js/Combat.js"></script>
-<script src="~/js/Campsite.js"></script>
-<script src="~/js/Event.js"></script>
-<script src="~/js/Map.js"></script>
-<script src="~/js/Inventory.js"></script>
 <script src="~/js/Menu.js"></script>
+<script src="~/js/Inventory.js"></script>
+<script src="~/js/Display.js"></script>
+<script src="~/js/Game.js"></script>
+<script src="~/js/Tutorial.js"></script>

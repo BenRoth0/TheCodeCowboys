@@ -1,132 +1,79 @@
-﻿// Cached GameState. Each server request returns a diff that is merged into this. Completely refreshed on page relod.
+﻿// Cached GameState. Each server request returns a diff that is merged into this. Only get completely refreshed on page relod.
 let gameState;
-let tutorialflag;
+// The map is defined server side so we grab it on load then cache it. Never needs to be updated.
+let map;
 
 document.addEventListener("DOMContentLoaded", function () {
-	// Page loaded, get current game state and store it locally.  
+	// Page loaded, get current game state and cache it. 
 	loadGame();
 });
 
 async function loadGame() {
-	let response = await fetch("/Game/GetGameState");
-	gameState = await response.json();
+	gameState = await sendGetRequest("/Game/GetGameState");
 	// Check if the user doesn't have a character
-	if (gameState.player == null) {// new player or session expired
+	if (gameState.player.maxHealth == 0) {// new player or session expired (this should be changed at some point)
 		window.location.href = "/"; // boot them to the Main Menu.
 	}
-	let flagresponse = await fetch("/Game/IsTutorial"); // get the tutorial flag
-	tutorialflag = await flagresponse.json()//if in the tutorial: start the tutorial
-	if (tutorialflag) {
+	map = await sendGetRequest("/Game/GetMap");
+	const isTutorial = await sendGetRequest("/Game/IsTutorial"); // get the tutorial flag
+	if (isTutorial) {
 		startTutorial()
 	}
 	// Update display with loaded data.  
-	updateDisplay();
+	refreshDisplay();
 }
 
-// Function that makes an ajax call telling the game engine to process the player's action, then updates the local gameState variable with the response.  
+// ----------------------------------- SERVER INTERACTION METHODS ----------------------------------------------------------------------
+
 async function executePlayerAction(action) {
-	const response = await fetch(`/Game/PlayerAction?action1=${encodeURIComponent(action)}`, { method: 'Post', });
-	await processResponse(response);
+	await sendPostRequest(`/Game/PlayerAction?action1=${action}`);
 }
 
-// Function to update the player's display  
-function updateDisplay() {
-	gameState.listMessages.forEach((message) => {
-		addLogEntry(message);
-	});
-	// Update Player display.
-	document.querySelectorAll(".player-name").forEach(el => { el.textContent = gameState.player.name; });
-	document.querySelectorAll(".player-image").forEach(el => { el.src = "/images/" + gameState.player.class + ".png"; }); // Placeholder image for now.
-	document.querySelectorAll(".player-image").forEach(el => { el.alt = gameState.player.name; });
-	const equippedItem = gameState.player.itemEquipped
-	document.querySelectorAll(".player-attack").forEach(el => { el.textContent = gameState.player.attack + equippedItem?.attack??0; });
-	document.querySelectorAll(".player-defense").forEach(el => { el.textContent = gameState.player.defense + equippedItem?.defense??0; });
-	document.querySelectorAll(".player-hp").forEach(el => { el.textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP"; });
-	document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
-	if (gameState.inCombat) {
-		//Enable/disable combat buttons
-		if (gameState.isPlayersTurn) {
-			enableCombatButtons();
+async function sendGetRequest(endpoint) {
+	try {
+		const response = await fetch(endpoint);
+		//Make sure response is valid.
+		if (!response.ok) {
+			throw new Error(`Server error: ${response.status} ${response.statusText}`);
 		}
-		else {
-			disableCombatButtons();
-		}
-		showCombatUI();
-		hideCampsiteUI();
-		hideEventUI();
-		// Update Enemy display.
-		document.getElementById("enemy-name").textContent = gameState.enemy.name;
-		document.getElementById("enemy-image").src = gameState.enemy.imageUrl;
-		document.getElementById("enemy-image").alt = gameState.enemy.name;
-		document.getElementById("enemy-attack").textContent = gameState.enemy.attack;
-		document.getElementById("enemy-defense").textContent = gameState.enemy.defense;
-		document.getElementById("enemy-hp").textContent = gameState.enemy.currentHealth + "/" + gameState.enemy.maxHealth + " HP";
+		const data = await response.json();
+		//Log the result from the server for debugging.
+		console.log(data);
+		//Return the result as Json.
+		return data;
 	}
-	else if (gameState.inCampsite) {
-		hideCombatUI();
-		hideEventUI();
-		showCampsiteUI();
-		if (gameState.isLocationComplete) {
-			disableCampsiteButtons();
-		}
-		// Gets rid of last combat's messages;
-		clearDialogBox();
-		// Update Map
-		updateMap();
-		// Inform the player about the campsite
-		addLogEntry("Rest at the campsite to heal 30% of your maximum HP and refill Health Potions");
-	}
-	else if (gameState.inEvent)
-	{
-		hideCombatUI();
-		hideCampsiteUI();
-		showEventUI();
-		if (gameState.isLocationComplete) {
-			disableEventButtons();
-		}
-		// Gets rid of last combat's messages;
-		clearDialogBox();
-		// Update Map
-		updateMap();
-		// Inform the player about the event
-		addLogEntry("A prickly bush lies in your path. A few red objects shimmer from fairly deep inside. Reach in and grab them?");
-	}
-	else {
-		hideCombatUI();
-		hideCampsiteUI();
-		hideEventUI();
+	catch (error) { //Something went wrong.
+		console.error("GET request error:", error);
+		return null;
 	}
 }
 
-// Function to add log entries to the dialog box.  
-function addLogEntry(message) {
-	const dialogBox = document.querySelector(".dialog-box");
-	const logLimit = 5;
-	if (dialogBox.childElementCount >= logLimit) {
-		dialogBox.innerHTML = "";
+async function sendPostRequest(endpoint, payload = {}) {
+	try {
+		const response = await fetch(endpoint, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(payload)
+		});
+		//Make sure response is valid.
+		if (!response.ok) {
+			throw new Error(`Server error: ${response.status} ${response.statusText}`);
+		}
+		const responseData = await response.json();
+		//Log diff returned from server for debugging.
+		console.log(responseData);
+		//Merge response into local cache.
+		mergeDiffIntoCache(gameState, responseData);
+		//Refresh the UI to reflect the new changes.
+		refreshDisplay();
 	}
-	const logDiv = document.createElement("div");
-	logDiv.textContent = message;
-	dialogBox.appendChild(logDiv);
+	catch (error) { //Something went wrong.
+		console.error("Error in sendPostRequest:", error);
+	}
 }
 
-function clearDialogBox() {
-	const dialogBox = document.querySelector(".dialog-box");
-	dialogBox.innerHTML = "";
-}
-
-async function processResponse(response) {
-	if (response.text == null) {
-		return;
-	}
-	if (!response.ok) {
-		throw new Error(`Server error: ${response.status} ${response.statusText}`);
-	}
-	const json = await response.json();
-	console.log(json);
-	mergeDiffIntoCache(gameState, json);
-	updateDisplay();
-}
 
 //This method essentially does the opposite of what GameController.GenerateDiff does then merges it with the cached gameState
 function mergeDiffIntoCache(target, json) {

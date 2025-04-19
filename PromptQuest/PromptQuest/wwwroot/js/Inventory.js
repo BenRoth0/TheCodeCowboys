@@ -1,58 +1,12 @@
 ﻿// "Global" Variables for the selected and equipped items
 let selectedItemIndex = -1;
 
-async function loadItems() {
-	const items = gameState.player.items;
-	// Clear existing inventory slots
-	for (let i = 1; i <= 20; i++) {
-		const slot = document.getElementById("inventory-slot-" + i);
-		while (slot.firstChild) {
-			slot.removeChild(slot.firstChild);
-		}
-	}
-	for (let i = 0; i < items.length; i += 1) {
-		//Create img tag and insert it into the slot
-		const image = document.createElement("img");
-		image.src = items[i].imageSrc;
-		image.alt = items[i].name;
-		const slot = document.getElementById("inventory-slot-" + (i + 1));
-		slot.appendChild(image);
-		//Set up select behavior for the slot
-		image.addEventListener("click", () => {
-			selectItem(items[i], i);
-		});
-	}
-	// Fill Equipped item slot
-	const equippedItem = gameState.player.itemEquipped;
-	//Clear out equipped item slot
-	const equippedItemSlot = document.getElementById("equipped-item");
-	while (equippedItemSlot.firstChild) {
-		equippedItemSlot.removeChild(equippedItemSlot.firstChild);
-	}
-	if (equippedItem != null) {
-		const image = document.createElement("img");
-		image.src = equippedItem.imageSrc;
-		image.alt = equippedItem.name;
-		equippedItemSlot.appendChild(image);
-		//Set up the select behavior
-		image.addEventListener("click", () => {
-			selectItem(equippedItem, -1);
-		});
-	}
-	// Set up the equip button
-	const equipButton = document.getElementById("equip-button");
-	equipButton.removeEventListener("click", equipItem);
-	equipButton.addEventListener("click", equipItem);
-}
-
 async function equipItem() {
 	// If there is no selected item then do nothing.
 	if (selectedItemIndex == -1) {
 		return;
 	}
-	const response = await fetch(`/Game/EquipItem?itemIndex=${selectedItemIndex}`, { method: 'Post', });
-	await processResponse(response);
-	await loadItems(); //Refresh the inventory to show new changes
+	await sendPostRequest(`/Game/EquipItem?itemIndex=${selectedItemIndex}`);
 }
 
 // Function to select an item and display its stats
