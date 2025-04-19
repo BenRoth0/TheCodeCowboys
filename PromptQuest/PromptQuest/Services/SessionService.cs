@@ -17,7 +17,6 @@ namespace PromptQuest.Services {
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private const string GameStateSessionKey = "GameState";
 		private const string TutorialFlagSessionKey = "TutorialFlag";
-		private const string AbilityCDSessionKey = "AbilityCD";
 
 		public SessionService(IHttpContextAccessor httpContextAccessor) {
 			_httpContextAccessor = httpContextAccessor;

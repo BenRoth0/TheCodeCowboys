@@ -4,7 +4,7 @@ namespace PromptQuest.Services {
 
 	public interface ICombatService {
 		string StartCombat(GameState gameState);
-		string PlayerAttack(GameState gameState);
+		string PlayerAttack(GameState gameState, int AttackMultiplier=1);
 		string PlayerUseHealthPotion(GameState gameState);
 		string PlayerRest(GameState gameState);
 		string PlayerSkipRest(GameState gameState);
@@ -46,11 +46,11 @@ namespace PromptQuest.Services {
 		#region Player Action Methods
 
 		/// <summary> Calculates the damage that the player does to the enemy, updates the game state, then returns a message.</summary>
-		public string PlayerAttack(GameState gameState) {
+		public string PlayerAttack(GameState gameState, int AttackMultiplier=1) {
 			// Get the player's equipped item
 			Item item = gameState.Player.ItemEquipped;
 			// Calculate damage as attack - defense.
-			int damage = gameState.Player.Attack + item.Attack - gameState.Enemy.Defense;
+			int damage = (int)Math.Floor((double)(gameState.Player.Attack + item.Attack)*AttackMultiplier) - gameState.Enemy.Defense;
 			// If attack is less than one make it one.
 			if(damage < 1)
 				damage = 1;
@@ -138,14 +138,7 @@ namespace PromptQuest.Services {
 			{
 				case "warrior"://attack for double power, uses the attack function
 					string message= "You performed a powerful attack: ";
-					int savedATK = gameState.Player.Attack;
-					Item item = gameState.Player.ItemEquipped;
-					int savedItemATK = item.Attack;
-					gameState.Player.Attack = gameState.Player.Attack * 2;
-					item.Attack= item.Attack * 2;
-					message += PlayerAttack(gameState);
-					gameState.Player.Attack = savedATK;
-					item.Attack = savedItemATK;
+					message += PlayerAttack(gameState, 2);
 					gameState.Player.AbilityCooldown = 3;
 					return message;
 					break;

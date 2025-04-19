@@ -50,12 +50,17 @@ async function enableCombatButtons() {
 	abilityButton.disabled = false;
 	abilityButton.classList.remove("PQButtonDisabled");
 	abilityCD = gameState.player.abilityCooldown;
+	const abilityIcon=document.getElementById("player-ability-cooldown-icon")
 
 	if (abilityCD == 0) {
 		abilityButton.innerHTML = "Ability (Ready!)"
+		abilityIcon.src = "/images/0_6_Clock.png"
 	}
 	else {
-		abilityButton.innerHTML = "Ability (CD: " + abilityCD +")"
+		abilityButton.innerHTML = "Ability (CD: " + abilityCD + ")"
+		abilityButton.disabled = true;
+		abilityButton.classList.add("PQButtonDisabled");
+		abilityIcon.src = "/images/"+abilityCD+"_6_Clock.png"
 	}
 }
 
