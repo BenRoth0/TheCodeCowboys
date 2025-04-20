@@ -126,14 +126,16 @@ namespace PromptQuest.Services {
 			}
 			// Update player health (+30% of max health)
 			gameState.Player.CurrentHealth += gameState.Player.MaxHealth / 3;
-			gameState.AddMessage($"You healed to {gameState.Player.CurrentHealth} HP!");
 			// If the potion put the player's health above maximum, set it to maximum.
 			if(gameState.Player.CurrentHealth >= gameState.Player.MaxHealth) {
 				gameState.Player.CurrentHealth = gameState.Player.MaxHealth;
 				gameState.AddMessage($"You healed to max HP!"); // Overwrite current message.
+				gameState.IsLocationComplete = true;
+				return;
 			}
 			// Ensure player can leave
 			gameState.IsLocationComplete = true;
+			gameState.AddMessage($"You healed to {gameState.Player.CurrentHealth} HP!");
 		}
 
 		/// <summary>Doesn't rest, updates the game state, then returns a message.</summary>

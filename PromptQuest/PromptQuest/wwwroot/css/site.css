@@ -41,14 +41,8 @@ body {
 		user-select: none; /* Prevents text selection */
 	}
 
-/* Allows for tabs in modal to be shown and hidden */
-.tab-content {
-	display: none;
-}
-
-/* Allows for tabs in modal to be shown and hidden */
-.show-tab {
-	display: block;
+.menu * {
+	visibility:hidden;
 }
 
 /* Style for map container */
@@ -115,7 +109,6 @@ body {
 	height: 100%;
 	width: 100%; /* Defaults to Fullscreen */
 	background-color: var(--background-color-primary);
-	display: none; /* Hidden by default */
 	z-index: 1050; /* Ensure it's above other elements */
 	padding: 2vmin;
 }
@@ -155,6 +148,10 @@ body {
 		object-fit: contain; /* Ensures the image maintains aspect ratio */
 		border-radius: 10px;
 	}
+
+.pq-inventory-slot-selected {
+	border-color: #ffdc4a;
+}
 
 /*---- Reusable Player Displays ------------------------------------------------------------------*/
 

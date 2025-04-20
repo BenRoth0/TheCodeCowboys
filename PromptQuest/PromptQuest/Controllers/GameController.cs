@@ -79,8 +79,8 @@ namespace PromptQuest.Controllers {
 		}
 
 		[HttpPost]
-		public JsonResult PlayerAction(string action1) {
-			Action action = new Action(() => { _gameService.ExecutePlayerAction(action1); });
+		public JsonResult PlayerAction(string playerAction) {
+			Action action = new Action(() => { _gameService.ExecutePlayerAction(playerAction); });
 			return ProcessRequest(action);
 		}
 
