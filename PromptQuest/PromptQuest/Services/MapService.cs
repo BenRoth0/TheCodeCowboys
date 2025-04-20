@@ -59,10 +59,13 @@ namespace PromptQuest.Services {
 			// Check if the player is on a campsite or event node
 			var currentNode = _mapNodes.FirstOrDefault(node => node.MapNodeId == gameState.PlayerLocation);
 			if (currentNode != null && currentNode.NodeType == "Campsite") {
+				gameState.AddMessage("You have found a campsite. Rest here to heal 30% of your maximum HP and refill your health potions.");
 				gameState.InCampsite = true;
 				return;
 			}
 			if (currentNode != null && currentNode.NodeType == "Event") {
+				gameState.AddMessage("A prickly bush lies in your path. A few red objects shimmer from fairly deep inside.");
+				gameState.AddMessage("Reach in and grab them?");
 				gameState.InEvent = true;
 				return;
 			}

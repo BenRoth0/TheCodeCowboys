@@ -7,7 +7,6 @@ namespace PromptQuest.Services {
 
 		bool DoesUserHaveSavedGame();
 		void StartCombat();
-		void RespawnPlayer();
 		void ExecutePlayerAction(string action);
 		void SkipToBoss();
 		void EquipItem(int itemIndex);
@@ -70,9 +69,11 @@ namespace PromptQuest.Services {
 			}
 			return gameState;
 		}
+
 		public bool IsTutorial() {
 			return _sessionService.GetTutorialFlag();
 		}
+
 		public void SetTutorialFlag(bool Flag) {
 			_sessionService.SetTutorialFlag(Flag);
 		}
@@ -126,28 +127,6 @@ namespace PromptQuest.Services {
 			UpdateGameState(gameState);
 		}
 
-		public void RespawnPlayer() {
-			// Get current gamestate from the session
-			GameState gameState = GetGameState();
-			// Reset player health and potions back to max
-			gameState.Player.CurrentHealth=gameState.Player.MaxHealth;
-			// Reset player's potions to 2
-			gameState.Player.HealthPotions=2;
-			// This pattern feels wrong, we'll figure something better out later.
-			if(_databaseService.IsAuthenticatedUser()) {
-				// StartCombat adds an enemy so lets delete the old one from the db if there is one.
-				if(gameState.Enemy != null) {
-					_databaseService.DeleteEnemy(gameState.Enemy.EnemyId);
-				}
-			}
-			// Restart the player at the first location.
-			gameState.PlayerLocation = 1;
-			// Start a new fight.
-			_combatService.StartCombat(gameState);
-			// Update current gamesate in the session
-			UpdateGameState(gameState);
-		}
-
 		#endregion Game Flow Methods - End
 
 		#region Action Routing Methods
@@ -181,6 +160,9 @@ namespace PromptQuest.Services {
 					if(gameState.InCombat) {//Moving the player could put the player in combat
 						_combatService.StartCombat(gameState);//Server should be the one to start combat
 					}
+					break;
+				case "respawn":
+					_combatService.RespawnPlayer(gameState);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(action), action, null);

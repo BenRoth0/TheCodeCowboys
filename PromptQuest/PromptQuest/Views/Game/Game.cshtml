@@ -27,7 +27,7 @@
 		}
 	</div>
 	<!-- Dialog Box -->
-	<div class="dialog-box pq-center-element-x" style="top: 25%; left: 50%; height: 20vmin; width: 100vmin;"></div>
+	<div class="dialog-box pq-center-element-x" id="dialog-box" style="overflow-x:auto;top: 25%; left: 50%; height: 20vmin; width: 100vmin;"></div>
 	<!-- Player Display -->
 	<div class="pq-container" id="player-display" style="display:none;bottom: 0; left: 0; width: 50vmin; height: 50vmin;">
 		<div class="player-name" style="top: 2%; left: 4%;"></div>
@@ -133,7 +133,7 @@
 				Press the button below to respawn and fight again.
 			</div>
 			<div class="modal-footer" style="border:none;">
-				<button type="button" class="btn pq-button pq-font" onclick="respawnPlayer()">Respawn</button>
+				<button type="button" id="respawn-btn" class="btn pq-button pq-font">Respawn</button>
 			</div>
 		</div>
 	</div>

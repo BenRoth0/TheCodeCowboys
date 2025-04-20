@@ -96,12 +96,6 @@ namespace PromptQuest.Controllers {
 			return ProcessRequest(action);
 		}
 
-		[HttpPost]
-		public JsonResult Respawn() {
-			Action action = new Action(() => { _gameService.RespawnPlayer(); });
-			return ProcessRequest(action);
-		}
-
 		[HttpGet]
 		public JsonResult MovePlayerToNextLocation() {
 			Action action = new Action(() => { _gameService.ExecutePlayerAction("move"); });
@@ -121,9 +115,9 @@ namespace PromptQuest.Controllers {
 		}
 
 		public JsonResult ProcessRequest(Action action) {
-			GameState gameStateBefore = _gameService.GetGameState(); //Take a snapshot of the current GameState before any changes
+			GameState gameStateBefore = _gameService.GetGameState().CreateDeepCopy(); //Take a snapshot of the current GameState before any changes. Deep copy so it doesn't respond to outside updates
 			action.Invoke(); //Perform the requested action
-			GameState gameStateAfter = _gameService.GetGameState(); //Take a snapshot of the current GameState after any changes
+			GameState gameStateAfter = _gameService.GetGameState().CreateDeepCopy(); //Take a snapshot of the current GameState after any changes. Deep copy so it doesn't respond to outside updates
 			JsonResult jsonResult = Json(GenerateDiff(gameStateBefore,gameStateAfter));//Generate a diff and convert into json
 			return jsonResult;
 		}
@@ -135,7 +129,7 @@ namespace PromptQuest.Controllers {
 			}
 			//Loop through each property in the GameState class
 			foreach(var prop in gameStateBefore.GetType().GetProperties()) {
-				if(prop.Name=="ImageSrc") {
+				if(prop.Name=="ListMessages") {
 					Console.WriteLine("GameState.Player.Items");
 				}
 				//Take a snapshot each property before and after changes were made

@@ -6,6 +6,7 @@ let actionButtonDisplay;
 let backgroundImage;
 let campsiteButtonDisplay;
 let eventButtonDisplay;
+let dialogBox;
 //Player action buttons
 let attackBtn;
 let healBtn;
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	backgroundImage = document.getElementById("bg-image");
 	campsiteButtonDisplay = document.getElementById("campsite-button-display");
 	eventButtonDisplay = document.getElementById("event-button-display");
+	dialogBox = document.getElementById("dialog-box");
 	//Grab all the buttons from the DOM on load.
 	attackBtn = document.getElementById("attack-btn");
 	healBtn = document.getElementById("health-potion-btn");
@@ -50,8 +52,8 @@ function refreshDisplay() {
 	refreshMap();
 	refreshDialogBox();
 	//Sync button states (disabled/enabled).
-	attackBtn.syncButtonState(gameState.inCombat && gameState.isPlayersTurn);
-	healBtn.syncButtonState(gameState.inCombat && gameState.isPlayersTurn);
+	attackBtn.syncButtonState(gameState.inCombat && gameState.isPlayersTurn && !gameState.isLocationComplete && gameState.player.currentHealth > 0);
+	healBtn.syncButtonState(gameState.inCombat && gameState.isPlayersTurn && !gameState.isLocationComplete && gameState.player.currentHealth > 0);
 	restBtn.syncButtonState(gameState.inCampsite && !gameState.isLocationComplete);
 	skipRestBtn.syncButtonState(gameState.inCampsite && !gameState.isLocationComplete);
 	acceptBtn.syncButtonState(gameState.inEvent && !gameState.isLocationComplete);
@@ -59,8 +61,8 @@ function refreshDisplay() {
 	//Sync UI visibility (visible/hidden).
 	playerDisplay.syncVisibility(gameState.player.currentHealth > 0);
 	enemyDisplay.syncVisibility(gameState.inCombat && gameState.enemy.currentHealth > 0);
-	actionButtonDisplay.syncVisibility(gameState.inCombat);
-	backgroundImage.syncVisibility(gameState.inCampsite);
+	actionButtonDisplay.syncVisibility(gameState.inCombat && !gameState.isLocationComplete && gameState.player.currentHealth > 0);
+	backgroundImage.syncVisibility(gameState.inCampsite && !gameState.isLocationComplete);
 	campsiteButtonDisplay.syncVisibility(gameState.inCampsite);
 	eventButtonDisplay.syncVisibility(gameState.inEvent);
 	//This will be merged into the sync pattern above at some point.
@@ -75,6 +77,8 @@ function refreshDisplay() {
 // Function to show the respawn modal
 function showRespawnModal() {
 	const respawnModal = new bootstrap.Modal(document.getElementById('respawnModal'));
+	const respawnButton = document.getElementById("respawn-btn");
+	respawnButton.attachPlayerAction('respawn');
 	respawnModal.show();
 }
 
@@ -87,18 +91,31 @@ function hideRespawnModal() {
 	}
 }
 
-// Function to respawn the player
-async function respawnPlayer() {
-	await sendPostRequest("/Game/Respawn");
-}
-
 // ------------------------ REFRESH DISPLAY HELPER METHODS ------------------------------------------------------------------------------------------------------
 
 function refreshDialogBox() {
+	//Clear old messages and load in the new list
+	dialogBox.innerHTML = "";
 	gameState.listMessages.forEach((message) => {
-		const dialogBox = document.querySelector(".dialog-box");
-		dialogBox.textContent += message = '\n';
+		const logDiv = document.createElement("div");
+		logDiv.textContent = message;
+		dialogBox.appendChild(logDiv);
+		//logDiv.scrollIntoView({ behavior: "smooth" });
 	});
+	//Scroll to bottom to show new messages
+	dialogBox.scrollTop = dialogBox.scrollHeight;
+}
+
+function scrollToBottomIfNeeded(elementId) {
+	let element = document.getElementById(elementId);
+	if (!element) return;
+
+	const isNearBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 50;
+	// 50px buffer to avoid overly aggressive scrolling
+
+	if (isNearBottom) {
+		element.scrollTop = element.scrollHeight; // Scroll only if user is near bottom
+	}
 }
 
 function refreshPlayerDisplay() {
@@ -235,7 +252,7 @@ function refreshMap() {
 
 //------------------------ OVERLOADS --------------------------------------------------------------------------------------------------------------
 
-//Shows/Hides an html element according to the given condition. Only updates if necessary to avoid UI flicker.
+//Shows/Hides an html element according to the given condition. If the condition is true, the element is shown, if not, it is hidden. Only updates if necessary to avoid UI flicker.
 HTMLElement.prototype.syncVisibility = function (condition) {
 	if (condition && this.style.display === "none") {
 		//Element should be visible but is currently hidden. Show it.
@@ -257,7 +274,7 @@ HTMLButtonElement.prototype.attachPlayerAction = function (action) {
 	});
 };
 
-//Enables/disables a button according to the given condition. Only updates if necessary to avoid UI flicker.
+//Enables/disables a button according to the given condition. If condition is true, button is enabled, if not, it is disabled. Only updates if necessary to avoid UI flicker.
 HTMLButtonElement.prototype.syncButtonState = function (condition) {
 	if (condition && this.disabled) {
 		//Button should be enabled but is currently disabled. Enable it.
