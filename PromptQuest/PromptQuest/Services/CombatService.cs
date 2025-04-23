@@ -21,6 +21,11 @@ namespace PromptQuest.Services {
 		public void StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
+			if(gameState.PlayerLocation == 7) {
+				gameState.Enemy = GetElite(gameState);
+				gameState.AddMessage($"You have been attacked by the {gameState.Enemy.Name}!"); // Let the user know that combat started.
+				return;
+			}
 			if(gameState.PlayerLocation != 10) {
 				gameState.Enemy = GetEnemy(gameState);
 				gameState.AddMessage($"You have been attcked by the {gameState.Enemy.Name}!"); // Let the user know that combat started.
@@ -299,7 +304,40 @@ namespace PromptQuest.Services {
 			return enemy;
 		}
 
-		/// <summary>Generatees an Enemy, updates the game state, then returns the Enemy.</summary>
+		/// <summary> Generates an Elite Enemy, updates the game state, then returns the Elite Enemy.</summary>
+		public Enemy GetElite(GameState gameState) {
+			if (gameState.Floor == 1) {
+				Enemy elite = new Enemy();
+				elite.Name = "Spectral Orc Berserker";
+				elite.ImageUrl = "/images/SpectralOrc.png";
+				elite.MaxHealth = 15;
+				elite.CurrentHealth = 15;
+				elite.Attack = 4;
+				elite.Defense = 3;
+				return elite;
+			}
+			else if (gameState.Floor == 2) {
+				Enemy elite = new Enemy();
+				elite.Name = "Corrupted Plant";
+				elite.ImageUrl = "/images/EvilPlant.png";
+				elite.MaxHealth = 20;
+				elite.CurrentHealth = 20;
+				elite.Attack = 6;
+				elite.Defense = 2;
+				return elite;
+			}
+			else {
+				Enemy elite = new Enemy();
+				elite.Name = "Demon Knight";
+				elite.ImageUrl = "/images/DemonKnight.png";
+				elite.MaxHealth = 40;
+				elite.CurrentHealth = 40;
+				elite.Attack = 7;
+				elite.Defense = 5;
+				return elite;
+			}
+		}
+		/// <summary> Generates an Enemy, updates the game state, then returns the Enemy.</summary>
 		public Enemy GetBoss(GameState gameState) {
 			if(gameState.Floor == 1) {
 				Enemy boss = new Enemy();

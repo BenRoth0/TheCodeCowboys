@@ -28,20 +28,9 @@ namespace Tests_BDD.StepDefinitions {
 		}
 
 		[When("I move to the {int}th room")]
-		public void WhenIMoveToTheThRoom(int p0) { 
-			// Click the menu button
-			IWebElement menuButton = webDriver.FindElement(By.XPath("//button[normalize-space(text()='Menu')]"));
-			menuButton.Click();
-			// Wait for the menu modal to show
-			PromptQuestTestMethods.WaitForElementToLoad(webDriver, "pq-modal");
-			// Click the map tab
-			IWebElement mapTab = webDriver.FindElement(By.Id("map-button"));
-			mapTab.Click();
-			// Wait for the map modal to show
-			PromptQuestTestMethods.WaitForElementToLoad(webDriver, "map-tab");
-			// Click the tenth room with attribute data-node-id="10"
-			IWebElement tenthNode = webDriver.FindElement(By.XPath("//div[@data-node-id='10']"));
-			tenthNode.Click();
+		public void WhenIMoveToTheThRoom(int p0) {
+			// Move to the desired room
+			PromptQuestTestMethods.MoveToRoom(webDriver, p0);
 		}
 
 		[Then("A boss should be spawned")]

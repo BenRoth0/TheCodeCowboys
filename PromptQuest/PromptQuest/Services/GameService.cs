@@ -10,6 +10,7 @@ namespace PromptQuest.Services {
 		void ExecutePlayerAction(string action);
 		void ExecuteEnemyAction();
 		void SkipToBoss();
+		void SkipToRoom(int targetRoom);
 		void EquipItem(int itemIndex);
 		void StartNewGame(Player player);
 		public bool IsTutorial();
@@ -207,13 +208,23 @@ namespace PromptQuest.Services {
 
 		#endregion
 
+		public void SkipToRoom(int targetRoom)
+		{	// This is a skip to the boss for testing purposes
+			// Get current gamestate
+			GameState gameState = GetGameState();
+			// Move the player to the desired room
+			_mapService.MovePlayer(gameState, targetRoom);
+			// Update current gamesate
+			UpdateGameState(gameState);
+		}
+
 		public void SkipToBoss() {        // This is a skip to the boss for testing purposes
 																								// Get current gamestate
 			GameState gameState = GetGameState();
 			// Move the player to the room before the boss.
 			_mapService.MovePlayer(gameState, 9);
-			_combatService.StartCombat(gameState);//Make sure combat starts when they get there or you could get stuck their.
-																						// Update current gamesate
+			_combatService.StartCombat(gameState);//Make sure combat starts when they get there or you could get stuck there.
+			// Update current gamesate
 			UpdateGameState(gameState);
 			//string message = "You have been teleported to the room before the boss.";
 		}

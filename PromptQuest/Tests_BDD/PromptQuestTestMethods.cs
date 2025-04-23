@@ -108,5 +108,11 @@ namespace Tests_BDD {
 			// Wait for the boss to spawn
 			WaitForElementToLoad(webDriver, "attack-btn");
 		}
+
+		/// <summary> Moves user to the specified roomNumber. </summary>
+		public static void MoveToRoom(IWebDriver webDriver, int targetRoom) {
+			// Navigate to the game page
+			webDriver.Navigate().GoToUrl("https://localhost:7186/Game/SkipToRoom?targetRoom={targetRoom}");
+		}
 	}
 }
