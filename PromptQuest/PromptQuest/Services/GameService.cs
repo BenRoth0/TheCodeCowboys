@@ -214,6 +214,10 @@ namespace PromptQuest.Services {
 			GameState gameState = GetGameState();
 			// Move the player to the desired room
 			_mapService.MovePlayer(gameState, targetRoom);
+			// Start combat if the player isn't on an event node at location 3,5, or 8
+			if(targetRoom != 3 && targetRoom != 5 && targetRoom != 8){
+				_combatService.StartCombat(gameState);
+			}
 			// Update current gamesate
 			UpdateGameState(gameState);
 		}

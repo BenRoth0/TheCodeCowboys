@@ -12,12 +12,10 @@ namespace Tests_BDD.StepDefinitions {
 
 		[BeforeScenario]
 		public void Setup() {
-			// Initialize WebDriver before each scenario
-			webDriver = new ChromeDriver();
-			webDriver.Manage().Window.Maximize();
-			// Start a new game
-			PromptQuestTestMethods.StartNewGame(webDriver, skipTutorial: true);
+			// Initialize the web driver before each scenario
+			webDriver = TestSetup.GetWebDriver();
 		}
+
 		#region Boss Spawn Test
 		[Given("I beat the {int}th room")]
 		public void GivenIBeatTheThRoom(int p0) { 
@@ -35,11 +33,6 @@ namespace Tests_BDD.StepDefinitions {
 
 		[Then("A boss should be spawned")]
 		public void ThenABossShouldBeSpawned() {
-			// Close the menu
-			IWebElement closeButton = webDriver.FindElement(By.Id("pq-modal-close"));
-			closeButton.Click();
-			// Wait for the boss to spawn
-			PromptQuestTestMethods.WaitForElementToLoad(webDriver, "attack-btn");
 			// Search for the boss' name Dark Orc Warlock
 			IWebElement bossName = webDriver.FindElement(By.Id("enemy-name"));
 			// Assert that the boss name displayed is Dark Orc Warlock
@@ -63,17 +56,10 @@ namespace Tests_BDD.StepDefinitions {
 			IWebElement menuButton = webDriver.FindElement(By.XPath("//button[normalize-space(text()='Menu')]"));
 			menuButton.Click();
 			// Wait for the menu modal to show
-			PromptQuestTestMethods.WaitForElementToLoad(webDriver, "pq-modal");
+			PromptQuestTestMethods.WaitForElementToLoad(webDriver, "menu");
 			// Check for an item with the DarkStaff image
 			IWebElement bossItem = webDriver.FindElement(By.XPath("//img[@src='/images/DarkStaff.png']"));	
 		}
 		#endregion
-		[AfterScenario]
-		public void TearDown() {
-			if (webDriver != null) {
-				webDriver.Quit(); // Ensure the browser is closed
-				webDriver?.Dispose(); // Clean up unmanaged resources
-			}
-		}
 	}
 }

@@ -101,7 +101,7 @@ namespace Tests_BDD.Features
             {
                 await this.ScenarioStartAsync();
 #line 5
-  await testRunner.GivenAsync("the user is on the game page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+  await testRunner.GivenAsync("I am on the game page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 6
   await testRunner.WhenAsync("I move to the 7th room", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
@@ -131,12 +131,15 @@ namespace Tests_BDD.Features
             {
                 await this.ScenarioStartAsync();
 #line 10
-  await testRunner.GivenAsync("I am in the 7th room", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+  await testRunner.GivenAsync("I am on the game page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 11
-  await testRunner.WhenAsync("I defeat the elite", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+  await testRunner.WhenAsync("I move to the 7th room", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 12
+  await testRunner.AndAsync("I defeat the elite", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 13
   await testRunner.ThenAsync("I should be given an elite item", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

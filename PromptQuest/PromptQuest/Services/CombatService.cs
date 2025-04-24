@@ -28,12 +28,12 @@ namespace PromptQuest.Services {
 			}
 			if(gameState.PlayerLocation != 10) {
 				gameState.Enemy = GetEnemy(gameState);
-				gameState.AddMessage($"You have been attcked by the {gameState.Enemy.Name}!"); // Let the user know that combat started.
+				gameState.AddMessage($"You have been attacked by the {gameState.Enemy.Name}!"); // Let the user know that combat started.
 				return;
 			}
 			// If the player is in the boss room, spawn a boss.
 			gameState.Enemy = GetBoss(gameState);
-			gameState.AddMessage($"You have encounterd the {gameState.Enemy.Name}! Defeat the boss! "); // Let the user know that combat started.
+			gameState.AddMessage($"You have encountered the {gameState.Enemy.Name}! Defeat the boss! "); // Let the user know that combat started.
 		}
 
 		#region Player Action Methods
@@ -52,41 +52,20 @@ namespace PromptQuest.Services {
 			// Return the result to the user.
 			gameState.AddMessage($"You attacked the {gameState.Enemy.Name} for {damage} damage");
 			// Check if enemy died.
-			if(gameState.Enemy.CurrentHealth <= 0) {
+			
+			if (gameState.Enemy.CurrentHealth <= 0) {
 				gameState.IsPlayersTurn = true; // Zero this field out because combat is over.
 				gameState.IsLocationComplete = true; // Player has completed the current area.
 				gameState.AddMessage($"You have defeated the {gameState.Enemy.Name}! Check your map to see where you're going next.");
 				if(gameState.PlayerLocation == 10) {
-					// Generate a boss item for the player
-					if(gameState.Floor == 1) {
-						// If the player is on the first floor, give them a boss specific item.
-						Item bossItem = new Item();
-						bossItem.Name = "Orc Warlock's Staff";
-						bossItem.Attack = 5;
-						bossItem.Defense = 4;
-						bossItem.ImageSrc = "/images/DarkStaff.png";
-						gameState.Player.Items.Add(bossItem);
-					}
-					else if(gameState.Floor == 2) {
-						// If the player is on the second floor, give them a boss specific item.
-						Item bossItem = new Item();
-						bossItem.Name = "Dark Elvish Sword";
-						bossItem.Attack = 8;
-						bossItem.Defense = 3;
-						bossItem.ImageSrc = "/images/DarkElvenSword.png";
-						gameState.Player.Items.Add(bossItem);
-					}
-					else {
-						// If the player is on the third floor, give them a boss specific item.
-						Item bossItem = new Item();
-						bossItem.Name = "Shadow Spear";
-						bossItem.Attack = 12;
-						bossItem.Defense = 6;
-						bossItem.ImageSrc = "/images/DarkSpear.png";
-						gameState.Player.Items.Add(bossItem);
-					}
+					Item bossItem = GetBossItem(gameState); // Get the boss item.
+					gameState.AddMessage($"You picked up the {gameState.Enemy.Name}'s {bossItem.Name}!");
+					gameState.Player.Items.Add(bossItem);
+				} else if(gameState.PlayerLocation == 7) {
+					Item eliteItem = GetEliteItem(gameState); // Get the elite's item.
+					gameState.AddMessage($"You picked up the {gameState.Enemy.Name}'s {eliteItem.Name}!");
+					gameState.Player.Items.Add(eliteItem);
 				}
-				return; 
 			}
 			gameState.IsPlayersTurn = false;
 		}
@@ -296,14 +275,68 @@ namespace PromptQuest.Services {
 						enemy.ImageUrl = "/images/LazyDrunkOrc.png";
 						enemy.MaxHealth = 35;
 						enemy.CurrentHealth = 35;
-						enemy.Attack = 10;
-						enemy.Defense = 5;
+						enemy.Attack = 7;
+						enemy.Defense = 3;
 						break;
 				}
 			}
 			return enemy;
 		}
-
+		#region Boss and Elite Item Generation
+		public Item GetBossItem(GameState gameState) {
+			// Generate a boss item for the player
+			Item bossItem = new Item();
+			if (gameState.Floor == 1) {
+				// If the player is on the first floor, give them a boss specific item.
+				bossItem.Name = "Dark Staff";
+				bossItem.Attack = 5;
+				bossItem.Defense = 4;
+				bossItem.ImageSrc = "/images/DarkStaff.png";
+			}
+			else if (gameState.Floor == 2) {
+				// If the player is on the second floor, give them a boss specific item.
+				bossItem.Name = "Dark Elvish Sword";
+				bossItem.Attack = 8;
+				bossItem.Defense = 3;
+				bossItem.ImageSrc = "/images/DarkElvenSword.png";
+			}
+			else {
+				// If the player is on the third floor, give them a boss specific item.
+				bossItem.Name = "Shadow Spear";
+				bossItem.Attack = 12;
+				bossItem.Defense = 6;
+				bossItem.ImageSrc = "/images/DarkSpear.png"; 
+			}
+			return bossItem;
+		}
+		public Item GetEliteItem(GameState gameState) {
+			// Generate a boss item for the player
+			Item eliteItem = new Item();
+			if (gameState.Floor == 1) {
+				// If the player is on the first floor, give them an elite specific item.
+				eliteItem.Name = "Berserker Axe";
+				eliteItem.Attack = 5;
+				eliteItem.Defense = 1;
+				eliteItem.ImageSrc = "/images/BerserkerAxe.png";
+			}
+			else if (gameState.Floor == 2) {
+				// If the player is on the second floor, give them an elite specific item.
+				eliteItem.Name = "Spiked Leaf";
+				eliteItem.Attack = 6;
+				eliteItem.Defense = 2;
+				eliteItem.ImageSrc = "/images/SpikedLeaf.png";
+			}
+			else {
+				// If the player is on the third floor, give them an elite specific item.
+				eliteItem.Name = "Demon Cleaver";
+				eliteItem.Attack = 10;
+				eliteItem.Defense = 5;
+				eliteItem.ImageSrc = "/images/DemonCleaver.png";
+			}
+			return eliteItem;
+		}
+		#endregion Boss and Elite Item Generation - End
+		#region Elite and Boss Enemy Generation
 		/// <summary> Generates an Elite Enemy, updates the game state, then returns the Elite Enemy.</summary>
 		public Enemy GetElite(GameState gameState) {
 			if (gameState.Floor == 1) {
@@ -370,6 +403,7 @@ namespace PromptQuest.Services {
 				return boss;
 			}
 		}
+		#endregion Boss and Elite Enemy Generation - End
 		#endregion Helper Methods - End
 	}
 }
