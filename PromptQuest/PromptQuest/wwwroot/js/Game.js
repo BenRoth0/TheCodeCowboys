@@ -15,6 +15,7 @@ let restBtn;
 let skipRestBtn;
 let acceptBtn;
 let denyBtn;
+let abilityBtn;
 let openTreasureBtn;
 let skipTreasureBtn;
 
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	eventButtonDisplay = document.getElementById("event-button-display");
 	treasureButtonDisplay = document.getElementById("treasure-button-display");
 	dialogBox = document.getElementById("dialog-box");
+	abilityCooldownIcon = document.getElementById("ability-cooldown-icon");
 	//Grab all the player action buttons from the DOM on load.
 	attackBtn = document.getElementById("attack-btn");
 	healBtn = document.getElementById("health-potion-btn");
@@ -37,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	skipRestBtn = document.getElementById("skip-rest-btn");
 	acceptBtn = document.getElementById("accept-btn");
 	denyBtn = document.getElementById("deny-btn");
+	abilityBtn = document.getElementById("ability-btn");
 	openTreasureBtn = document.getElementById("open-treasure-btn");
 	skipTreasureBtn = document.getElementById("skip-treasure-btn");
 	//Add all player action button event listeners on load
@@ -46,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	skipRestBtn.attachPlayerAction('skip-rest');
 	acceptBtn.attachPlayerAction('accept');
 	denyBtn.attachPlayerAction('deny');
+	abilityBtn.attachPlayerAction('ability');
 	openTreasureBtn.attachPlayerAction('open-treasure');
 	skipTreasureBtn.attachPlayerAction('skip-treasure');
 });
@@ -65,6 +69,7 @@ function refreshDisplay() {
 	skipRestBtn.syncButtonState(gameState.inCampsite && !gameState.isLocationComplete);
 	acceptBtn.syncButtonState(gameState.inEvent && !gameState.isLocationComplete);
 	denyBtn.syncButtonState(gameState.inEvent && !gameState.isLocationComplete);
+	abilityBtn.syncButtonState(gameState.inCombat && gameState.isPlayersTurn && !gameState.isLocationComplete && gameState.player.currentHealth > 0 && gameState.player.abilityCooldown == 0);
 	openTreasureBtn.syncButtonState(gameState.inTreasure && !gameState.isLocationComplete);
 	skipTreasureBtn.syncButtonState(gameState.inTreasure && !gameState.isLocationComplete);
 	//Sync UI visibility (visible/hidden).
