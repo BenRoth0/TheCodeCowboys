@@ -4,12 +4,13 @@ namespace PromptQuest.Services {
 
 	public interface ICombatService {
 		void StartCombat(GameState gameState);
-		void PlayerAttack(GameState gameState);
+		void PlayerAttack(GameState gameState, int attackMult = 1);
 		void PlayerUseHealthPotion(GameState gameState);
 		void PlayerRest(GameState gameState);
 		void PlayerSkipRest(GameState gameState);
 		void PlayerAccept(GameState gameState);
 		void PlayerDeny(GameState gameState);
+		void PlayerAbility(GameState gameState);
 		void RespawnPlayer(GameState gameState);
 		void EnemyAttack(GameState gameState);
 		Enemy GetEnemy(GameState gameState);
@@ -39,11 +40,11 @@ namespace PromptQuest.Services {
 		#region Player Action Methods
 
 		/// <summary> Calculates the damage that the player does to the enemy, updates the game state, then returns a message.</summary>
-		public void PlayerAttack(GameState gameState) {
+		public void PlayerAttack(GameState gameState, int attackMult = 1) {
 			// Get the player's equipped item
 			Item item = gameState.Player.ItemEquipped;
 			// Calculate damage as attack - defense.
-			int damage = gameState.Player.Attack + item.Attack - gameState.Enemy.Defense;
+			int damage = (int)Math.Floor((double)(gameState.Player.Attack + item.Attack)*attackMult) - gameState.Enemy.Defense;
 			// If attack is less than one make it one.
 			if(damage < 1)
 				damage = 1;
@@ -69,7 +70,21 @@ namespace PromptQuest.Services {
 			}
 			gameState.IsPlayersTurn = false;
 		}
-
+		/// <summary>activates the player's ability</summary>
+		public void PlayerAbility(GameState gameState)
+		{
+			switch (gameState.Player.Class.ToLower())
+			{
+				case "warrior"://attack for double power, uses the attack function
+					gameState.AddMessage($"You used your ability! You attacked the {gameState.Enemy.Name} for double damage!");
+					PlayerAttack(gameState, 2);
+					gameState.Player.AbilityCooldown = 3;
+					break;
+				default:
+					gameState.AddMessage("Your class has no ability.");
+					break;
+			}
+		}
 		/// <summary>Calculates the amount healed by a Health Potion, updates the game state, then returns a message.</summary>
 		public void PlayerUseHealthPotion(GameState gameState) {
 			// If player has no potions, don't let them heal.
