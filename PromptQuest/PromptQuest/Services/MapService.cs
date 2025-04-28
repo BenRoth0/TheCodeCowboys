@@ -11,12 +11,12 @@ namespace PromptQuest.Services {
 		private static readonly List<MapNode> _mapNodes = new List<MapNode>
 			{
 					new MapNode { MapNodeId = 1 },
-					new MapNode { MapNodeId = 2, NodeType = "Treasure"},
+					new MapNode { MapNodeId = 2, NodeType = "Elite"},
 					new MapNode { MapNodeId = 3, NodeType = "Event" },
 					new MapNode { MapNodeId = 4 },
 					new MapNode { MapNodeId = 5, NodeType = "Campsite" },
-					new MapNode { MapNodeId = 7 , NodeType = "Elite"},
-					new MapNode { MapNodeId = 6, NodeType = "Treasure" },
+					new MapNode { MapNodeId = 6 , NodeType = "Elite"},
+					new MapNode { MapNodeId = 7, NodeType = "Treasure" },
 					new MapNode { MapNodeId = 8, NodeType = "Campsite" },
 					new MapNode { MapNodeId = 9 },
 					new MapNode { MapNodeId = 10, NodeType = "Boss" }

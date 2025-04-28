@@ -23,7 +23,7 @@ namespace PromptQuest.Services {
 		public void StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
-			if(gameState.PlayerLocation == 7) {
+			if(gameState.PlayerLocation == 2 || gameState.PlayerLocation == 7) {
 				gameState.Enemy = GetElite(gameState);
 				gameState.AddMessage($"You have been attacked by the {gameState.Enemy.Name}!"); // Let the user know that combat started.
 				return;
