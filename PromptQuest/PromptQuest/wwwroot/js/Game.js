@@ -8,6 +8,7 @@ let campsiteButtonDisplay;
 let eventButtonDisplay;
 let treasureButtonDisplay;
 let dialogBox;
+let abilityCooldownIcon
 //Player action buttons
 let attackBtn;
 let healBtn;
@@ -130,6 +131,7 @@ function refreshPlayerDisplay() {
 	document.querySelectorAll(".player-defense").forEach(el => { el.textContent = gameState.player.defense + equippedItem?.defense ?? 0; });
 	document.querySelectorAll(".player-hp").forEach(el => { el.textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP"; });
 	document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
+	
 }
 
 function refreshEnemyDisplay() {
