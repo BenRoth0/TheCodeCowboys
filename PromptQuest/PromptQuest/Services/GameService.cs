@@ -166,6 +166,9 @@ namespace PromptQuest.Services {
 				case "respawn":
 					_combatService.RespawnPlayer(gameState);
 					break;
+				case "ability":
+					_combatService.PlayerAbility(gameState);
+					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(action), action, null);
 			}
