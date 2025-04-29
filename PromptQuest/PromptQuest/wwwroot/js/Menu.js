@@ -199,15 +199,15 @@ function selectItem(item, index) {
 	document.getElementById("item-attack").textContent = item.attack;
 	document.getElementById("item-defense").textContent = item.defense;
 	document.getElementById("item-image").src = item.imageSrc;
-	document.getElementById("item-status-effects").textContent = statusEffectCheck(item.statusEffects);
+	document.getElementById("item-status-effects").textContent = 'Chance on Hit: ' + statusEffectCheck(item.statusEffects);
 	//Show item details
 	itemDetails.syncVisibility(selectedItemIndex != -1);
 }
 function statusEffectCheck(item) {
 	if (item == 1) {
-		return 'Chance on Hit: Bleeding';
+		return 'Bleeding';
 	} else if (item == 2) {
-		return 'Chance on Hit: Burning';
+		return 'Burning';
 	}
 }
 async function equipItem() {
