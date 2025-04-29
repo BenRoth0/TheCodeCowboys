@@ -54,7 +54,7 @@ namespace PromptQuest.Services {
 			// Update enemy health.
 			gameState.Enemy.CurrentHealth -= damage;
 			//decrement ability cooldown if ability was not used
-			if (decrementAbility)
+			if (decrementAbility && gameState.Player.AbilityCooldown>0)
 			{
 				gameState.Player.AbilityCooldown -= 1;
 			}
