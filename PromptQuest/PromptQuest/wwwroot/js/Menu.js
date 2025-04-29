@@ -199,10 +199,17 @@ function selectItem(item, index) {
 	document.getElementById("item-attack").textContent = item.attack;
 	document.getElementById("item-defense").textContent = item.defense;
 	document.getElementById("item-image").src = item.imageSrc;
+	document.getElementById("item-status-effects").textContent = statusEffectCheck(item.statusEffects);
 	//Show item details
 	itemDetails.syncVisibility(selectedItemIndex != -1);
 }
-
+function statusEffectCheck(item) {
+	if (item == 1) {
+		return 'Chance on Hit: Bleeding';
+	} else if (item == 2) {
+		return 'Chance on Hit: Burning';
+	}
+}
 async function equipItem() {
 	// If there is no selected item then do nothing.
 	if (selectedItemIndex == -1) {
