@@ -4,7 +4,7 @@ namespace PromptQuest.Services {
 
 	public interface ICombatService {
 		void StartCombat(GameState gameState);
-		void PlayerAttack(GameState gameState, int attackMult = 1);
+		void PlayerAttack(GameState gameState, int attackMult = 1, bool decrementAbility=true);
 		void PlayerUseHealthPotion(GameState gameState);
 		void PlayerRest(GameState gameState);
 		void PlayerSkipRest(GameState gameState);
@@ -22,6 +22,7 @@ namespace PromptQuest.Services {
 		public void StartCombat(GameState gameState) {
 			gameState.InCombat = true;
 			gameState.IsPlayersTurn = true; // Player always goes first, for now.
+			gameState.Player.AbilityCooldown = 0; //reset player ability, may be removed down the line
 			if(gameState.PlayerLocation == 7) {
 				gameState.Enemy = GetElite(gameState);
 				gameState.AddMessage($"You have been attacked by the {gameState.Enemy.Name}!"); // Let the user know that combat started.
@@ -40,7 +41,7 @@ namespace PromptQuest.Services {
 		#region Player Action Methods
 
 		/// <summary> Calculates the damage that the player does to the enemy, updates the game state, then returns a message.</summary>
-		public void PlayerAttack(GameState gameState, int attackMult = 1) {
+		public void PlayerAttack(GameState gameState, int attackMult = 1, bool decrementAbility = true) {
 			// Get the player's equipped item
 			Item item = gameState.Player.ItemEquipped;
 			// Calculate damage as attack - defense.
@@ -50,6 +51,11 @@ namespace PromptQuest.Services {
 				damage = 1;
 			// Update enemy health.
 			gameState.Enemy.CurrentHealth -= damage;
+			//decrement ability cooldown if ability was not used
+			if (decrementAbility)
+			{
+				gameState.Player.AbilityCooldown -= 1;
+			}
 			// Return the result to the user.
 			gameState.AddMessage($"You attacked the {gameState.Enemy.Name} for {damage} damage");
 			// Check if enemy died.
@@ -76,8 +82,8 @@ namespace PromptQuest.Services {
 			switch (gameState.Player.Class.ToLower())
 			{
 				case "warrior"://attack for double power, uses the attack function
-					gameState.AddMessage($"You used your ability! You attacked the {gameState.Enemy.Name} for double damage!");
-					PlayerAttack(gameState, 2);
+					gameState.AddMessage($"You used your ability! You power up and perform a strong attack!");
+					PlayerAttack(gameState, 2, false);
 					gameState.Player.AbilityCooldown = 3;
 					break;
 				default:
