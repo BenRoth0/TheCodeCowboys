@@ -45,35 +45,100 @@ namespace PromptQuest.Services {
 		#region Player Action Methods
 
 		/// <summary> Calculates the damage that the player does to the enemy, updates the game state, then returns a message.</summary>
-		public void PlayerAttack(GameState gameState,int attackMult = 1,bool decrementAbility = true) {
-			// Get the player's equipped item
+		public void PlayerAttack(GameState gameState, int attackMult = 1, bool decrementAbility = true) {
+			Random random = new Random();//for any random rolls
+			int attackBuff = 0;//for any attack buffs
+												 // Get the player's equipped item
 			Item item = gameState.Player.ItemEquipped;
-			// Calculate damage as attack - defense.
-			int damage = (int)Math.Floor((double)(gameState.Player.Attack + item.Attack) * attackMult) - gameState.Enemy.Defense;
-			// If attack is less than one make it one.
-			if(damage < 1) {
-				damage = 1;
-			}
-			// Update enemy health.
-			gameState.Enemy.CurrentHealth -= damage;
+	//beggining of attack portion
+		//Checking for the Quick Shot passive
+		int numberOfAttacks = 1;
+			if (gameState.Player.HasPassive("Quick Shot"))//quick shot passive
+			{
+				int quickShotRoll = random.Next(0, 20);
+				if ((quickShotRoll < 2 && gameState.Player.Class.ToLower() == "archer") || quickShotRoll < 1)
+				{
+					gameState.AddMessage("Your Quick Shot passive made you attack another time!");
+					numberOfAttacks +=1;
+				}
+			}//end of quick shot passive
+			for (int i = 0; i < numberOfAttacks; i++)
+			{ //beggining of loop for multiple attacks
+				//beggining of damage calc
+				// Checking for Heavy Smash passive
+				if (gameState.Player.HasPassive("Heavy Smash"))
+				{
+					int HeavySmashRoll = random.Next(0, 10);
+					if ((HeavySmashRoll < 2 && gameState.Player.Class.ToLower() == "warrior") || HeavySmashRoll < 1)//right now thinking passives can be picked for any class for fun, but are better on their prescribed classes
+					{
+						gameState.AddMessage("Your Heavy Smash passive gave you +3 attack!");
+						attackBuff = 3;
+					}
+				}// end of heavy smash passive
+				 // Calculate damage as attack - defense.
+				int damage = (int)Math.Floor((double)(gameState.Player.Attack + item.Attack + attackBuff) * attackMult) - gameState.Enemy.Defense;
+				// If attack is less than one make it one.
+				if (damage < 1)
+				{
+					damage = 1;
+				}
+				//Checking for Mana Burn passive
+				if (gameState.Player.HasPassive("Mana Burn"))
+				{
+					int manaBurnRoll = random.Next(0, 10);
+					if ((manaBurnRoll < 2 && gameState.Player.Class.ToLower() == "mage") || manaBurnRoll < 1)
+					{
+						int bonusDamage = 2 + gameState.Player.AbilityCooldown;
+						gameState.AddMessage("Your Mana Burn passive added " + bonusDamage + " true damage to your attack!");
+						damage += bonusDamage;
+					}
+				}// end of mana burn passive
+				 //Checking for Poison Weapons passive
+				if (gameState.Player.HasPassive("Poison Weapons")){
+					int PoisonRoll = random.Next(0, 10);
+					if ((PoisonRoll < 2 && gameState.Player.Class.ToLower() == "archer") || PoisonRoll < 1)
+					{
+						gameState.AddMessage("Your Poison Weapons passive has reduced the enemies defense permanently!");
+						gameState.Enemy.Defense -= 1;
+					}
+				}//End of Poison Weapons passive
+					// Update enemy health.
+					gameState.Enemy.CurrentHealth -= damage;
+				//end of damabe calc
+
 			//decrement ability cooldown if ability was not used
-			if(decrementAbility && gameState.Player.AbilityCooldown>0) {
+			if (decrementAbility && gameState.Player.AbilityCooldown>0)
+			{
 				gameState.Player.AbilityCooldown -= 1;
 			}
-			// Return the result to the user.
+			if(gameState.Player.HasPassive("Arcane Recovery")){//check for arcane recovery passive
+				//roll to decrement ability cooldown again
+				if (decrementAbility && gameState.Player.AbilityCooldown > 0)
+				{
+					int arcaneRecoveryRoll = random.Next(0, 10);
+					if ((arcaneRecoveryRoll < 4 && gameState.Player.Class.ToLower() == "mage") || arcaneRecoveryRoll < 2)
+					{
+						gameState.AddMessage("Your Arcane Recovery passive reduced your active ability cooldown!");
+						gameState.Player.AbilityCooldown -= 1;
+					}
+				}
+			}//end of arcane recovery passive
+			 // Return the result to the user.
 			gameState.AddMessage($"You attacked the {gameState.Enemy.Name} for {damage} damage");
-			if(item.StatusEffects != StatusEffect.None) {
-				Random random = new Random();
-				int statusEffectChance = random.Next(0,5); // 25% chance to apply status effect
-				if(statusEffectChance == 1) {
-					if(!gameState.Enemy.StatusEffects.HasFlag(item.StatusEffects)) {
+			//Status effect section
+			if (item.StatusEffects != StatusEffect.None) {
+				int statusEffectChance = random.Next(0, 5); // 25% chance to apply status effect
+				if (statusEffectChance == 1) {
+					if (!gameState.Enemy.StatusEffects.HasFlag(item.StatusEffects)) {
 						gameState.AddMessage($"The {gameState.Enemy.Name} is now affected by {item.StatusEffects.ToString()}!");
 						gameState.Enemy.StatusEffects = item.StatusEffects;
 					}
 				}
 			}
-			// Check if enemy died.
-			if(gameState.Enemy.CurrentHealth <= 0) {
+					//end of attack portion
+			}//End of attack loop
+			// Check ifenemy died.
+			if (gameState.Enemy.CurrentHealth <= 0) {
 				gameState.IsPlayersTurn = true; // Zero this field out because combat is over.
 				gameState.IsLocationComplete = true; // Player has completed the current area.
 				gameState.AddMessage($"You have defeated the {gameState.Enemy.Name}! Check your map to see where you're going next.");
@@ -422,6 +487,17 @@ namespace PromptQuest.Services {
 																			 // If attack is less than one make it one.
 			if(damage < 1)
 				damage = 1;
+			// If the player has Spiked Bulwark, deal damage to the enemy.
+			if (gameState.Player.HasPassive("Spiked Bulwark"))
+			{
+				int returnDamage = 1;
+				if (gameState.Player.Class.ToLower() == "warrior")
+				{
+					returnDamage = 2;
+				}
+				gameState.Enemy.CurrentHealth -= returnDamage;
+				gameState.AddMessage($"Your Spiked Bulwark passive dealt {returnDamage} damage back to the {gameState.Enemy.Name}!");
+			}
 			// Update player health.
 			gameState.Player.CurrentHealth -= damage;
 			// Return an action result with a message describing what happened.
