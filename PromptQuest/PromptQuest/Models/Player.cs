@@ -25,6 +25,8 @@ namespace PromptQuest.Models {
 		public int AbilityCooldown { get; set; }
 		[Required]
 		public string Class { get; set; } = "";
+
+		public string Passive { get; set; } = "";
 		/// <summary>The Player's equipped item. Readonly</summary>
 		public Item EquippedWeapon => Items.FirstOrDefault(i => i.Equipped && i.itemType == ItemType.Weapon) ?? new Item(){ itemType = ItemType.Weapon };
 		public Item EquippedHelm => Items.FirstOrDefault(i => i.Equipped && i.itemType == ItemType.Helm) ?? new Item() { itemType = ItemType.Helm };
@@ -34,5 +36,20 @@ namespace PromptQuest.Models {
 		public List<Item> Items { get; set; } = new List<Item>();
 		public StatusEffect StatusEffects { get; set; } = StatusEffect.None;
 		public int Gold { get; set; } = 0;
+
+		//functions that should not be added to the database
+		public bool HasPassive(string passive)//multiple of the same passive do not stack
+		{
+			if(Passive== passive) return true;
+			if(ItemEquipped.Passive==passive) return true;//should be for each equipped item once that becomes a thing
+			return false;
+		}
+		public string[] GetPassives()
+		{
+			List<string> passives = new List<string>();
+			if (Passive != "") passives.Add(Passive);
+			if (ItemEquipped.Passive != "") passives.Add(ItemEquipped.Passive);
+			return passives.ToArray();
+		}
 	}
 }
