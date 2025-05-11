@@ -214,7 +214,7 @@ namespace PromptQuest.Services {
 				new Item { Name = "Jeweled Leggings", Attack = 0, Defense = 1, itemType = ItemType.Legs, ImageSrc = "/images/BaseLegs.png"},
 				new Item { Name = "Jeweled Helmet", Attack = 0, Defense = 1, itemType = ItemType.Helm, ImageSrc = "/images/BaseHelm.png"},
 				new Item { Name = "Fiery Sword", Attack = 2, Defense = 0, StatusEffects = StatusEffect.Burning, ImageSrc = "/images/PlaceholderItem2.png"},
-				new Item { Name = "Frozen Shield", Attack = 1, Defense = 3, ImageSrc = "/images/PlaceholderItem3.png"},
+				new Item { Name = "Frozen Shield", Attack = 1, Defense = 3, Passive="Spiked Bulwark", ImageSrc = "/images/PlaceholderItem3.png"},
 				new Item { Name = "Warded Sword", Attack = 3, Defense = 2, ImageSrc = "/images/PlaceholderItem4.png"}
 			};
 		}
