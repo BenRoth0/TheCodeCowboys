@@ -53,7 +53,7 @@ namespace PromptQuest.Services {
 	//beggining of attack portion
 		//Checking for the Quick Shot passive
 		int numberOfAttacks = 1;
-			if (gameState.Player.HasPassive("Quick Shot"))//quick shot passive
+			if (gameState.Player.HasPassive(Passives.QuickShot))//quick shot passive
 			{
 				int quickShotRoll = random.Next(0, 20);
 				if ((quickShotRoll < 2 && gameState.Player.Class.ToLower() == "archer") || quickShotRoll < 1)
@@ -66,7 +66,7 @@ namespace PromptQuest.Services {
 			{ //beggining of loop for multiple attacks
 				//beggining of damage calc
 				// Checking for Heavy Smash passive
-				if (gameState.Player.HasPassive("Heavy Smash"))
+				if (gameState.Player.HasPassive(Passives.HeavySmash))
 				{
 					int HeavySmashRoll = random.Next(0, 10);
 					if ((HeavySmashRoll < 2 && gameState.Player.Class.ToLower() == "warrior") || HeavySmashRoll < 1)//right now thinking passives can be picked for any class for fun, but are better on their prescribed classes
@@ -83,7 +83,7 @@ namespace PromptQuest.Services {
 					damage = 1;
 				}
 				//Checking for Mana Burn passive
-				if (gameState.Player.HasPassive("Mana Burn"))
+				if (gameState.Player.HasPassive(Passives.ManaBurn))
 				{
 					int manaBurnRoll = random.Next(0, 10);
 					if ((manaBurnRoll < 2 && gameState.Player.Class.ToLower() == "mage") || manaBurnRoll < 1)
@@ -94,7 +94,7 @@ namespace PromptQuest.Services {
 					}
 				}// end of mana burn passive
 				 //Checking for Poison Weapons passive
-				if (gameState.Player.HasPassive("Poison Weapons")){
+				if (gameState.Player.HasPassive(Passives.PoisonWeapons)){
 					int PoisonRoll = random.Next(0, 10);
 					if ((PoisonRoll < 2 && gameState.Player.Class.ToLower() == "archer") || PoisonRoll < 1)
 					{
@@ -111,7 +111,7 @@ namespace PromptQuest.Services {
 			{
 				gameState.Player.AbilityCooldown -= 1;
 			}
-			if(gameState.Player.HasPassive("Arcane Recovery")){//check for arcane recovery passive
+			if(gameState.Player.HasPassive(Passives.ArcaneRecovery)){//check for arcane recovery passive
 				//roll to decrement ability cooldown again
 				if (decrementAbility && gameState.Player.AbilityCooldown > 0)
 				{
@@ -488,7 +488,7 @@ namespace PromptQuest.Services {
 			if(damage < 1)
 				damage = 1;
 			// If the player has Spiked Bulwark, deal damage to the enemy.
-			if (gameState.Player.HasPassive("Spiked Bulwark"))
+			if (gameState.Player.HasPassive(Passives.SpikedBulwark))
 			{
 				int returnDamage = 1;
 				if (gameState.Player.Class.ToLower() == "warrior")

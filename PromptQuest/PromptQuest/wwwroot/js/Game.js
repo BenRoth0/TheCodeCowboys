@@ -139,6 +139,7 @@ function refreshPlayerDisplay() {
 	document.querySelectorAll(".player-defense").forEach(el => { el.textContent = gameState.player.defense + gameState.player.defenseBuff + equippedItem?.defense ?? 0; });
 	document.querySelectorAll(".player-hp").forEach(el => { el.textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP"; });
 	document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
+	document.getElementById("player-passive").textContent = getPassiveDescription(gameState.player.passive);
 	abilityCooldownIcon.src = "/images/" +gameState.player.abilityCooldown + "_6_Clock.png"
 }
 
