@@ -83,7 +83,7 @@ namespace PromptQuest.Services {
 				int gold = random.Next(6, 16);
 				gameState.Player.Gold += gold;
 				gameState.AddMessage($"You gained {gold} gold!");
-				if (gameState.PlayerLocation == 18) {
+				if(gameState.PlayerLocation == 18) {
 					Item bossItem = GetBossItem(gameState); // Get the boss item.
 					gameState.AddMessage($"You picked up the {gameState.Enemy.Name}'s {bossItem.Name}!");
 					gameState.Player.Items.Add(bossItem);
@@ -237,20 +237,27 @@ namespace PromptQuest.Services {
 					bloodThornAxe.itemType = ItemType.Weapon;
 					bloodThornAxe.StatusEffects = StatusEffect.Bleeding;
 					gameState.Player.Items.Add(bloodThornAxe);
-					gameState.Player.StatusEffects = StatusEffect.Bleeding; // Apply bleeding effect to the player, currently doesn't seem to do anything
-					gameState.AddMessage("You pick up the BloodThorn Axe. It's thorns cause you to bleed.");
+					gameState.AddMessage("You pick up the BloodThorn Axe. It's thorns poke you.");
+					gameState.Player.CurrentHealth -= 5; // Damage the player
+					if(gameState.Player.CurrentHealth <= 0) {
+						gameState.AddMessage("By some miracle, you live...");
+						gameState.Player.CurrentHealth = 1; // Prevent death
+					}
 					break;
 				case 4:
 					Item poisonChestPlate = new Item();
 					poisonChestPlate.Name = "Plate of the Poisoned";
-					poisonChestPlate.Attack = 7;
+					poisonChestPlate.Attack = 10;
 					poisonChestPlate.Defense = 7;
 					poisonChestPlate.ImageSrc = "/images/PoisonChestplate.png";
 					poisonChestPlate.itemType = ItemType.Chest;
-					// poisonChestPlate.StatusEffects = StatusEffect.Bleeding; // Let the weapon apply poison eventually
 					gameState.Player.Items.Add(poisonChestPlate);
-					// gameState.Player.StatusEffects = StatusEffect.Bleeding; // Apply poison effect to the player, currently not implemented
 					gameState.AddMessage("You pick up the Plate of the Poisoned. It's toxins cause you to feel sick.");
+					gameState.Player.CurrentHealth -= 10; // Damage the player
+					if(gameState.Player.CurrentHealth <= 0) {
+						gameState.AddMessage("By some miracle, you live...");
+						gameState.Player.CurrentHealth = 1; // Prevent death
+					}
 					break;
 				case 5:
 					Random random = new Random();
@@ -286,8 +293,8 @@ namespace PromptQuest.Services {
 					}
 					else if(chance <= 99) {
 						// 2%: Unimaginable Wealth
-						gameState.AddMessage("Gold - but actually potions - rain from the sky! You have gained Unimaginable Wealth!");
-						gameState.Player.HealthPotions += 10; // For now, grant many potions. Later change to gold
+						gameState.AddMessage("Gold rains from the sky! You have gained Unimaginable Wealth!");
+						gameState.Player.Gold += 100; // Give 100 gold
 					}
 					else {
 						// 1%: Certain Death
@@ -296,8 +303,8 @@ namespace PromptQuest.Services {
 					}
 					break;
 				case 6:
-					gameState.AddMessage("You scoop up the small pile of gold only to find that it was actually potions because the developers of this game haven't gotten around to adding gold yet!");
-					gameState.Player.HealthPotions += 10; // For now, grant 10 potions. Later change to gold
+					gameState.AddMessage("You scoop up the small pile of gold!");
+					gameState.Player.Gold += 20; // Grant gold
 					break;
 				case 7:
 					gameState.AddMessage("You drink the red potion and feel more refreshed than ever! You gained 5 Maximum HP and healed to full!");
