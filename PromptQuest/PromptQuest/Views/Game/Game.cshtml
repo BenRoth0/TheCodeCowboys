@@ -32,7 +32,7 @@
 	<!-- Player Display -->
 	<div class="pq-container" id="player-display" style="display:none;bottom: 0; left: 0; width: 50vmin; height: 50vmin;">
 		<div class="player-name" style="top: 2%; left: 4%;"></div>
-		<img class="player-image" src="~/images/LoadingImage.png" style="top: 10%; left: 3%; height: 75%; width: auto;" />
+		<img class="player-image pq-border" src="~/images/LoadingImage.png" style="top: 10%; left: 3%; height: 75%; width: auto;" />
 		<img class="player-potions-icon" src="~/images/PotionIcon.png" alt="Potion Icon" style="top: 70%; left: 76%; height: 15%; width: auto;">
 		<div class="player-potions stat-text" id="player-health-potions" style="top: 74%; left: 89%;"></div>
 		<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 3%; height: 15%; width: auto;">
@@ -86,12 +86,13 @@
 	<div class="pq-container">
 		<!-- Player display on the left -->
 		<button class="pq-button" id="menu-close" style="top:0; right:2vmin; height: 8vmin; width: 17vmin;"> Close </button>
-		<div class="player-name" style="top:15vmin; left:5vmin; height:6vmin; width:40vmin"></div>
-		<img class="player-image" style="top:20vmin; left:5vmin; height: 40vmin; width: auto; max-width:25%; max-height:auto;" src="~/images/LoadingImage.png" alt="Alternate Text" />
+		@* <div class="player-name" style="top:15vmin; left:5vmin; height:6vmin; width:40vmin"></div> *@
+		<img style="top:5vmin; left:4vmin; height: 50vmin; width: auto; z-index: 100;" src="~/images/frame.png" alt="Alternate Text" />
+		<img class="player-image" style="top:12vmin; left:13vmin; height: 35vmin; width: auto;" src="~/images/LoadingImage.png" alt="Alternate Text" />
 		<!-- Stats box label -->
-		<div class="" style="bottom:30vmin; left:6vmin; height: 5vmin; width: 17vmin; font-size:3vmin; color: white;"> Stats </div>
+		<div class="" style="bottom:35vmin; left:6vmin; height: 5vmin; width: 17vmin; font-size:3vmin; color: white;"> Stats </div>
 		<!-- Stats Box -->
-		<div class="pq-container pq-border" style="bottom:0; left:5vmin; height:30vmin; width: 40vmin; max-width:25%">
+		<div class="pq-container pq-border" style="bottom:5vmin; left:5vmin; height:30vmin; width: 40vmin; max-width:25%">
 			<span class="stat-text" style="top:2%; left:5%; height: 15%; width:100%">Health: </span>
 			<span class="player-hp stat-text" id="player-hp" style="top:2%; left:40%; height: 15%; width:100%"></span>
 			<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="top:19%; left:2%; height: 20%; width:auto">

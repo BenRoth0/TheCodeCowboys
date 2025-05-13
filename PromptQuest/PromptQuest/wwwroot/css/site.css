@@ -157,7 +157,7 @@ body {
 }
 
 .player-image {
-	border: var(--pq-border);
+/*	border: var(--pq-border);*/
 }
 
 .player-attack {
