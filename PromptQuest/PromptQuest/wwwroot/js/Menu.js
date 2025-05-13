@@ -162,6 +162,13 @@ async function refreshMap() {
 			imgElement.className = "map-image";
 			nodeElement.appendChild(imgElement);
 		}
+		// Check for NodeType and add image if it is "Shop"
+		if (mapDef.listMapNodes[i].nodeType === "Shop") {
+			const imgElement = document.createElement("img");
+			imgElement.src = "/images/shop.png";
+			imgElement.className = "map-image";
+			nodeElement.appendChild(imgElement);
+		}
 		// Show player which node they are on
 		if ((i + 1) == gameState.playerLocation) {
 			nodeElement.classList.add("map-node-current");

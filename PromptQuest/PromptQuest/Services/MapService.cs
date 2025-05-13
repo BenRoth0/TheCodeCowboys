@@ -19,13 +19,13 @@ namespace PromptQuest.Services {
 			new MapNode { MapNodeId = 7, NodeType = "Enemy", ConnectedNodes = {9}, NodeHeight = 1, NodeDistance = 4},
 			new MapNode { MapNodeId = 8, NodeType = "Campsite", ConnectedNodes = {9}, NodeHeight = 3, NodeDistance = 4},
 			new MapNode { MapNodeId = 9, NodeType = "Enemy", ConnectedNodes = {10, 11}, NodeHeight = 2, NodeDistance = 5},
-			new MapNode { MapNodeId = 10, NodeType = "Enemy", ConnectedNodes = {12}, NodeHeight = 1, NodeDistance = 6},
+			new MapNode { MapNodeId = 10, NodeType = "Shop", ConnectedNodes = {12}, NodeHeight = 1, NodeDistance = 6},
 			new MapNode { MapNodeId = 11, NodeType = "Elite", ConnectedNodes = {12}, NodeHeight = 3, NodeDistance = 6},
 			new MapNode { MapNodeId = 12, NodeType = "Enemy", ConnectedNodes = {13, 14, 15}, NodeHeight = 2, NodeDistance = 7},
 			new MapNode { MapNodeId = 13, NodeType = "Treasure", ConnectedNodes = {16}, NodeHeight = 1, NodeDistance = 8},
 			new MapNode { MapNodeId = 14, NodeType = "Campsite", ConnectedNodes = {17}, NodeHeight = 2, NodeDistance = 8},
 			new MapNode { MapNodeId = 15, NodeType = "Event", ConnectedNodes = {17}, NodeHeight = 3, NodeDistance = 8},
-			new MapNode { MapNodeId = 16, NodeType = "Enemy", ConnectedNodes = {18}, NodeHeight = 1, NodeDistance = 9},
+			new MapNode { MapNodeId = 16, NodeType = "Shop", ConnectedNodes = {18}, NodeHeight = 1, NodeDistance = 9},
 			new MapNode { MapNodeId = 17, NodeType = "Treasure", ConnectedNodes = {18}, NodeHeight = 2, NodeDistance = 9},
 			new MapNode { MapNodeId = 18, NodeType = "Boss", ConnectedNodes = {1}, NodeHeight = 2, NodeDistance = 10}
 		};
