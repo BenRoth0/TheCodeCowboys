@@ -25,7 +25,6 @@ namespace PromptQuest.Models {
 		public Item ItemEquipped => Items.FirstOrDefault(i => i.Equipped)??new Item();
 		public List<Item> Items { get; set; } = new List<Item>();
 		public StatusEffect StatusEffects { get; set; } = StatusEffect.None;
-		public int Gold { get; set; } = 0;
 
 		//functions that should not be added to the database
 		public bool HasPassive(Passives passive)//multiple of the same passive do not stack
