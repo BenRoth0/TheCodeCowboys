@@ -25,6 +25,7 @@ namespace PromptQuest.Models {
 		public int AbilityCooldown { get; set; }
 		[Required]
 		public string Class { get; set; } = "";
+		public int Gold { get; set; } = 0;
 		public Passives Passive { get; set; } = Passives.None;
 		/// <summary>The Player's equipped item. Readonly</summary>
 		public Item EquippedWeapon => Items.FirstOrDefault(i => i.Equipped && i.itemType == ItemType.Weapon) ?? new Item(){ itemType = ItemType.Weapon };
