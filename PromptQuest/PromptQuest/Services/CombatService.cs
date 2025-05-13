@@ -143,7 +143,6 @@ namespace PromptQuest.Services {
 				gameState.IsLocationComplete = true; // Player has completed the current area.
 				gameState.AddMessage($"You have defeated the {gameState.Enemy.Name}! Check your map to see where you're going next.");
 				// Generate a random amount of gold between 6 and 15
-				Random random = new Random();
 				int gold = random.Next(6, 16);
 				gameState.Player.Gold += gold;
 				gameState.AddMessage($"You gained {gold} gold!");

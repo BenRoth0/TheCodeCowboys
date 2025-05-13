@@ -115,17 +115,23 @@ namespace PromptQuest.Services {
 
 		/// <summary> Deletes the GameState with the given GoogleUserId. If it isn't found, nothing happens. </summary>
 		private async Task DeleteGameState() {
-			string userGoogleId = GetGoogleAccountId();
-			var existingGameState = await FetchGameStateFromDb(userGoogleId);
-			if(existingGameState == null) {
-				return;//There is no GameState in the db for this user. So, do nothing.
+			if (IsAuthenticatedUser())
+			{
+				string userGoogleId = GetGoogleAccountId();
+				var existingGameState = await FetchGameStateFromDb(userGoogleId);
+				if (existingGameState == null)
+				{
+					return;//There is no GameState in the db for this user. So, do nothing.
+				}
+				//Manually delete related items because EF's cascade delete be buggin'
+				_dbContext.Items.RemoveRange(existingGameState.Player.Items);
+				_dbContext.Players.Remove(existingGameState.Player);
+				_dbContext.Enemies.Remove(existingGameState.Enemy);
+				_dbContext.GameStates.Remove(existingGameState);
+				_dbContext.SaveChanges();
 			}
-			//Manually delete related items because EF's cascade delete be buggin'
-			_dbContext.Items.RemoveRange(existingGameState.Player.Items);
-			_dbContext.Players.Remove(existingGameState.Player);
-			_dbContext.Enemies.Remove(existingGameState.Enemy);
-			_dbContext.GameStates.Remove(existingGameState);
-			_dbContext.SaveChanges();
+
+
 		}
 
 		public void DeleteEnemy(int enemyId) {
