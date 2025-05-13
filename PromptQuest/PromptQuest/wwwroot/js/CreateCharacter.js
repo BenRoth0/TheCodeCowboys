@@ -69,6 +69,6 @@ async function fetchDefaultPlayerImage() {
 	function loadPassiveDescription() {
 		let passiveSelect = document.getElementById("passive-select");
 		let selectedPassive = passiveSelect.options[passiveSelect.selectedIndex].value;
-		passiveDescription.innerHTML = Passives[selectedPassive];
+		passiveDescription.innerHTML = getPassiveDescription(selectedPassive);
 
 	}

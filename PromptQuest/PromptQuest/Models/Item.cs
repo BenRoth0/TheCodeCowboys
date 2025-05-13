@@ -11,7 +11,7 @@ namespace PromptQuest.Models {
 		public int Defense { get; set; } = 0;
 		public string ImageSrc { get; set; } = "/images/PromptQuestLogo.png";
 		public StatusEffect StatusEffects { get; set; } = StatusEffect.None;
-		public string Passive { get; set; } = "";
+		public Passives Passive { get; set; } = Passives.None;
 		public ItemType itemType { get; set; } = ItemType.Weapon;
 	}
 	public enum ItemType {
