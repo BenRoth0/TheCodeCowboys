@@ -24,8 +24,15 @@ namespace PromptQuest.Tests_BDD
 					Attack = 3,
 					Defense = 2,
 					Name = "TestPlayer",
+
 				}
 			};
+			_combatService.StartCombat(_gameState);
+			_gameState.Enemy.CurrentHealth = 10;
+			_gameState.Enemy.MaxHealth = 10;
+			_gameState.Player.Attack = 7;
+			_gameState.Enemy.Defense = 0;
+			_gameState.IsPlayersTurn = true;
 		}
 
 		[Test]
@@ -65,6 +72,7 @@ namespace PromptQuest.Tests_BDD
 		{
 			// Arrange  
 			_gameState.Player.Class = "Warrior";
+			_combatService.StartCombat(_gameState);
 			_gameState.Player.AbilityCooldown = 3;
 
 			// Act  
@@ -109,6 +117,7 @@ namespace PromptQuest.Tests_BDD
 		{
 			// Arrange  
 			_gameState.Player.Class = "Mage";
+			_combatService.StartCombat(_gameState);
 			_gameState.Player.AbilityCooldown = 3;
 
 			// Act  
@@ -220,6 +229,7 @@ namespace PromptQuest.Tests_BDD
 		{
 			// Arrange  
 			_gameState.Player.Class = "Archer";
+			_combatService.StartCombat(_gameState);
 
 			// Act  
 			_combatService.PlayerAbility(_gameState);
@@ -234,6 +244,7 @@ namespace PromptQuest.Tests_BDD
 		{
 			// Arrange  
 			_gameState.Player.Class = "Archer";
+			_combatService.StartCombat(_gameState);
 			_gameState.Player.AbilityCooldown = 3;
 
 			// Act  

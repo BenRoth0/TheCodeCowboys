@@ -76,7 +76,7 @@ namespace PromptQuest.Services {
 					}
 				}// end of heavy smash passive
 				 // Calculate damage as attack - defense.
-				int damage = (int)Math.Floor((double)(gameState.Player.Attack + item.Attack + attackBuff) * attackMult) - gameState.Enemy.Defense;
+					int damage = (int)Math.Floor((double)(gameState.Player.Attack + item.Attack + attackBuff) * attackMult) - gameState.Enemy.Defense;
 				// If attack is less than one make it one.
 				if (damage < 1)
 				{
