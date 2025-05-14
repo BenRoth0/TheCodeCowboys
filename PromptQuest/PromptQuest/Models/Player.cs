@@ -40,8 +40,12 @@ namespace PromptQuest.Models {
 		//functions that should not be added to the database
 		public bool HasPassive(Passives passive)//multiple of the same passive do not stack
 		{
-			if(Passive== passive) return true;
-			if(ItemEquipped.Passive==passive) return true;//should be for each equipped item once that becomes a thing
+			if(Passive== passive) {
+				return true;
+			}
+			if(ItemEquipped.Passive==passive) {
+				return true;//should be for each equipped item once that becomes a thing
+			}
 			return false;
 		}
 	}
