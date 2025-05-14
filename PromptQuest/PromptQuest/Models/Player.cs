@@ -17,7 +17,7 @@ namespace PromptQuest.Models {
 		public int CurrentHealth { get; set; }
 		public int BaseDefense { get; set; }
 		[NotMapped]
-		public int DefenseStat => BaseDefense + EquippedHelm.Defense + EquippedChest.Defense + EquippedLegs.Defense + EquippedBoots.Defense + DefenseBuff;
+		public int DefenseStat => BaseDefense + EquippedWeapon.Defense + EquippedHelm.Defense + EquippedChest.Defense + EquippedLegs.Defense + EquippedBoots.Defense + DefenseBuff;
 		public int DefenseBuff { get; set; } = 0; // For temporary defense increases that last only one hit, resets each combat
 		public int BaseAttack { get; set; } = 0;
 		[NotMapped]
@@ -35,7 +35,6 @@ namespace PromptQuest.Models {
 		public Item EquippedBoots => Items.FirstOrDefault(i => i.Equipped && i.itemType == ItemType.Boots) ?? new Item() { itemType = ItemType.Boots };
 		public List<Item> Items { get; set; } = new List<Item>();
 		public StatusEffect StatusEffects { get; set; } = StatusEffect.None;
-		public int Gold { get; set; } = 0;
 
 		//functions that should not be added to the database
 		public bool HasPassive(Passives passive)//multiple of the same passive do not stack
@@ -43,10 +42,72 @@ namespace PromptQuest.Models {
 			if(Passive== passive) {
 				return true;
 			}
-			if(ItemEquipped.Passive==passive) {
-				return true;//should be for each equipped item once that becomes a thing
+			if(EquippedWeapon.Passive==passive) {
+				return true;
+			}
+			if (EquippedHelm.Passive == passive)
+			{
+				return true;
+			}
+			if (EquippedChest.Passive == passive)
+			{
+				return true;
+			}
+			if (EquippedLegs.Passive == passive)
+			{
+				return true;
+			}
+			if (EquippedBoots.Passive == passive)
+			{
+				return true;
 			}
 			return false;
+		}
+		public int QuickShot(int roll){
+			if(!HasPassive(Passives.QuickShot)){
+				return 0;
+			}
+			if((roll < 10 && Class.ToLower() == "archer") || roll < 5){
+				return 1;
+			}
+			return 0;
+		}
+		public int HeavySmash(int roll){
+			if(!HasPassive(Passives.HeavySmash)){
+				return 0;
+			}
+			if((roll < 20 && Class.ToLower() == "warrior") || roll < 10){
+				return 3;
+			}
+			return 0;
+		}
+		public int ManaBurn(int roll){
+			if(!HasPassive(Passives.ManaBurn)){
+				return 0;
+			}
+			if ((roll < 20 && Class.ToLower() == "mage") || roll < 10)
+			{
+				return 2+AbilityCooldown;
+			}
+			return 0;
+		}
+		public int PoisonWeapons(int roll){
+			if(!HasPassive(Passives.PoisonWeapons)){
+				return 0;
+			}
+			if ((roll < 20 && Class.ToLower() == "archer") || roll < 10)
+			{
+				return 1;
+			}
+			return 0;
+		}
+		public void ArcaneRecovery(int roll){
+			if(!HasPassive(Passives.ArcaneRecovery)){
+				return;
+			}
+			if (((roll < 40 && Class.ToLower() == "mage") || roll < 20)&& AbilityCooldown>0){
+				AbilityCooldown -= 1;
+			}
 		}
 	}
 }

@@ -49,59 +49,25 @@ namespace PromptQuest.Services {
 			Random random = new Random();//for any random rolls
 			int attackBuff = 0;//for any attack buffs
 												 // Get the player's equipped item
-			Item item = gameState.Player.ItemEquipped;
 	//beggining of attack portion
 		//Checking for the Quick Shot passive
-		int numberOfAttacks = 1;
-			if (gameState.Player.HasPassive(Passives.QuickShot))//quick shot passive
-			{
-				int quickShotRoll = random.Next(0, 20);
-				if ((quickShotRoll < 2 && gameState.Player.Class.ToLower() == "archer") || quickShotRoll < 1)
-				{
-					gameState.AddMessage("Your Quick Shot passive made you attack another time!");
-					numberOfAttacks +=1;
-				}
-			}//end of quick shot passive
+			int numberOfAttacks = 1;
+			numberOfAttacks += gameState.Player.QuickShot(random.Next(0,100));
 			for (int i = 0; i < numberOfAttacks; i++)
 			{ //beggining of loop for multiple attacks
 				//beggining of damage calc
 				// Checking for Heavy Smash passive
-				if (gameState.Player.HasPassive(Passives.HeavySmash))
-				{
-					int HeavySmashRoll = random.Next(0, 10);
-					if ((HeavySmashRoll < 2 && gameState.Player.Class.ToLower() == "warrior") || HeavySmashRoll < 1)//right now thinking passives can be picked for any class for fun, but are better on their prescribed classes
-					{
-						gameState.AddMessage("Your Heavy Smash passive gave you +3 attack!");
-						attackBuff = 3;
-					}
-				}// end of heavy smash passive
+				attackBuff = gameState.Player.HeavySmash(random.Next(0,100));
 				 // Calculate damage as attack - defense.
-					int damage = (int)Math.Floor((double)(gameState.Player.Attack + item.Attack + attackBuff) * attackMult) - gameState.Enemy.Defense;
+					int damage = (int)Math.Floor((double)(gameState.Player.AttackStat + attackBuff) * attackMult) - gameState.Enemy.Defense;
 				// If attack is less than one make it one.
 				if (damage < 1)
 				{
 					damage = 1;
 				}
 				//Checking for Mana Burn passive
-				if (gameState.Player.HasPassive(Passives.ManaBurn))
-				{
-					int manaBurnRoll = random.Next(0, 10);
-					if ((manaBurnRoll < 2 && gameState.Player.Class.ToLower() == "mage") || manaBurnRoll < 1)
-					{
-						int bonusDamage = 2 + gameState.Player.AbilityCooldown;
-						gameState.AddMessage("Your Mana Burn passive added " + bonusDamage + " true damage to your attack!");
-						damage += bonusDamage;
-					}
-				}// end of mana burn passive
-				 //Checking for Poison Weapons passive
-				if (gameState.Player.HasPassive(Passives.PoisonWeapons)){
-					int PoisonRoll = random.Next(0, 10);
-					if ((PoisonRoll < 2 && gameState.Player.Class.ToLower() == "archer") || PoisonRoll < 1)
-					{
-						gameState.AddMessage("Your Poison Weapons passive has reduced the enemies defense permanently!");
-						gameState.Enemy.Defense -= 1;
-					}
-				}//End of Poison Weapons passive
+				damage += gameState.Player.ManaBurn(random.Next(0,100));
+				gameState.Enemy.Defense -= gameState.Player.PoisonWeapons(random.Next(0,100));
 					// Update enemy health.
 					gameState.Enemy.CurrentHealth -= damage;
 				//end of damabe calc
@@ -110,32 +76,25 @@ namespace PromptQuest.Services {
 			if (decrementAbility && gameState.Player.AbilityCooldown>0)
 			{
 				gameState.Player.AbilityCooldown -= 1;
+				gameState.Player.ArcaneRecovery(random.Next(0,100));
 			}
-			if(gameState.Player.HasPassive(Passives.ArcaneRecovery)){//check for arcane recovery passive
-				//roll to decrement ability cooldown again
-				if (decrementAbility && gameState.Player.AbilityCooldown > 0)
-				{
-					int arcaneRecoveryRoll = random.Next(0, 10);
-					if ((arcaneRecoveryRoll < 4 && gameState.Player.Class.ToLower() == "mage") || arcaneRecoveryRoll < 2)
-					{
-						gameState.AddMessage("Your Arcane Recovery passive reduced your active ability cooldown!");
-						gameState.Player.AbilityCooldown -= 1;
-					}
-				}
-			}//end of arcane recovery passive
 			 // Return the result to the user.
 			gameState.AddMessage($"You attacked the {gameState.Enemy.Name} for {damage} damage");
-			//Status effect section
-			if (item.StatusEffects != StatusEffect.None) {
-				int statusEffectChance = random.Next(0, 5); // 25% chance to apply status effect
-				if (statusEffectChance == 1) {
-					if (!gameState.Enemy.StatusEffects.HasFlag(item.StatusEffects)) {
-						gameState.AddMessage($"The {gameState.Enemy.Name} is now affected by {item.StatusEffects.ToString()}!");
-						gameState.Enemy.StatusEffects = item.StatusEffects;
+				//Status effect section
+				Item item = gameState.Player.EquippedWeapon;
+				if (item.StatusEffects != StatusEffect.None)
+				{
+					int statusEffectChance = random.Next(0, 5); // 25% chance to apply status effect
+					if (statusEffectChance == 1)
+					{
+						if (!gameState.Enemy.StatusEffects.HasFlag(item.StatusEffects))
+						{
+							gameState.AddMessage($"The {gameState.Enemy.Name} is now affected by {item.StatusEffects.ToString()}!");
+							gameState.Enemy.StatusEffects = item.StatusEffects;
+						}
 					}
 				}
-			}
-					//end of attack portion
+				//end of attack portion
 			}//End of attack loop
 			// Check ifenemy died.
 			if (gameState.Enemy.CurrentHealth <= 0) {
