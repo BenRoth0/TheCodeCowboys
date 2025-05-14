@@ -107,6 +107,7 @@ function refreshInventory() {
 	fillEquippedSlot(gameState.player.equippedWeapon);
 	//Make item details visible if an item is selected.
 	itemDetails.syncVisibility(selectedItemIndex != -1);
+	equipBtn.syncButtonState(selectedItemIndex != -1);
 }
 
 async function refreshMap() {
