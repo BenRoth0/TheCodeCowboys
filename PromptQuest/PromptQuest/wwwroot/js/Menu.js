@@ -255,6 +255,7 @@ function fillEquippedSlot(item) {
 	const image = document.createElement("img");
 	image.src = item.imageSrc;
 	image.alt = item.name;
+	image.id = item.name;
 	equippedSlot.appendChild(image);
 	//Set up the select behavior
 	image.addEventListener("click", () => {

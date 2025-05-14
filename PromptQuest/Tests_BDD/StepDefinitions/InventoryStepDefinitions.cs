@@ -76,12 +76,14 @@ namespace Tests_BDD {
 		public void WhenIClickTheEquipButton() {
 			IWebElement equipButton = webDriver.FindElement(By.Id("equip-btn"));
 			equipButton.Click();
+			PromptQuestTestMethods.WaitForElementToLoad(webDriver, "Jeweled Boots");
 		}
 
-		[Then("that item will leave the list of items")]
-		public void ThenThatItemWillLeaveTheListOfItems() {
-			IWebElement equippedSlot = webDriver.FindElement(By.Id("equipped-item"));
-			Assert.IsTrue(true);
+		[Then("the item should go into the correct slot")]
+		public void ThenTheItemShouldGoIntoTheCorrectSlot() {
+			// Check if the equipped item slot is not empty
+			IWebElement bootsSlotImage = webDriver.FindElement(By.Id("Jeweled Boots"));
+			Assert.IsNotNull(bootsSlotImage, "Equipped item slot is empty.");
 		}
 
 		[Then("that item will move to the equipped item slot")]
@@ -97,7 +99,7 @@ namespace Tests_BDD {
 
 		[Then("nothing should happen")]
 		public void ThenNothingShouldHappen() {
-			IWebElement equippedSlot = webDriver.FindElement(By.Id("equipped-item"));
+			IWebElement equippedSlot = webDriver.FindElement(By.Id("equipped-weapon"));
 			Assert.IsTrue(string.IsNullOrEmpty(equippedSlot.Text));
 		}
 
