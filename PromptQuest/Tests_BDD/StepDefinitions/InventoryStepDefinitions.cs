@@ -76,7 +76,6 @@ namespace Tests_BDD {
 		public void WhenIClickTheEquipButton() {
 			IWebElement equipButton = webDriver.FindElement(By.Id("equip-btn"));
 			equipButton.Click();
-			PromptQuestTestMethods.WaitForElementToLoad(webDriver, "Jeweled Boots");
 		}
 
 		[Then("the item should go into the correct slot")]
@@ -105,6 +104,7 @@ namespace Tests_BDD {
 
 		[Then("the item should display its type")]
 		public void ThenTheItemShouldDisplayItsType() {
+			PromptQuestTestMethods.WaitForElementToLoad(webDriver, "item-type");
 			IWebElement itemtype = webDriver.FindElement(By.Id("item-type"));
 			Assert.IsFalse(string.IsNullOrEmpty(itemtype.ToString()), "Item type element is missing.");
 		}
