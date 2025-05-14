@@ -380,7 +380,7 @@ namespace PromptQuest.Services {
 			int itemPrice = 0;
 			if(actionValue == 1) {
 				// Set item price
-				itemPrice = 50;
+				itemPrice = 25;
 				if(gameState.Player.Gold < itemPrice) {
 					gameState.AddMessage("You don't have enough gold!");
 					return;

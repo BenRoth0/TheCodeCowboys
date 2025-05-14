@@ -11,7 +11,7 @@ namespace PromptQuest.Services {
 		private static readonly List<MapNode> _mapNodes = new List<MapNode>
 		{
 			new MapNode { MapNodeId = 1, NodeType = "Enemy", ConnectedNodes = {2, 3}, NodeHeight = 2, NodeDistance = 1},
-			new MapNode { MapNodeId = 2, NodeType = "Shop", ConnectedNodes = {4, 5}, NodeHeight = 1, NodeDistance = 2},
+			new MapNode { MapNodeId = 2, NodeType = "Enemy", ConnectedNodes = {4, 5}, NodeHeight = 1, NodeDistance = 2},
 			new MapNode { MapNodeId = 3, NodeType = "Event", ConnectedNodes = {5, 6}, NodeHeight = 3, NodeDistance = 2},
 			new MapNode { MapNodeId = 4, NodeType = "Enemy", ConnectedNodes = {7}, NodeHeight = 1, NodeDistance = 3},
 			new MapNode { MapNodeId = 5, NodeType = "Campsite", ConnectedNodes = {7}, NodeHeight = 2, NodeDistance = 3},

@@ -122,7 +122,7 @@ function hideRespawnModal() {
 
 // Items currently in shop
 const shopItems = [
-	{ name: "Darksteel Leggings", id: 1, price: 50 },
+	{ name: "Darksteel Leggings", id: 1, price: 25 },
 	{ name: "Radiant Glass Helm", id: 2, price: 65 },
 	{ name: "The Pencil Blade", id: 3, price: 75 }
 ];
