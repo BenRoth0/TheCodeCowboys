@@ -7,13 +7,13 @@ using PromptQuest.Services;
 
 namespace PromptQuest.Controllers {
 
-	public class GameController:Controller {
+	public class GameController : Controller {
 		private readonly ILogger<GameController> _logger;
 		private readonly IGameStateService _gameStateService;
 		private readonly ICombatService _combatService;
 		private readonly IMapService _mapService;
 		private readonly IDallEApiService _dallEApiService;
-		private readonly JsonSerializerSettings _jsonSerializerSettings=new JsonSerializerSettings { ContractResolver = new DefaultContractResolver() };
+		private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new DefaultContractResolver() };
 
 		public GameController(ILogger<GameController> logger, IGameStateService gameStateService, ICombatService combatService, IMapService mapService, IDallEApiService dallEApiService) {
 			_logger = logger;
@@ -81,7 +81,7 @@ namespace PromptQuest.Controllers {
 
 		[HttpPost]
 		public async Task<JsonResult> PlayerAction(string playerAction, int actionValue = 0) {
-			Func<GameState, Task> action = new Func<GameState, Task>(async (gameState) => { 
+			Func<GameState, Task> action = new Func<GameState, Task>(async (gameState) => {
 				switch(playerAction.ToLower()) {
 					case "attack":
 						_combatService.PlayerAttack(gameState);
@@ -119,6 +119,9 @@ namespace PromptQuest.Controllers {
 					case "skip-treasure":
 						_combatService.PlayerSkipTreasure(gameState); // Currently in _combatService, may change later
 						break;
+					case "purchase":
+						_combatService.PlayerPurchaseItem(gameState, actionValue); // Currently in _combatService, may change later
+						break;
 					case "move":
 						_mapService.MovePlayer(gameState, actionValue);
 						if(gameState.InCombat) {//Moving the player could put the player in combat
@@ -136,13 +139,13 @@ namespace PromptQuest.Controllers {
 					default:
 						throw new ArgumentOutOfRangeException(nameof(playerAction), playerAction, null);
 				}
-				});
+			});
 			return await ProcessRequest(action);
 		}
 
 		[HttpPost]
 		public async Task<JsonResult> EnemyAction() {
-			Func<GameState, Task> action = new Func<GameState, Task>(async (gameState) => { 
+			Func<GameState, Task> action = new Func<GameState, Task>(async (gameState) => {
 				//There is a delay between player and enemy actions client side. Try to find a way to get it onto the server to avoid bugs.
 				//await Task.Delay(2000); // 2-second delay to simulate the enemy taking time complete their turn.
 				_combatService.EnemyAttack(gameState);//Enemy only attacks for now.
@@ -152,7 +155,7 @@ namespace PromptQuest.Controllers {
 
 		[HttpPost]
 		public async Task<JsonResult> EndTutorial() {
-			Func<GameState, Task> action = new Func<GameState, Task>(async (gameState) => { 
+			Func<GameState, Task> action = new Func<GameState, Task>(async (gameState) => {
 				gameState.InTutorial = false;
 			});
 			return await ProcessRequest(action);
@@ -181,18 +184,18 @@ namespace PromptQuest.Controllers {
 			//Update session to match what happened.
 			_gameStateService.UpdateGameState(gameStateAfter);
 			//Find the differences between the GameState before and after the action and turn it into json.
-			JsonResult jsonResult = Json(GenerateDiff(gameStateBefore,gameStateAfter));
+			JsonResult jsonResult = Json(GenerateDiff(gameStateBefore, gameStateAfter));
 			return jsonResult;
 		}
 
-		public Dictionary<string,object> GenerateDiff(object objectBefore,object objectAfter) {
-			Dictionary<string,object> dictionaryDiff = new Dictionary<string,object>();
+		public Dictionary<string, object> GenerateDiff(object objectBefore, object objectAfter) {
+			Dictionary<string, object> dictionaryDiff = new Dictionary<string, object>();
 			if(objectBefore == null || objectAfter == null || objectBefore.GetType() != objectAfter.GetType()) {
 				return dictionaryDiff; // Return empty diff if types don't match
 			}
 			//Loop through each property in the GameState class
 			foreach(var prop in objectBefore.GetType().GetProperties()) {
-				if(prop.Name=="CurrentHealth") {
+				if(prop.Name == "CurrentHealth") {
 					Console.WriteLine("GameState.Enemy.CurrentHealth");
 				}
 				//Take a snapshot each property before and after changes were made
@@ -209,12 +212,12 @@ namespace PromptQuest.Controllers {
 				}
 				// Handle complex objects (like Player, Enemy)
 				else if(oldValue != null && newValue != null && !IsPrimitiveType(prop.PropertyType)) {
-					var nestedDiff = GenerateDiff(oldValue,newValue);
+					var nestedDiff = GenerateDiff(oldValue, newValue);
 					if(nestedDiff.Any()) {
 						dictionaryDiff[prop.Name] = nestedDiff; // Only store if changes exist
 					}
 				}
-				else if(!Equals(oldValue,newValue)) {//Property doesn't derive from IEnumerable but did change so include it.
+				else if(!Equals(oldValue, newValue)) {//Property doesn't derive from IEnumerable but did change so include it.
 					dictionaryDiff[prop.Name] = newValue;
 				}
 			}

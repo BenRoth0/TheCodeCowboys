@@ -11,7 +11,7 @@ namespace PromptQuest.Services {
 		private static readonly List<MapNode> _mapNodes = new List<MapNode>
 		{
 			new MapNode { MapNodeId = 1, NodeType = "Enemy", ConnectedNodes = {2, 3}, NodeHeight = 2, NodeDistance = 1},
-			new MapNode { MapNodeId = 2, NodeType = "Enemy", ConnectedNodes = {4, 5}, NodeHeight = 1, NodeDistance = 2},
+			new MapNode { MapNodeId = 2, NodeType = "Shop", ConnectedNodes = {4, 5}, NodeHeight = 1, NodeDistance = 2},
 			new MapNode { MapNodeId = 3, NodeType = "Event", ConnectedNodes = {5, 6}, NodeHeight = 3, NodeDistance = 2},
 			new MapNode { MapNodeId = 4, NodeType = "Enemy", ConnectedNodes = {7}, NodeHeight = 1, NodeDistance = 3},
 			new MapNode { MapNodeId = 5, NodeType = "Campsite", ConnectedNodes = {7}, NodeHeight = 2, NodeDistance = 3},
@@ -61,6 +61,7 @@ namespace PromptQuest.Services {
 			gameState.InCampsite = false;
 			gameState.InEvent = false;
 			gameState.InTreasure = false;
+			gameState.InShop = false;
 			// Check if the player is on a campsite or event node
 			var currentNode = _mapNodes.FirstOrDefault(node => node.MapNodeId == gameState.PlayerLocation);
 			if(currentNode != null && currentNode.NodeType == "Campsite") {
@@ -122,6 +123,14 @@ namespace PromptQuest.Services {
 				gameState.AddMessage("You find a chest during your travels!");
 				gameState.AddMessage("Open the chest?");
 				gameState.InTreasure = true;
+				return;
+			}
+			if(currentNode != null && currentNode.NodeType == "Shop") {
+				gameState.AddMessage("You find yourself at an ominous shop with no tender.");
+				gameState.AddMessage("What would you like to buy?");
+				gameState.InShop = true;
+				// Allow player to leave immediately.
+				gameState.IsLocationComplete = true;
 				return;
 			}
 			if(currentNode.NodeType == "Enemy" || currentNode.NodeType == "Boss" || currentNode.NodeType == "Elite") {
