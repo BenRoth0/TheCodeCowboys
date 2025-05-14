@@ -59,7 +59,7 @@ namespace PromptQuest.Services {
 				// Checking for Heavy Smash passive
 				attackBuff = gameState.Player.HeavySmash(random.Next(0,100));
 				 // Calculate damage as attack - defense.
-					int damage = (int)Math.Floor((double)(gameState.Player.AttackStat + attackBuff) * attackMult) - gameState.Enemy.Defense;
+					int damage = (gameState.Player.AttackStat + attackBuff) * attackMult - gameState.Enemy.Defense;
 				// If attack is less than one make it one.
 				if (damage < 1)
 				{
