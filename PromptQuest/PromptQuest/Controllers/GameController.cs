@@ -87,16 +87,16 @@ namespace PromptQuest.Controllers {
 						_combatService.PlayerAttack(gameState);
 						break;
 					case "equip":
-							Item newItem = gameState.Player.Items[actionValue];
-							Item? oldItem = gameState.Player.Items.FirstOrDefault(i => i.itemType == newItem.itemType && i.Equipped == true);
-							if(oldItem != null) {
-								oldItem.Equipped = false;
-								if(oldItem.Name == newItem.Name) {
-									break;
-								}
+						Item newItem = gameState.Player.Items[actionValue];
+						Item? oldItem = gameState.Player.Items.FirstOrDefault(i => i.itemType == newItem.itemType && i.Equipped == true);
+						if(oldItem != null) {
+							oldItem.Equipped = false;
+							if(oldItem.Name == newItem.Name) {
+								break;
 							}
-							//Mark new item as equipped.
-							newItem.Equipped = true;
+						}
+						//Mark new item as equipped.
+						newItem.Equipped = true;
 						break;
 					case "heal":
 						_combatService.PlayerUseHealthPotion(gameState);
@@ -171,7 +171,11 @@ namespace PromptQuest.Controllers {
 		public IActionResult SkipToRoom(int targetRoom) {
 			GameState gameState = _gameStateService.GetGameState();
 			// Move the player to the desired room
-			_mapService.MovePlayer(gameState, targetRoom);
+			_mapService.MovePlayer(gameState, targetRoom, admin: true);
+			if(gameState.InCombat) {//Moving the player could put the player in combat
+				_combatService.StartCombat(gameState);//Server should be the one to start combat
+			}
+			_gameStateService.UpdateGameState(gameState); // Update the session with the new game state
 			return RedirectToAction("Game");
 		}
 

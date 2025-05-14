@@ -3,7 +3,7 @@ using PromptQuest.Models;
 
 namespace PromptQuest.Services {
 	public interface IMapService {
-		public void MovePlayer(GameState gameState, int mapNodeId = 0);
+		public void MovePlayer(GameState gameState, int mapNodeId = 0, bool admin = false);
 		public Map GetMap();
 	}
 	public class MapService : IMapService {
@@ -26,15 +26,19 @@ namespace PromptQuest.Services {
 			new MapNode { MapNodeId = 14, NodeType = "Campsite", ConnectedNodes = {17}, NodeHeight = 2, NodeDistance = 8},
 			new MapNode { MapNodeId = 15, NodeType = "Event", ConnectedNodes = {17}, NodeHeight = 3, NodeDistance = 8},
 			new MapNode { MapNodeId = 16, NodeType = "Shop", ConnectedNodes = {18}, NodeHeight = 1, NodeDistance = 9},
-			new MapNode { MapNodeId = 17, NodeType = "Treasure", ConnectedNodes = {18}, NodeHeight = 2, NodeDistance = 9},
+			new MapNode { MapNodeId = 17, NodeType = "Enemy", ConnectedNodes = {18}, NodeHeight = 2, NodeDistance = 9},
 			new MapNode { MapNodeId = 18, NodeType = "Boss", ConnectedNodes = {1}, NodeHeight = 2, NodeDistance = 10}
 		};
 		private static readonly Map _map = new Map() { ListMapNodes = _mapNodes };
 
 		// Moves the player to the mapNode with the given mapNodeId, if mapNodeId isn't provided, the player's location (mapNodeId) increases by 1.
-		public void MovePlayer(GameState gameState, int mapNodeId = 0) {
-			MapNode mapNodeCur = _mapNodes.Find(mn => mn.MapNodeId == gameState.PlayerLocation);
-			if(!mapNodeCur.ConnectedNodes.Contains(mapNodeId)) {
+		public void MovePlayer(GameState gameState, int mapNodeId = 0, bool admin = false) {
+			MapNode? mapNodeCur = _mapNodes.Find(mn => mn.MapNodeId == gameState.PlayerLocation);
+			if(mapNodeCur == null) {
+				gameState.AddMessage("You are lost in the void.");
+				return;
+			}
+			if(!mapNodeCur.ConnectedNodes.Contains(mapNodeId) && !admin) {
 				return;
 			}
 			// Just for now to keep track of visited nodes.
