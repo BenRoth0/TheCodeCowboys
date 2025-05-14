@@ -3,7 +3,7 @@ using PromptQuest.Services;
 using PromptQuest.Models;
 using NUnit.Framework.Internal;
 
-namespace PromptQuest.Tests_BDD
+namespace PlayerAbilityTests.Tests
 {
 	[TestFixture]
 	public class PlayerAbilityTests
