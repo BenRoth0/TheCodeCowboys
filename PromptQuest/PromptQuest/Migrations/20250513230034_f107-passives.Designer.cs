@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PromptQuest.Models;
 
@@ -10,9 +11,11 @@ using PromptQuest.Models;
 namespace PromptQuest.Migrations
 {
     [DbContext(typeof(GameStateDbContext))]
-    partial class GameStateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250513230034_f107-passives")]
+    partial class f107passives
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,9 +81,6 @@ namespace PromptQuest.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("InEvent")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("InShop")
                         .HasColumnType("bit");
 
                     b.Property<bool>("InTreasure")
@@ -177,10 +177,7 @@ namespace PromptQuest.Migrations
                     b.Property<int>("AbilityCooldown")
                         .HasColumnType("int");
 
-                    b.Property<int>("BaseAttack")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BaseDefense")
+                    b.Property<int>("Attack")
                         .HasColumnType("int");
 
                     b.Property<string>("Class")
@@ -188,6 +185,9 @@ namespace PromptQuest.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CurrentHealth")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Defense")
                         .HasColumnType("int");
 
                     b.Property<int>("DefenseBuff")

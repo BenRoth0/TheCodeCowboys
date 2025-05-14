@@ -107,6 +107,7 @@ function refreshInventory() {
 	fillEquippedSlot(gameState.player.equippedWeapon);
 	//Make item details visible if an item is selected.
 	itemDetails.syncVisibility(selectedItemIndex != -1);
+	equipBtn.syncButtonState(selectedItemIndex != -1);
 }
 
 async function refreshMap() {
@@ -221,6 +222,7 @@ function selectItem(item, index) {
 	document.getElementById("item-defense").textContent = item.defense;
 	document.getElementById("item-image").src = item.imageSrc;
 	document.getElementById("item-status-effects").textContent = statusEffectCheck(item.statusEffects);
+	document.getElementById("item-passive").textContent = getPassiveDescription(item.passive);
 	document.getElementById("item-type").textContent = 'Type: ' + itemTypeCheck(item.itemType);
 	//Show item details
 	itemDetails.syncVisibility(selectedItemIndex != -1);
@@ -261,11 +263,8 @@ function fillEquippedSlot(item) {
 	const image = document.createElement("img");
 	image.src = item.imageSrc;
 	image.alt = item.name;
+	image.id = item.name;
 	equippedSlot.appendChild(image);
-	//Set up the select behavior
-	image.addEventListener("click", () => {
-		selectItem(item, -1);
-	});
 }
 function updateEquipButton(item) {
 	equipBtn.disabled = false;
