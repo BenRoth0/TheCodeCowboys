@@ -4,107 +4,122 @@
 	// Get User's profile image
 	string userProfileImage = User.FindFirst("GoogleProfileImageUrl")?.Value;
 	// Something went wrong, show the default image.
-	if (userProfileImage == null)
-	{
+	if(userProfileImage == null) {
 		userProfileImage = "";
 	}
 }
 
-<img src="" id="main-background-image" style="position: absolute; top: 50%; left: 50%; height: 100%; width: 100%; transform: translate(-50%, -50%); user-select: none;" />
-<div class="pq-container">
-	<img class="bg-image" id="bg-image" src="~/images/campsite.png" style="display:none; position: absolute; top: 50%; left: 50%; height: 50%; width: auto; transform: translate(-50%, -10%);" />
-	<!-- Menu Button -->
-	<button class="pq-button" id="menu-btn" style="top:1vmin; right:1vmin; height: 7vmin; width: 14vmin;">Menu</button>
-	<!-- Login Display -->
-	<div class="login-display" style="top: 0; left: 0; height: 8vmin; width: 20vmin;">
-		@if (isUserLoggedIn)
-		{
-			<img src="@userProfileImage" />
-			<a class="pq-link" href="/Account/SignOutFromGoogleLogin">Logout</a>
-		}
-		else
-		{
-			<a class="pq-link" href="/Account/GoogleLogin">Login with Google</a>
-		}
-	</div>
-	<!-- Dialog Box -->
-	<div class="dialog-box pq-center-element-x" id="dialog-box" style="overflow-x:auto;top: 25%; left: 50%; height: 20vmin; width: 100vmin;"></div>
-	<!-- Player Display -->
-	<div class="pq-container" id="player-display" style="bottom: 0; left: 0; width: 50vmin; height: 50vmin; opacity: 0;">
-		<!-- Player Damage Indicator -->
-		<div id="player-damage-indicator"
-				 style="top: 10%; left: 90%; height: 70%; width: auto;
-						font-size: 50px; font-weight: bold; font-family: 'texture', sans-serif;
-						text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-						opacity: 0; transition: opacity 1.0s ease-out, transform 2.0s ease-out;">
+<link rel="stylesheet" href="~/css/CreateCharacter.css">
+
+<div class="container-fluid">
+	<div class="row organizer">
+		<img src="" id="main-background-image" style="position: absolute; top: 50%; left: 50%; height: 100%; width: 100%; transform: translate(-50%, -50%); user-select: none;" />
+		<img class="bg-image" id="bg-image" src="~/images/campsite.png" style="display:none; position: absolute; top: 50%; left: 50%; height: 50%; width: auto; transform: translate(-50%, -10%);" />
+		<!-- Header Row -->
+		<div class="col-12" id="header">
+			<!-- Login Display -->
+			<div class="login-display" style="height: 100%; width: fit-content;">
+				@if(isUserLoggedIn) {
+				<img src="@userProfileImage" />
+				<a class="pq-link" href="/Account/SignOutFromGoogleLogin">Logout</a>
+				}
+				else {
+				<a class="pq-link" href="/Account/GoogleLogin">Login with Google</a>
+				}
+			</div>
+			<!-- Menu Button -->
+			<button class="pq-button" id="menu-btn" style="height: 100%; width: fit-content;">Menu</button>
 		</div>
-		<div class="player-name" style="top: 2%; left: 4%;"></div>
-		<img class="player-image pq-border" id="player-image" src="~/images/BlankImage.png" style="top: 10%; left: 3%; height: 75%; width: auto;" />
-		<button id="open-map-btn" class="map-btn" style="bottom: 18%; left: 5%; height: 10%; width: 10%; background: none; border: none; padding: 0; cursor: pointer;">
-			<img src="~/images/MapIcon.png" alt="Alternate Text" style="max-height:100%; " />
-		</button>
-		<button id="open-inventory-btn" class="map-btn" style="bottom: 30%; left: 5%; height: 10%; width: 10%; background: none; border: none; padding: 0; cursor: pointer;">
-			<img src="~/images/InventoryIcon.png" alt="Alternate Text" style="max-height:100%; " />
-		</button>
-		<div id="player-health-bar-container" class="pq-border" style="top: 10%; left: 81%; width: 5%; height: 55%; position: relative; overflow: hidden;">
-			<div id="player-health-bar" style="width: 100%; background-color: darkred; position: absolute; bottom: 0; transition: height 1.0s ease-in-out;"></div>
+
+		<!-- Dialog Box Module -->
+		<div class="col-12" id="dialog">
+			<div id="dialog-box"></div>
 		</div>
-		<img class="player-potions-icon" src="~/images/PotionIcon.png" alt="Potion Icon" style="top: 70%; left: 76%; height: 15%; width: auto;">
-		<div class="player-potions stat-text" id="player-health-potions" style="top: 74%; left: 89%;"></div>
-		<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 15%; height: 15%; width: auto;">
-		<span class="player-attack stat-text" id="player-attack" style="bottom: 0%; left: 25%;">0</span>
-		<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 40%; height: 15%; width: auto;">
-		<span class="player-defense stat-text" id="player-defense" style="bottom: 0%; left: 53%;">0</span>
-		@* <span class="player-hp stat-text" id="player-hp" style="bottom: 3%; right: 25%;"></span> *@
-	</div>
-	<!-- Action Buttons Display -->
-	<div class="pq-center-element-x" id="action-button-display" style="display:none; bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
-		<button class="pq-button" id="attack-btn" style="margin-bottom:2vmin; width: 100%;">Attack</button>
-		<button class="pq-button" id="health-potion-btn" style="margin-bottom:2vmin; width: 100%;">Use Potion</button>
-		<div class="pq-container" style="bottom: 0; left: 0; width: 50vmin; height: 5vmin;">
-			<button class="pq-button" id="ability-btn" style="margin-bottom:2vmin; width: 100%;">Active Ability</button>
-			<img class="player-ability-icon" id="ability-cooldown-icon" src="~/images/0_6_Clock.png" alt="Cooldown Icon" style="top: 12%; left: 2%; height: 90%; width: auto;">
+
+		<!-- Player Module -->
+		<div class="col-4" id="player">
+			<div class="position-relative character-display" id="player-display">
+				<!-- Player Damage Indicator --> 
+				<div id="player-damage-indicator" 
+						 style="top: 10%; left: 90%; height: 70%; width: auto; 
+						font-size: 50px; font-weight: bold; font-family: 'texture', sans-serif; 
+						text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+						opacity: 0; transition: opacity 1.0s ease-out, transform 2.0s ease-out;"> 
+				</div> 
+				<div class="player-name name-text" style="top: 0%; left: 4%; height: 10%; width: 75%; "></div>
+				<img class="player-image pq-border" id="player-image" src="~/images/BlankImage.png" style="top: 10%; left: 3%; height: auto; width: 75%;" />
+				<button id="open-map-btn" class="map-btn" style="top: 69%; left: 5%; height: 10%; width: 10%; background: none; border: none; padding: 0; cursor: pointer;"> 
+					<img src="~/images/MapIcon.png" alt="Alternate Text" style="max-height:100%; " /> 
+				</button> 
+				<button id="open-inventory-btn" class="map-btn" style="top: 57%; left: 5%; height: 10%; width: 10%; background: none; border: none; padding: 0; cursor: pointer;"> 
+					<img src="~/images/InventoryIcon.png" alt="Alternate Text" style="max-height:100%; " /> 
+				</button> 
+				<div id="player-health-bar-container" class="pq-border" style="top: 10%; left: 81%; width: 5%; height: 55%; position: relative; overflow: hidden;"> 
+					<div id="player-health-bar" style="width: 100%; background-color: darkred; position: absolute; bottom: 0; transition: height 1.0s ease-in-out;"></div> 
+				</div> 
+				<img class="player-potions-icon" src="~/images/PotionIcon.png" alt="Potion Icon" style="top: 70%; left: 76%; height: 15%; width: auto;"> 
+				<div class="player-potions stat-text" id="player-health-potions" style="top: 74%; left: 89%;"></div> 
+				<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 18%; height: 15%; width: auto;"> 
+				<span class="player-attack stat-text" id="player-attack" style="bottom: 0%; left: 30%;">0</span> 
+				<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 40%; height: 15%; width: auto;"> 
+				<span class="player-defense stat-text" id="player-defense" style="bottom: 0%; left: 53%;">0</span> 
+			</div> 
 		</div>
-	</div>
-	<!-- Campsite Buttons Display -->
-	<div class="pq-center-element-x" id="campsite-button-display" style="display:none; bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
-		<button class="pq-button" id="rest-btn" style="margin-bottom:2vmin; width: 100%;">Rest</button>
-		<button class="pq-button" id="skip-rest-btn" style="margin-bottom:2vmin; width: 100%;">Sleep is For the Weak</button>
-	</div>
-	<!-- Event Buttons Display -->
-	<div class="pq-center-element-x" id="event-button-display" style="display:none; bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
-		<button class="pq-button" id="accept-btn" style="margin-bottom:2vmin; width: 100%;">Accept</button>
-		<button class="pq-button" id="deny-btn" style="margin-bottom:2vmin; width: 100%;">Deny</button>
-	</div>
-	<!-- Treasure Buttons Display -->
-	<div class="pq-center-element-x" id="treasure-button-display" style="display:none; bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
-		<button class="pq-button" id="open-treasure-btn" style="margin-bottom:2vmin; width: 100%;">Open</button>
-		<button class="pq-button" id="skip-treasure-btn" style="margin-bottom:2vmin; width: 100%;">Seems Like a Trap...</button>
-	</div>
-	<!-- Shop Buttons Display -->
-	<div class="pq-center-element-x" id="shop-button-display" style="display:none; bottom: 0; left: 50%; height: 45vmin; width: 45vmin;">
-	</div>
-	<!-- Enemy Display -->
-	<div class="pq-container" id="enemy-display" style="bottom: 0; right: 0; width: 50vmin; height: 50vmin; opacity:0;">
-		<div id="enemy-health-bar-container" class="pq-border" style="top: 10%; left: 14%; width: 5%; height: 75%; position: relative; overflow: hidden;">
-			<div id="enemy-health-bar" style="width: 100%; background-color: darkred; position: absolute; bottom: 0; transition: height 1.0s ease-in-out;"></div>
+
+		<!-- Action Buttons Module -->
+		<div class="col debug-box d-flex" id="buttons">
+			<div class="btn-stack" id="action-button-display">
+				<button class="pq-button" id="attack-btn">Attack</button>
+				<button class="pq-button" id="health-potion-btn">Use Potion</button>
+				<button class="pq-button position-relative" id="ability-btn">
+					<img class="player-ability-icon" id="ability-cooldown-icon" src="~/images/0_6_Clock.png" alt="Cooldown Icon" style="float: inline-start; align-self: center; height: auto; width: 0%; max-height: 100%; max-width: 100%">
+					Active Ability
+				</button>
+			</div>
+			<!-- Campsite Buttons Display -->
+			<div class="btn-stack" id="campsite-button-display">
+				<button class="pq-button" id="rest-btn" style="">Rest</button>
+				<button class="pq-button" id="skip-rest-btn" style="">Sleep is For the Weak</button>
+			</div>
+			<!-- Event Buttons Display -->
+			<div class="btn-stack" id="event-button-display">
+				<button class="pq-button" id="accept-btn" style="">Accept</button>
+				<button class="pq-button" id="deny-btn" style="">Deny</button>
+			</div>
+			<!-- Treasure Buttons Display -->
+			<div class="btn-stack" id="treasure-button-display">
+				<button class="pq-button" id="open-treasure-btn" style="">Open</button>
+				<button class="pq-button" id="skip-treasure-btn" style="">Seems Like a Trap...</button>
+			</div>
+			<!-- Shop Buttons Display -->
+			<div class="btn-stack" id="shop-button-display">
+			</div>
 		</div>
-		<!-- Enemy Damage Indicator -->
-		<div id="enemy-damage-indicator"
-				 style="top: 10%; right: 90%; height: 70%; width: auto; z-index: 99;
-						font-size: 50px; font-weight: bold; font-family: 'texture', sans-serif;
-						text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-						opacity: 0; transition: opacity 1.0s ease-out, transform 2.0s ease-out;">
+
+		<!-- Enemy Module -->
+		<div class="col-4" id="enemy">
+			<div class="position-relative character-display" id="enemy-display">
+			 	<div id="enemy-health-bar-container" class="pq-border" style="top: 10%; left: 14%; width: 5%; height: 75%; position: relative; overflow: hidden; text-align: start"> 
+			 		<div id="enemy-health-bar" style="width: 100%; background-color: darkred; position: absolute; bottom: 0; transition: height 1.0s ease-in-out;"></div> 
+			 	</div> 
+			 	<!-- Enemy Damage Indicator --> 
+			 	<div id="enemy-damage-indicator" 
+			 			 style="top: 10%; right: 90%; height: 70%; width: auto; z-index: 99; 
+			 			font-size: 50px; font-weight: bold; font-family: 'texture', sans-serif; 
+			 			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+			 			opacity: 0; transition: opacity 1.0s ease-out, transform 2.0s ease-out;"> 
+			 	</div>
+				<div class="name-text" id="enemy-name" style="top: 0%; right: 4%; height: 10%; width: 75%; "></div>
+				<img class="enemy-image" id="enemy-image" src="~/images/BlankImage.png" style="top: 10%; right: 3%; height: auto; width: 75%;" />
+				<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 46%; height: 15%; width: auto;"> 
+			 	<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 1%; right: 46%;"></span> 
+			 	<img class="enemy-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; right: 24%; height: 15%; width: auto;"> 
+			 	<span class="enemy-defense stat-text" id="enemy-defense" style="bottom: 1%; right: 22%;"></span> 
+			 	 <span class="enemy-hp stat-text" id="enemy-hp" style="bottom: 3%; right: 5%;"></span> 
+			 	<img class="bleeding-indicator" id="bleeding-indicator" src="~/images/BleedingIndicator.png" alt="Bleeding Indicator" style="top: 75%; left: 4%; height: 10%; width: auto;"> 
+			 	<img class="burning-indicator" id="burning-indicator" src="~/images/BurningIndicator.png" alt="Burning Indicator" style="top: 65%; left: 4%; height: 10%; width: auto;"> 
+			 </div> 
 		</div>
-		<div class="enemy-name" id="enemy-name" style="top: 2%; right: 4%;"></div>
-		<img class="enemy-image" id="enemy-image" src="~/images/BlankImage.png" style="top: 10%; right: 3%; height: 75%; width: auto;" />
-		<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 49%; height: 15%; width: auto;">
-		<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 0%; right: 39%;"></span>
-		<img class="enemy-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; right: 24%; height: 15%; width: auto;">
-		<span class="enemy-defense stat-text" id="enemy-defense" style="bottom: 0%; right: 22%;"></span>
-		@* <span class="enemy-hp stat-text" id="enemy-hp" style="bottom: 3%; right: 5%;"></span> *@
-		<img class="bleeding-indicator" id="bleeding-indicator" src="~/images/BleedingIndicator.png" alt="Bleeding Indicator" style="top: 75%; left: 4%; height: 10%; width: auto;">
-		<img class="burning-indicator" id="burning-indicator" src="~/images/BurningIndicator.png" alt="Burning Indicator" style="top: 65%; left: 4%; height: 10%; width: auto;">
 	</div>
 </div>
 
@@ -158,8 +173,7 @@
 					</div>
 				</div>
 				<div class="pq-inventory-display" style="bottom:0; left:0; height: 35%; width: 100%">
-					@for (int i = 1; i <= 20; i++)
-					{
+					@for(int i = 1;i <= 20;i++) {
 						<div class="pq-inventory-slot" id="inventory-slot-@i">
 						</div>
 					}
@@ -251,3 +265,22 @@
 <script src="~/js/Menu.js"></script>
 <script src="~/js/Game.js"></script>
 <script src="~/js/Tutorial.js"></script>
+
+<script>
+	function adjustLayout() {
+			const isPortrait = (window.innerHeight / window.innerWidth > .73);
+			const container = document.querySelector('.organizer');
+
+			if (isPortrait) {
+					container.classList.remove('landscape-layout'); // Remove Bootstrap row behavior
+					container.classList.add('portrait-layout'); // Switch to stacked layout
+			} else {
+					container.classList.add('landscape-layout'); // Restore Bootstrap layout in landscape
+					container.classList.remove('portrait-layout');
+			}
+	}
+
+	// Run on load and when resizing
+	window.addEventListener('load', adjustLayout);
+	window.addEventListener('resize', adjustLayout);
+</script>
