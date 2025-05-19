@@ -10,11 +10,11 @@
 	}
 }
 
-<img src="~/images/BackgroundGloomyDarkForest.png" style="position: absolute; top: 50%; left: 50%; height: 100%; width: 100%; transform: translate(-50%, -50%);" />
+<img src="~/images/BackgroundGloomyDarkForest.png" style="position: absolute; top: 50%; left: 50%; height: 100%; width: 100%; transform: translate(-50%, -50%); user-select: none;" />
 <div class="pq-container">
 	<img class="bg-image" id="bg-image" src="~/images/campsite.png" style="display:none; position: absolute; top: 50%; left: 50%; height: 50%; width: auto; transform: translate(-50%, -10%);" />
 	<!-- Menu Button -->
-	<button class="pq-button" id="menu-open" style="top:0; right:0; height: 7vmin; width: 14vmin;"> Menu </button>
+	<button class="pq-button" id="menu-btn" style="top:1vmin; right:1vmin; height: 7vmin; width: 14vmin;">Menu</button>
 	<!-- Login Display -->
 	<div class="login-display" style="top: 0; left: 0; height: 8vmin; width: 20vmin;">
 		@if (isUserLoggedIn)
@@ -30,16 +30,32 @@
 	<!-- Dialog Box -->
 	<div class="dialog-box pq-center-element-x" id="dialog-box" style="overflow-x:auto;top: 25%; left: 50%; height: 20vmin; width: 100vmin;"></div>
 	<!-- Player Display -->
-	<div class="pq-container" id="player-display" style="display:none;bottom: 0; left: 0; width: 50vmin; height: 50vmin;">
+	<div class="pq-container" id="player-display" style="bottom: 0; left: 0; width: 50vmin; height: 50vmin; opacity: 0;">
+		<!-- Player Damage Indicator -->
+		<div id="player-damage-indicator"
+				 style="top: 10%; left: 90%; height: 70%; width: auto;
+						font-size: 50px; font-weight: bold; font-family: 'texture', sans-serif;
+						text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+						opacity: 0; transition: opacity 1.0s ease-out, transform 2.0s ease-out;">
+		</div>
 		<div class="player-name" style="top: 2%; left: 4%;"></div>
-		<img class="player-image" src="~/images/LoadingImage.png" style="top: 10%; left: 3%; height: 75%; width: auto;" />
+		<img class="player-image pq-border" id="player-image" src="~/images/BlankImage.png" style="top: 10%; left: 3%; height: 75%; width: auto;" />
+		<button id="open-map-btn" class="map-btn" style="bottom: 18%; left: 5%; height: 10%; width: 10%; background: none; border: none; padding: 0; cursor: pointer;">
+			<img src="~/images/MapIcon.png" alt="Alternate Text" style="max-height:100%; " />
+		</button>
+		<button id="open-inventory-btn" class="map-btn" style="bottom: 30%; left: 5%; height: 10%; width: 10%; background: none; border: none; padding: 0; cursor: pointer;">
+			<img src="~/images/InventoryIcon.png" alt="Alternate Text" style="max-height:100%; " />
+		</button>
+		<div id="player-health-bar-container" class="pq-border" style="top: 10%; left: 81%; width: 5%; height: 55%; position: relative; overflow: hidden;">
+			<div id="player-health-bar" style="width: 100%; background-color: darkred; position: absolute; bottom: 0; transition: height 1.0s ease-in-out;"></div>
+		</div>
 		<img class="player-potions-icon" src="~/images/PotionIcon.png" alt="Potion Icon" style="top: 70%; left: 76%; height: 15%; width: auto;">
 		<div class="player-potions stat-text" id="player-health-potions" style="top: 74%; left: 89%;"></div>
-		<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 3%; height: 15%; width: auto;">
-		<span class="player-attack stat-text" id="player-attack" style="bottom: 1%; left: 15%;">0</span>
-		<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 25%; height: 15%; width: auto;">
-		<span class="player-defense stat-text" id="player-defense" style="bottom: 1%; left: 38%;">0</span>
-		<span class="player-hp stat-text" id="player-hp" style="bottom: 3%; right: 25%;"></span>
+		<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 18%; height: 15%; width: auto;">
+		<span class="player-attack stat-text" id="player-attack" style="bottom: 0%; left: 30%;">0</span>
+		<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 40%; height: 15%; width: auto;">
+		<span class="player-defense stat-text" id="player-defense" style="bottom: 0%; left: 53%;">0</span>
+		@* <span class="player-hp stat-text" id="player-hp" style="bottom: 3%; right: 25%;"></span> *@
 	</div>
 	<!-- Action Buttons Display -->
 	<div class="pq-center-element-x" id="action-button-display" style="display:none; bottom: 0; left: 50%; height: 45vmin; width: fit-content;">
@@ -69,23 +85,34 @@
 	<div class="pq-center-element-x" id="shop-button-display" style="display:none; bottom: 0; left: 50%; height: 45vmin; width: 45vmin;">
 	</div>
 	<!-- Enemy Display -->
-	<div class="pq-container" id="enemy-display" style="display:none; bottom: 0; right: 0; width: 50vmin; height: 50vmin;">
+	<div class="pq-container" id="enemy-display" style="bottom: 0; right: 0; width: 50vmin; height: 50vmin; opacity:0;">
+		<div id="enemy-health-bar-container" class="pq-border" style="top: 10%; left: 14%; width: 5%; height: 75%; position: relative; overflow: hidden;">
+			<div id="enemy-health-bar" style="width: 100%; background-color: darkred; position: absolute; bottom: 0; transition: height 1.0s ease-in-out;"></div>
+		</div>
+		<!-- Enemy Damage Indicator -->
+		<div id="enemy-damage-indicator"
+				 style="top: 10%; right: 90%; height: 70%; width: auto; z-index: 99;
+						font-size: 50px; font-weight: bold; font-family: 'texture', sans-serif;
+						text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+						opacity: 0; transition: opacity 1.0s ease-out, transform 2.0s ease-out;">
+		</div>
 		<div class="enemy-name" id="enemy-name" style="top: 2%; right: 4%;"></div>
-		<img class="enemy-image" id="enemy-image" src="~/images/LoadingImage.png" style="top: 10%; right: 3%; height: 75%; width: auto;" />
-		<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 62%; height: 15%; width: auto;">
-		<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 1%; right: 62%;"></span>
-		<img class="enemy-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; right: 40%; height: 15%; width: auto;">
-		<span class="enemy-defense stat-text" id="enemy-defense" style="bottom: 1%; right: 38%;"></span>
-		<span class="enemy-hp stat-text" id="enemy-hp" style="bottom: 3%; right: 5%;"></span>
-		<img class="bleeding-indicator" id="bleeding-indicator" src="~/images/BleedingIndicator.png" alt="Bleeding Indicator" style="top: 75%; left: 10%; height: 10%; width: auto;">
-		<img class="burning-indicator" id="burning-indicator" src="~/images/BurningIndicator.png" alt="Burning Indicator" style="top: 65%; left: 10%; height: 10%; width: auto;">
+		<img class="enemy-image" id="enemy-image" src="~/images/BlankImage.png" style="top: 10%; right: 3%; height: 75%; width: auto;" />
+		<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 46%; height: 15%; width: auto;">
+		<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 1%; right: 46%;"></span>
+		<img class="enemy-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; right: 24%; height: 15%; width: auto;">
+		<span class="enemy-defense stat-text" id="enemy-defense" style="bottom: 1%; right: 22%;"></span>
+		@* <span class="enemy-hp stat-text" id="enemy-hp" style="bottom: 3%; right: 5%;"></span> *@
+		<img class="bleeding-indicator" id="bleeding-indicator" src="~/images/BleedingIndicator.png" alt="Bleeding Indicator" style="top: 75%; left: 4%; height: 10%; width: auto;">
+		<img class="burning-indicator" id="burning-indicator" src="~/images/BurningIndicator.png" alt="Burning Indicator" style="top: 65%; left: 4%; height: 10%; width: auto;">
 	</div>
 </div>
 
-<div class="pq-modal-fullscreen" id="menu" style="display: none;">
+<!-- Invetory Window -->
+<div class="pq-modal-fullscreen" id="inventory" style="display: none;">
 	<div class="pq-container">
 		<!-- Player display on the left -->
-		<button class="pq-button" id="menu-close" style="top:0; right:2vmin; height: 8vmin; width: 17vmin;"> Close </button>
+		<button class="pq-button" id="close-inventory-btn" style="top:0; right:2vmin; height: 8vmin; width: 17vmin;"> Close </button>
 		<div class="player-name" style="top:15vmin; left:5vmin; height:6vmin; width:40vmin"></div>
 		<img class="player-image" style="top:20vmin; left:5vmin; height: 40vmin; width: auto; max-width:25%; max-height:auto;" src="~/images/LoadingImage.png" alt="Alternate Text" />
 		<!-- Stats box label -->
@@ -102,13 +129,10 @@
 			<span class="stat-text" id="gold-display" style="top:66%; left:20%; height: 19%;"></span>
 			<span class="pq-font" id="player-passive" style="top:19%; left:30%; height: 20%; width:auto">nothing yet</span>
 		</div>
-		<!-- Tab Menu -->
+		<!-- Main Group Box -->
 		<div class="pq-tab-window pq-border" style="bottom:0; right:0vmin; height:85vmin; width:150vmin; max-width: 70%;">
-			<!-- Tab Buttons -->
-			<button class="pq-tab" id="inventory-btn" style="top:-4.5vmin; left:1vmin; height: 4vmin; width: 12vmin;"> Inventory </button>
-			<button class="pq-tab" id="map-btn" style="top:-4.5vmin; left:14vmin; height: 4vmin; width: 12vmin;"> Map </button>
-			<!-- Inventory window -->
-			<div id="inventory" class="pq-container">
+			<!-- Inventory slots window -->
+			<div class="pq-container">
 				<div id="equipped-weapon" class="pq-inventory-slot" style="top:15%; height:15%; left:1%;"></div>  <!-- Weapon Slot -->
 				<div id="equipped-helm" class="pq-inventory-slot" style="top:0%; height:15%; left:11%;"></div>  <!-- Helm Slot -->
 				<div id="equipped-chest" class="pq-inventory-slot" style="top:15%; height:15%; left:11%;"></div>  <!-- Chest Slot -->
@@ -137,24 +161,32 @@
 					}
 				</div>
 			</div>
-			<!-- Map window -->
-			<div id="map" class="pq-container">
-				<div class="pq-font text-center" id="floor-tracker" style="top:5%; left:5%; height:15%; width:90%; font-size:8vmin;"></div>
-				<button class="pq-button" id="floor-btn" style="top:25%; left:40%; height:10%; width:20%; font-size:2vmin; ">Move to Next Floor</button>
-				<div class="pq-map-display" id="map-container" style="bottom:0; left:0; height: 35%; width: 100%">
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
 
+<!-- Overlay to make the background behind window's dark and not clickable -->
+<div id="overlay" style="display: none;"></div>
+
+<!-- Map -->
+<div id="map" class="pq-container" style="display: none; position:absolute; top:5%; left:5%; width:90%; height: 90%; border: 3px solid black;">
+	<!-- Map Background -->
+	<img src="~/images/BackgroundMap.png" alt="Alternate Text" style="height:100%;width:100%;" />
+	<button id="close-map-btn" class="map-btn" style="top: 2vmin; right: 2vmin; height: 50px; width: 50px; background: none; border: none; padding: 0;">
+		<img src="~/images/MapCloseIcon.png" alt="Alternate Text" style="max-height:100%; " />
+	</button>
+	<div class="pq-font text-center" id="floor-tracker" style="top:5%; left:5%; height:15%; width:90%; color: black; font-size:8vmin; font-family: 'texture', sans-serif"></div>
+	<button class="pq-button" id="floor-btn" style="top:25%; left:40%; height:10%; width:20%; font-size:2vmin;">Move to Next Floor</button>
+	<div class="pq-map-display" id="map-container" style="bottom:0; left:0; height: 40%; width: 100%">
+	</div>
+</div>
+
 <!-- Respawn Modal -->
-<div class="modal fade" id="respawnModal" tabindex="-1" aria-labelledby="respawnModalLabel" aria-hidden="true">
+<div class="modal fade" id="respawnModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="respawnModalLabel" aria-hidden="true">
 	<div class="modal-dialog pq-border pq-font text-light">
 		<div class="modal-content BackgroundColorDark p-2">
 			<div class="modal-header" style="border:none;">
 				<h5 class="modal-title" id="respawnModalLabel">You have been defeated!</h5>
-				<button type="button" class="btn-close" style="color:white;" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body" style="border:none;">
 				Press the button below to respawn and fight again.
@@ -163,6 +195,16 @@
 				<button type="button" id="respawn-btn" class="btn pq-button pq-font">Respawn</button>
 			</div>
 		</div>
+	</div>
+</div>
+
+<!-- Game Menu -->
+<div id="menu" class="pq-container BackgroundColorDark" style="display: none;">
+	<div class="pq-center-element" id="" style="top: 50%; left: 50%; height: fit-content; width: fit-content; max-height: 100%; max-width: 100%">
+		<button class="pq-button" id="continue-btn" style="margin-bottom:2vmin; width: 100%;">Continue</button>
+		<button class="pq-button" id="tutorial-btn" style="margin-bottom:2vmin; width: 100%;">View Tutorial</button>
+		<button class="pq-button" id="options-btn" style="margin-bottom:2vmin; width: 100%;">Options</button>
+		<button class="pq-button" id="quit-btn" style="margin-bottom:2vmin; width: 100%;">Return to Main Menu</button>
 	</div>
 </div>
 
