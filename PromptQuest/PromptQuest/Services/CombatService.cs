@@ -62,8 +62,13 @@ namespace PromptQuest.Services {
 				attackBuff = gameState.Player.HeavySmash(random.Next(0,100));
 				// Calculate damage as attack - defense.
 				int damage = (gameState.Player.AttackStat + attackBuff) * attackMult - gameState.Enemy.Defense;
+				// Convert this flat damage into a range of 0.8-1.30x the damage picking a random number between these values of the damage
+				int lowerBound = (int)Math.Floor(damage * 0.8);
+				int upperBound = (int)Math.Ceiling(damage * 1.3);
+				// Generate a random number between the lower and upper bounds
+				damage = random.Next(lowerBound, upperBound + 1);
 				// If attack is less than one make it one.
-				if(damage < 1) {
+				if (damage < 1) {
 					damage = 1;
 				}
 				//Checking for Mana Burn passive
@@ -499,7 +504,13 @@ namespace PromptQuest.Services {
 		public void EnemyAttack(GameState gameState) {
 			// Calculate damage as attack - defense.
 			int damage = gameState.Enemy.Attack - gameState.Player.DefenseStat - gameState.Player.DefenseBuff;
-			if(gameState.Player.DefenseBuff>0) {
+			// Make the damage a range of 0.8-1.30x the damage picking a random number between these values of the damage
+			int lowerBound = (int)Math.Floor(damage * 0.8);
+			int upperBound = (int)Math.Ceiling(damage * 1.3);
+			// Generate a random number between the lower and upper bounds
+			Random random = new Random();
+			damage = random.Next(lowerBound, upperBound + 1);
+			if (gameState.Player.DefenseBuff>0) {
 				gameState.AddMessage("Your shield blocked incoming damage");
 			}
 			gameState.Player.DefenseBuff = 0;//reset the defense buff after blocking one hit
