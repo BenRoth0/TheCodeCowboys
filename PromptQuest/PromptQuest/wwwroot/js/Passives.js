@@ -13,7 +13,7 @@ function getPassiveDescription(passiveId) {
 function getActiveDescription(_class) {
 	_class=_class.toLowerCase()
 	if (_class == "warrior") { return "Reckless Strike: Perform an attack at double strength."; }
-	if (_class == "mage") { return "Magic Barrier: Gain +6 defense against the next attack against you."; }
+	if (_class == "mage") { return "Magic Barrier: Gain +6 defense against the next attack."; }
 	if (_class == "archer") { return "Twin Shot: Perform two attacks."; }
 	return "Unknown Active"
 }
