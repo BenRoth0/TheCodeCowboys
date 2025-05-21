@@ -167,9 +167,8 @@ namespace PromptQuest.Services {
 						new MapNode { MapNodeId = 18, NodeType = "Boss", ConnectedNodes = {1}, NodeHeight = 4, NodeDistance = 10 }
 					};
 				default:
-					var random = new Random();
-					int randomFloor = random.Next(1, 8); // 1 to 7 inclusive
-					return GetMapNodesForFloor(randomFloor);
+					int nextFloor = (floor % 7) + 1; // Cycles 1-7
+					return GetMapNodesForFloor(nextFloor);
 			}
 		}
 		#endregion GetMapNodes - End
