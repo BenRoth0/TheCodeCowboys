@@ -60,13 +60,11 @@ namespace PromptQuest.Services {
 				//beggining of damage calc
 				// Checking for Heavy Smash passive
 				attackBuff = gameState.Player.HeavySmash(random.Next(0,100));
-				// Calculate damage as attack - defense.
-				int damage = (gameState.Player.AttackStat + attackBuff) * attackMult - gameState.Enemy.Defense;
-				// Convert this flat damage into a range of 0.8-1.30x the damage picking a random number between these values of the damage
-				int lowerBound = (int)Math.Floor(damage * 0.8);
-				int upperBound = (int)Math.Ceiling(damage * 1.3);
+				// Make damage into a range of 0.8-1.30x the attack stat picking a random number between these values of the damage
+				int lowerBound = (int)Math.Floor((gameState.Player.AttackStat + attackBuff) * 0.8);
+				int upperBound = (int)Math.Ceiling((gameState.Player.AttackStat + attackBuff) * 1.3);
 				// Generate a random number between the lower and upper bounds
-				damage = random.Next(lowerBound, upperBound + 1);
+				int damage = random.Next(lowerBound, upperBound + 1) * attackMult - gameState.Enemy.Defense;
 				// If attack is less than one make it one.
 				if (damage < 1) {
 					damage = 1;
@@ -502,19 +500,17 @@ namespace PromptQuest.Services {
 
 		/// <summary>Calculates the damage that the enemy does to the player, updates the game state, then returns a message.</summary>
 		public void EnemyAttack(GameState gameState) {
-			// Calculate damage as attack - defense.
-			int damage = gameState.Enemy.Attack - gameState.Player.DefenseStat - gameState.Player.DefenseBuff;
-			// Make the damage a range of 0.8-1.30x the damage picking a random number between these values of the damage
-			int lowerBound = (int)Math.Floor(damage * 0.8);
-			int upperBound = (int)Math.Ceiling(damage * 1.3);
-			// Generate a random number between the lower and upper bounds
+			// Make the damage a range of 0.8-1.30x the attack stat picking a random number between these values of the damage
+			int lowerBound = (int)Math.Floor(gameState.Enemy.Attack * 0.8);
+			int upperBound = (int)Math.Ceiling(gameState.Enemy.Attack * 1.3);
+			// Generate a random number between the lower and upper bounds and calculate damage
 			Random random = new Random();
-			damage = random.Next(lowerBound, upperBound + 1);
+			int damage = random.Next(lowerBound, upperBound + 1) - gameState.Player.DefenseStat - gameState.Player.DefenseBuff; ;
 			if (gameState.Player.DefenseBuff>0) {
 				gameState.AddMessage("Your shield blocked incoming damage");
 			}
 			gameState.Player.DefenseBuff = 0;//reset the defense buff after blocking one hit
-																			 // If attack is less than one make it one.
+			// If attack is less than one make it one.
 			if(damage < 1)
 				damage = 1;
 			// If the player has Spiked Bulwark, deal damage to the enemy.
