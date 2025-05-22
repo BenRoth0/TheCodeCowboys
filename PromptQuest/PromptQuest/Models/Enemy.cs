@@ -12,8 +12,6 @@ namespace PromptQuest.Models
 		public int CurrentHealth { get; set; } = 30;
 		public int Attack { get; set; } = 8;
 		public int Defense { get; set; } = 3;
-		public bool IsElite { get; set; } = false;
-		public bool IsBoss { get; set; } = false;
 		public StatusEffect StatusEffects { get; set; } = StatusEffect.None;
 	}
 }

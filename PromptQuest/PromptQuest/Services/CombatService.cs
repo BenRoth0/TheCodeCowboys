@@ -742,7 +742,6 @@ namespace PromptQuest.Services {
 				elite.CurrentHealth = 35;
 				elite.Attack = 12;
 				elite.Defense = 5;
-				elite.IsElite = true;
 				return elite;
 			}
 			else if(gameState.Floor == 2) {
@@ -753,7 +752,6 @@ namespace PromptQuest.Services {
 				elite.CurrentHealth = 40;
 				elite.Attack = 15;
 				elite.Defense = 8;
-				elite.IsElite = true;
 				return elite;
 			}
 			else {
@@ -764,7 +762,6 @@ namespace PromptQuest.Services {
 				elite.CurrentHealth = 50;
 				elite.Attack = 18;
 				elite.Defense = 13;
-				elite.IsElite = true;
 				return elite;
 			}
 		}
@@ -778,7 +775,6 @@ namespace PromptQuest.Services {
 				boss.CurrentHealth = 40;
 				boss.Attack = 12;
 				boss.Defense = 3;
-				boss.IsBoss = true;
 				return boss;
 			}
 			else if(gameState.Floor == 2) {
@@ -789,7 +785,6 @@ namespace PromptQuest.Services {
 				boss.CurrentHealth = 55;
 				boss.Attack = 15;
 				boss.Defense = 7;
-				boss.IsBoss = true;
 				return boss;
 			}
 			else {
@@ -800,7 +795,6 @@ namespace PromptQuest.Services {
 				boss.CurrentHealth = 70;
 				boss.Attack = 20;
 				boss.Defense = 14;
-				boss.IsBoss = true;
 				return boss;
 			}
 		}
