@@ -42,12 +42,6 @@ namespace PromptQuest.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsBoss")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsElite")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MaxHealth")
                         .HasColumnType("int");
 
