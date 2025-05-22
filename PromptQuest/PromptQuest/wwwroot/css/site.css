@@ -29,7 +29,7 @@
 	height: 100vh;
 }
 
-.container-fluid {max-width: 100vw; max-height: 100vh;}
+.container-fluid {max-width: 100vw; max-height: 100vh; overflow: hidden;}
 
 /* Order modules based on screen orientation */
 .landscape-layout #header { order: 1; height: 10%; display: flex; justify-content: space-between; padding-top: 5px;}
@@ -295,12 +295,13 @@ body {
 	overflow-y: visible; /* Enable vertical scrolling if content overflows */
 	overflow-x: hidden; /* Hide horizontal scrolling (optional) */
 	gap: 10px; /* Space between squares */
+	padding: 10px;
 }
 
 /* Inventory slots */
 .pq-inventory-slot {
-	width: 12vmin; /* Fixed width */
-	height: 12vmin; /* Fixed height */
+	width: 4rem; /* Fixed width */
+	height: 4rem; /* Fixed height */
 	border: var(--pq-border);
 	border-radius: 10px;
 	/* Flexbox for centering */

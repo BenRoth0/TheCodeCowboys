@@ -1,0 +1,308 @@
+﻿/* Inventory Layout Styles */
+#inventory.landscape-layout {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+#inventory.portrait-layout {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+/* Header (Close Button) */
+.landscape-layout #inventory-header {
+	order: 1;
+	width: 100%;
+	height: 8%;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.portrait-layout #inventory-header {
+	order: 1;
+	width: 100%;
+	height: 6%;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+/* Player Info and Stats Section */
+.landscape-layout #inventory-player-section {
+	order: 2;
+	width: 25%;
+	max-width: 25%;
+	height: 90%;
+	display: flex;
+	flex-direction: column;
+}
+
+.portrait-layout #inventory-player-section {
+	order: 2;
+	width: 100%;
+	height: 25%;
+	max-height: 25%;
+	display: flex;
+	flex-direction: row;
+	gap: 2%;
+}
+
+.landscape-layout #inventory-player-info {
+	max-height: 45%;
+	width: 100%;
+	overflow: hidden;
+}
+
+.landscape-layout #inventory-stats {
+	max-height: 46%;
+	width: 100%;
+	flex-direction: column;
+}
+
+.portrait-layout #inventory-player-info {
+	height: 100%;
+	width: 48%;
+	overflow: hidden;
+}
+
+.portrait-layout #inventory-stats {
+	height: 90%;
+	width: 48%;
+	flex-direction: row;
+}
+
+/* Main Inventory */
+.landscape-layout #inventory-main {
+	order: 4;
+	width: 68%;
+	height: 86%;
+}
+
+.portrait-layout #inventory-main {
+	order: 3;
+	width: 100%;
+	max-width: 100%;
+	height: 66%;
+	max-height: 66%;
+	margin-top: 2%;
+}
+
+/* Equipment Grid Container */
+.landscape-layout #equipment-grid-container {
+	position: absolute;
+	top: 5%;
+	left: 5%;
+	width: 35%;
+	height: 50%;
+	display: grid;
+	grid-template-columns: 25% 25% 25%;
+	grid-template-rows: 25% 25% 25%;
+	gap: .5%;
+	grid-template-areas:
+		". helm ."
+		"weapon chest ."
+		"equip-btn legs ."
+		". boots .";
+}
+
+.portrait-layout #equipment-grid-container {
+	position: absolute;
+	bottom: 0%;
+	right: 5%;
+	width: 30%;
+	height: 50%;
+	display: grid;
+	grid-template-columns: 40% 40%;
+	grid-template-rows: 20% 20% 20% 20%;
+	gap: 2.5%;
+	grid-column-gap: 10%;
+	grid-template-areas:
+		". helm"
+		"weapon chest"
+		"equip-btn legs"
+		". boots";
+}
+
+/* Equipment Slots - Grid Layout */
+.landscape-layout #equipped-weapon,
+.portrait-layout #equipped-weapon {
+	grid-area: weapon;
+	width: 100%;
+	height: 100%;
+	position: static;
+}
+
+.landscape-layout #equipped-helm,
+.portrait-layout #equipped-helm {
+	grid-area: helm;
+	width: 100%;
+	height: 100%;
+	position: static;
+}
+
+.landscape-layout #equipped-chest,
+.portrait-layout #equipped-chest {
+	grid-area: chest;
+	width: 100%;
+	height: 100%;
+	position: static;
+}
+
+.landscape-layout #equipped-legs,
+.portrait-layout #equipped-legs {
+	grid-area: legs;
+	width: 100%;
+	height: 100%;
+	position: static;
+}
+
+.landscape-layout #equipped-boots,
+.portrait-layout #equipped-boots {
+	grid-area: boots;
+	width: 100%;
+	height: 100%;
+	position: static;
+}
+
+.landscape-layout #equip-btn,
+.portrait-layout #equip-btn {
+	grid-area: equip-btn;
+	width: 100%;
+	height: 80%;
+	align-self: center;
+	position: static;
+	font-size: 0.8rem;
+}
+
+/* Item Details Container */
+.landscape-layout #item-details-container {
+	top: 3%;
+	right: 3%;
+	width: 70%;
+	height: 60%;
+	position: absolute;
+}
+
+.portrait-layout #item-details-container {
+	top: 2.5%;
+	right: 5%;
+	width: 100%;
+	height: 40%;
+}
+
+/* Inventory Grid */
+.landscape-layout #inventory-grid {
+	bottom: 0%;
+	left: 0%;
+	width: 100%;
+	height: 35%;
+}
+
+.portrait-layout #inventory-grid {
+	bottom: 6%;
+	left: 2.5%;
+	width: 60%;
+	height: 46%;
+}
+
+/* Portrait layout specific adjustments */
+.portrait-layout #inventory-player-info,
+.portrait-layout #inventory-stats {
+	display: inline-block;
+	vertical-align: top;
+}
+
+/* Main flexbox layout */
+#item-details {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	gap: 2%;
+	padding: 2%;
+	box-sizing: border-box;
+	display: flex !important;
+	flex-direction: row;
+	justify-content: start;
+}
+
+/* Left side - Image container */
+.image-container {
+	width: fit-content;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#item-image {
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	object-fit: contain;
+}
+
+/* Right side - Text and stats container */
+.content-container {
+	width: 58%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+/* Top section with title and text */
+.text-section {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 1%;
+}
+
+#item-name {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 2%;
+}
+
+#item-type {
+	font-size: 1.2rem;
+	opacity: 0.8;
+	margin-bottom: 2%;
+}
+
+#item-passive {
+	font-size: 1rem;
+	margin-bottom: 2%;
+}
+
+#item-status-effects {
+	font-size: 1.8vmin;
+	flex: 1;
+}
+
+/* Bottom section with stats */
+.stats-section {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 15px;
+	margin-top: auto;
+	padding-top: 2%;
+}
+
+.stat-item {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.stat-icon {
+	height: 3rem;
+	width: auto;
+}
+
+.stat-value {
+	font-size: 2rem;
+	min-width: 30px;
+}
