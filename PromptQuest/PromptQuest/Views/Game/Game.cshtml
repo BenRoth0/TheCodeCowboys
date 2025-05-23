@@ -129,7 +129,7 @@
 	<div class="row organizer">
 		<!-- Close Button -->
 		<div class="col-12" id="inventory-header">
-			<button class="pq-button" id="close-inventory-btn" style="height: 100%; width: fit-content; margin-left: auto; display: block;">Close</button>
+			<button class="pq-button px-5" id="close-inventory-btn" style="height: 100%; width: fit-content; margin-left: auto; display: block;">Close</button>
 		</div>
 		<!-- Player Info and Stats Section -->
 		<div class="col" id="inventory-player-section">
@@ -170,7 +170,7 @@
 		</div>
 		<!-- Main Inventory Section -->
 		<div class="col" id="inventory-main">
-			<div class="position-relative pq-border" style="height: 100%; width: 100%; padding: 1vmin;">
+			<div class="pq-border" id="inventory-container" style="height: 100%; width: 100%; padding: 1vmin;">
 
 				<!-- Equipment Slots -->
 				<div id="equipment-grid-container">
@@ -201,7 +201,7 @@
 							</div>
 
 							<!-- Stats section -->
-							<div class="stats-section" style="display: inherit;">
+							<div class="stats-section" >
 								<div class="stat-item">
 									<img id="shield-icon" src="~/images/ShieldIcon.png" alt="Defense" class="stat-icon">
 									<div id="item-defense" class="pq-font stat-value">+2</div>
@@ -217,7 +217,7 @@
 				</div>
 
 				<!-- Inventory Grid -->
-				<div class="pq-inventory-display" id="inventory-grid" style="position: absolute;">
+				<div class="pq-inventory-display" id="inventory-grid" style="">
 					@for(int i = 1;i <= 20;i++) {
 						<div class="pq-inventory-slot" id="inventory-slot-@i"></div>
 					}

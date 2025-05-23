@@ -269,55 +269,6 @@ body {
 	transform: translateY(-50%); /* Shifts it by half its width to achieve true vertical centering */
 }
 
-/* Custom Modal window */
-.pq-modal-fullscreen {
-	position: fixed;
-	top: 0; /* Default position */
-	left: 0;
-	height: 100%;
-	width: 100%; /* Defaults to Fullscreen */
-	background-color: var(--background-color-primary);
-	z-index: 1050; /* Ensure it's above other elements */
-	padding: 2vmin;
-}
-
-.pq-tab-window {
-	position: absolute;
-	background-color: var(--background-color-primary);
-	padding: 2vmin;
-}
-
-/* A flex display that will automatically stack inventory slots based on screen size */
-.pq-inventory-display {
-	display: flex; /* Use flexbox for layout */
-	flex-wrap: wrap; /* Allow items to wrap to the next line */
-	justify-content: center; /* Center items horizontally */
-	overflow-y: visible; /* Enable vertical scrolling if content overflows */
-	overflow-x: hidden; /* Hide horizontal scrolling (optional) */
-	gap: 10px; /* Space between squares */
-	padding: 10px;
-}
-
-/* Inventory slots */
-.pq-inventory-slot {
-	width: 4rem; /* Fixed width */
-	height: 4rem; /* Fixed height */
-	border: var(--pq-border);
-	border-radius: 10px;
-	/* Flexbox for centering */
-	display: flex;
-	justify-content: center; /* Centers horizontally */
-	align-items: center; /* Centers vertically */
-}
-
-	/* Inventory slots */
-	.pq-inventory-slot > img {
-		max-width: 100%; /* Prevents the image from overflowing */
-		max-height: 100%; /* Keeps the image within the slot */
-		object-fit: contain; /* Ensures the image maintains aspect ratio */
-		border-radius: 10px;
-	}
-
 /*---- Reusable Player Displays ------------------------------------------------------------------*/
 
 .player-image {
