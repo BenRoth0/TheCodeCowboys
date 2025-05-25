@@ -24,7 +24,7 @@
 .portrait-layout #inventory-header {
 	order: 1;
 	width: 100%;
-	height: 6%;
+	height: 7%;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
@@ -43,8 +43,7 @@
 .portrait-layout #inventory-player-section {
 	order: 2;
 	width: 100%;
-	height: 25%;
-	max-height: 25%;
+	max-height: 20%;
 	display: flex;
 	flex-direction: row;
 	gap: 2%;
@@ -64,13 +63,14 @@
 
 .portrait-layout #inventory-player-info {
 	height: 100%;
-	width: 48%;
+	width: auto;
 	overflow: hidden;
 }
 
 .portrait-layout #inventory-stats {
-	height: 90%;
-	width: 48%;
+	height: 100%;
+	flex: 1;
+/*	max-width: 60%;*/
 	flex-direction: row;
 }
 
@@ -87,32 +87,38 @@
 	order: 3;
 	width: 100%;
 	max-width: 100%;
-	height: 66%;
-	max-height: 66%;
-	margin-top: 2%;
+	height: 70%;
+	max-height: 70%;
+	padding: 1rem;
 }
 
 #inventory-container {
+	height: 100%;
+	width: 100%;
 	display: flex;
 	flex-direction: inherit;
 	flex-wrap: wrap;
-	gap: 1vmin;
+/*	gap: 1vmin;*/
 	align-content: flex-start;
+	overflow: auto;
 }
 
 /* Equipment Grid Container - Modified for flexbox */
 .landscape-layout #equipment-grid-container {
-	padding: 1.5rem;
+	padding: 1rem;
+	/*	align-content: center;*/
 	order: 3;
-	width: 40%;
+	width: 35%;
+	max-width: 14rem;
 	height: 100%;
+	max-height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden !important;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(4, 1fr);
+	grid-template-columns: 50% 50%;
+	grid-auto-rows: min-content;
 	/*grid-auto-flow: column;*/ /* Forces items to flow column-wise */
-	gap: 1%;
+	gap: 1.5%;
 	/*grid-column-gap: 5%;*/
 	grid-template-areas:
 		". helm"
@@ -122,18 +128,17 @@
 }
 
 .portrait-layout #equipment-grid-container {
-	padding: 1rem;
+	padding: 2rem;
 	order: 3;
-	width: 50%;
-	height: 65%;
+	width: 45%;
+	max-width: 14rem;
+	height: fit-content;
+	max-height: 65%;
 	overflow-y: auto;
 	overflow-x: hidden !important;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: 50% 50%;
 	grid-template-rows: repeat(4, 1fr);
-	/*grid-auto-flow: column;*/ /* Forces items to flow column-wise */
-	gap: 1%;
-	/*grid-column-gap: 5%;*/
 	grid-template-areas:
 		". helm"
 		"weapon chest"
@@ -145,23 +150,27 @@
 .landscape-layout #equipment-grid-container > * {
 	aspect-ratio: 1;
 	width: 100%;
+	max-width: 100%;
 	height: auto;
+	max-height: 100%;
 	/* Center the content if needed */
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: .8rem;
+	font-size: .9rem;
 }
 
 .portrait-layout #equipment-grid-container > * {
 	aspect-ratio: 1;
 	width: 100%;
+	max-width: 100%;
 	height: auto;
+	max-height: 100%;
 	/* Center the content if needed */
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 1rem;
+	font-size: .8rem;
 }
 
 /* Equipment Slots - Grid Layout */
@@ -194,7 +203,7 @@
 .landscape-layout #item-details-container {
 	order: 1;
 	width: 60%;
-/*	min-width: 300px;*/
+	min-width: 20rem;
 	height: 55%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -219,7 +228,7 @@
 
 .portrait-layout #inventory-grid {
 	order: 2;
-	width: 45%;
+	flex: 1;
 	height: 65%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -264,6 +273,7 @@
 
 /* Right side - Text and stats container */
 .content-container {
+	display: inherit;
 	width: 58%;
 	display: flex;
 	flex-direction: column;
@@ -279,24 +289,22 @@
 }
 
 #item-name {
-	font-size: 1.5rem;
 	font-weight: bold;
-	margin-bottom: 2%;
+	margin-bottom: 2px;
+	line-height: 1;
 }
 
 #item-type {
-	font-size: 1.2rem;
 	opacity: 0.8;
-	margin-bottom: 2%;
+	margin-bottom: 2px;
 }
 
 #item-passive {
-	font-size: 1rem;
-	margin-bottom: 2%;
+	margin-bottom: 2px;
 }
 
 #item-status-effects {
-	font-size: 1.8vmin;
+/*	font-size: 1.8vmin;*/
 	flex: 1;
 }
 
@@ -333,15 +341,15 @@
 	justify-content: center; /* Center items horizontally */
 	overflow-y: visible; /* Enable vertical scrolling if content overflows */
 	overflow-x: hidden; /* Hide horizontal scrolling (optional) */
-	gap: 10px; /* Space between squares */
-	padding: 10px;
+	gap: 1rem; /* Space between squares */
+	padding: 1rem;
 }
 
 /* Inventory slots */
 .pq-inventory-slot {
 	width: 5rem; /* Fixed width */
 	height: 5rem; /* Fixed height */
-	border: var(--pq-border);
+	border: 1px solid white;
 	border-radius: 10px;
 	/* Flexbox for centering */
 	display: flex;

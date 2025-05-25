@@ -68,7 +68,7 @@
 		</div>
 
 		<!-- Action Buttons Module -->
-		<div class="col debug-box d-flex" id="buttons">
+		<div class="col" id="buttons">
 			<div class="btn-stack" id="action-button-display">
 				<button class="pq-button" id="attack-btn">Attack</button>
 				<button class="pq-button" id="health-potion-btn">Use Potion</button>
@@ -125,40 +125,40 @@
 </div>
 
 <!-- Inventory Window -->
-<div class="container-fluid" id="inventory" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--background-color-primary); z-index: 1050; padding: 2vmin;">
+<div class="container-fluid" id="inventory" style="visibility: hidden; display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--background-color-primary); z-index: 950; padding: 1rem;">
 	<div class="row organizer">
 		<!-- Close Button -->
 		<div class="col-12" id="inventory-header">
-			<button class="pq-button px-5" id="close-inventory-btn" style="height: 100%; width: fit-content; margin-left: auto; display: block;">Close</button>
+			<button class="pq-button px-5 pq-font-small" id="close-inventory-btn" style="height: fit-content; width: fit-content; max-height: 100%; margin-left: auto; display: block;">Close</button>
 		</div>
 		<!-- Player Info and Stats Section -->
 		<div class="col" id="inventory-player-section">
 			<div id="inventory-player-info">
-				<div class="player-name name-text" style="height: 10%; width: 100%; max-width: 100%; max-height: 10%; line-height: 1; font-size: 1.5rem;"></div>
-				<img class="player-image pq-border" style="aspect-ratio: 1; height: 90%; width: auto; max-width: 100%; max-height: 90%;" src="~/images/LoadingImage.png" alt="Player Portrait" />
+				@* <div class="player-name name-text" style="height: 10%; width: 100%; max-width: 100%; max-height: 10%; line-height: 1; font-size: 1.5rem;"></div> *@
+				<img class="player-image pq-border" style="aspect-ratio: 1; height: 100%; width: auto; max-width: 100%;" src="~/images/LoadingImage.png" alt="Player Portrait" />
 			</div>
 
 			<div id="inventory-stats" style="flex-direction: column;">
-				<div class="stat-text" style="line-height: 1; font-size: 1.5rem;">Stats</div>
+				@* <div class="stat-text" style="line-height: 1; font-size: 1.5rem;">Stats</div> *@
 				<div class="position-relative pq-border" style="height: 100%; width: 100%; padding: 1vmin;display: flex; flex-direction: inherit;">
 
-					<div style="height: 15%; width: auto;">
-						<span class="stat-text" style="font-size: 1rem;">Health:</span>
-						<span class="player-hp stat-text" id="player-hp" style=""></span>
+					<div style="height: 0%; width: auto;">
+						@* <span class="stat-text" style="font-size: 1rem;">Health:</span> *@
+						<span class="player-hp stat-text" id="player-hp" style="display:none;"></span>
 						<span class="pq-font" id="player-passive" style="font-size: 0;">nothing yet</span>
 					</div>
 
-					<div style="height: 25%; width: auto;">
+					<div style="height: 30%; width: auto;">
 						<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="display: inline; height: 100%; width: auto;">
-						<span class="player-defense stat-text" id="player-defense" style="">0</span>
+						<span class="player-defense pq-font-large" id="player-defense" style="">0</span>
 					</div>
-					<div style="height: 25%; width: auto;">
+					<div style="height: 30%; width: auto;">
 						<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="height: 100%; width: auto;">
-						<span class="player-attack stat-text" id="player-attack" style="">0</span>
+						<span class="player-attack pq-font-large" id="player-attack" style="">0</span>
 					</div>
-					<div style="height: 25%; width: auto;">
+					<div style="height: 30%; width: auto;">
 						<img id="gold-image" src="~/images/GoldCoin.png" style="height: 100%; width: auto;" />
-						<span class="stat-text" id="gold-display" style=""></span>
+						<span class="pq-font-large" id="gold-display" style=""></span>
 					</div>
 					<div style="top:20%; left:35%; height: 80%; width:65%; overflow-y: auto;">
 						<span class="ability-text" id="player-passive">nothing yet</span>
@@ -170,7 +170,7 @@
 		</div>
 		<!-- Main Inventory Section -->
 		<div class="col" id="inventory-main">
-			<div class="pq-border" id="inventory-container" style="height: 100%; width: 100%; padding: 1vmin;">
+			<div class="pq-border" id="inventory-container" style="height: 100%; width: 100%;">
 
 				<!-- Equipment Slots -->
 				<div id="equipment-grid-container">
@@ -183,7 +183,7 @@
 				</div>
 
 				<!-- Item Details Display -->
-				<div class="pq-border" id="item-details-container">
+				<div class="" id="item-details-container">
 					<div id="item-details">
 						<!-- Left side - Image -->
 						<div class="image-container">
@@ -194,10 +194,10 @@
 						<div class="content-container">
 							<!-- Text section -->
 							<div class="text-section">
-								<div id="item-name" class="pq-font"></div>
-								<div id="item-type" class="pq-font"></div>
-								<div id="item-passive" class="pq-font"></div>
-								<div id="item-status-effects" class="pq-font"></div>
+								<div id="item-name" class="pq-font-large"></div>
+								<div id="item-type" class="pq-font-normal"></div>
+								<div id="item-passive" class="pq-font-small"></div>
+								<div id="item-status-effects" class="pq-font-small"></div>
 							</div>
 
 							<!-- Stats section -->
@@ -228,10 +228,18 @@
 </div>
 
 <!-- Overlay to make the background behind window's dark and not clickable -->
-<div id="overlay" style="display: none;"></div>
+<div id="overlay" style="visibility: hidden;"></div>
+
+<!-- Game Menu -->
+<div class="pq-center-element BackgroundColorDark" id="menu">
+	<button class="pq-button" id="continue-btn" style="margin-bottom:2vmin; width: 100%;">Continue</button>
+	<button class="pq-button" id="tutorial-btn" style="margin-bottom:2vmin; width: 100%;">View Tutorial</button>
+	<button class="pq-button" id="options-btn" style="margin-bottom:2vmin; width: 100%;">Options</button>
+	<button class="pq-button" id="quit-btn" style="margin-bottom:2vmin; width: 100%;">Return to Main Menu</button>
+</div>
 
 <!-- Map -->
-<div id="map" class="pq-container" style="display: none; position:absolute; top:5%; left:5%; width:90%; height: 90%; border: 3px solid black;">
+<div id="map" class="pq-container" style="visibility: hidden; display: block; position:absolute; top:5%; left:5%; width:90%; height: 90%; border: 3px solid black;">
 	<!-- Map Background -->
 
 	<img src="~/images/BackgroundMap.png" alt="Alternate Text" style="height:100%;width:100%;" />
@@ -276,16 +284,6 @@
 	</div>
 </div>
 
-<!-- Game Menu -->
-<div id="menu" class="pq-container BackgroundColorDark" style="display: none;">
-	<div class="pq-center-element" id="" style="top: 50%; left: 50%; height: fit-content; width: fit-content; max-height: 100%; max-width: 100%">
-		<button class="pq-button" id="continue-btn" style="margin-bottom:2vmin; width: 100%;">Continue</button>
-		<button class="pq-button" id="tutorial-btn" style="margin-bottom:2vmin; width: 100%;">View Tutorial</button>
-		<button class="pq-button" id="options-btn" style="margin-bottom:2vmin; width: 100%;">Options</button>
-		<button class="pq-button" id="quit-btn" style="margin-bottom:2vmin; width: 100%;">Return to Main Menu</button>
-	</div>
-</div>
-
 <!-- Tutorial Modal -->
 <div class="modal fade" id="tutorial-popup" tabindex="-1" aria-labelledby="tutorialModalLabel" aria-hidden="true" style="display:none;">
 	<div class="modal-dialog pq-border pq-font text-light">
@@ -312,7 +310,8 @@
 
 <script>
 	function adjustLayout() {
-			const isPortrait = (window.innerHeight / window.innerWidth > .73);
+			// const isPortrait = (window.innerHeight / window.innerWidth > .73);
+			const isPortrait = (window.innerHeight / window.innerWidth > 1);
 			const containers = document.querySelectorAll('.organizer');
 
 			containers.forEach((container) => {

@@ -15,7 +15,7 @@ let floorBtn;
 //Client side state tracking variables
 let isMapOpen = false; //Keep track of whether or not the map is open so we don't refresh it constantly.
 let isInventoryOpen = false; //Keep track of whether or not the inventory is open so we don't refresh it constantly.
-let selectedItemIndex = -1; //No item selected on load.
+let selectedItemIndex = 0; //No item selected on load.
 //Cached map object that is defined server side so we grab it on load and then it never needs to be updated.
 let mapDef;
 let legendVisible = true;
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	equippedChestSlot = document.getElementById("equipped-chest");
 	equippedLegsSlot = document.getElementById("equipped-legs");
 	equippedBootsSlot = document.getElementById("equipped-boots");
-	itemDetails = document.getElementById("item-details");
+	itemDetails = document.getElementById("item-details-container");
 	//Grab all the buttons that need to be cached from the DOM on load.
 	equipBtn = document.getElementById("equip-btn");
 	floorBtn = document.getElementById("floor-btn");
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("continue-btn").addEventListener("click", () => { overlay.syncVisibility(false); menu.syncVisibility(false); }); //Hide overlay and menu.
 	document.getElementById("quit-btn").addEventListener("click", () => {window.location.replace("/Home"); }); // Redirect to /Home and clear history
 	document.getElementById("open-inventory-btn").addEventListener("click", () => { overlay.syncVisibility(true); inventory.syncVisibility(true); isInventoryOpen = true; refreshInventory(); }); 
-	document.getElementById("close-inventory-btn").addEventListener("click", () => { overlay.syncVisibility(false); inventory.syncVisibility(false); isInventoryOpen = false; });//Force menu to hide on click.
+	document.getElementById("close-inventory-btn").addEventListener("click", () => { overlay.syncVisibility(false); inventory.syncVisibility(false); itemDetails.syncVisibility(false); isInventoryOpen = false; });//Force menu to hide on click.
 	document.getElementById("open-map-btn").addEventListener("click", () => { overlay.syncVisibility(true); map.syncVisibility(true); isMapOpen = true;  refreshMap(); });//Set tab and refresh menu
 	document.getElementById("close-map-btn").addEventListener("click", () => { overlay.syncVisibility(false); map.syncVisibility(false); isMapOpen = false; });//Set tab and refresh menu
 	document.getElementById("legend").addEventListener("click", () => { showHideLegend(); });//toggle the legend display
@@ -83,6 +83,7 @@ function refreshInventory() {
 			selectItem(items[i], i);
 		});
 		if (i == selectedItemIndex) {
+			selectItem(items[i], i);
 			updateEquipButton(items[i]);
 		}
 	}

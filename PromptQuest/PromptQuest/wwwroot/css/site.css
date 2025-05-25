@@ -40,13 +40,13 @@
 .landscape-layout .btn-stack {width: 100%; max-height: 100%; flex-direction: column; align-self: center;}
 .landscape-layout .btn-stack > * {width: 100%; height: fit-content; margin-bottom:5%; padding-left: 5%; padding-right: 5%; font-size: 1rem; text-overflow: inherit; }
 
-.portrait-layout #header { order: 1; width: 100%; height: 5%; display: flex; justify-content: space-between; padding-top: 5px;}
-.portrait-layout #enemy { order: 2; width: 100%; height: 35%; padding: 10px}
+.portrait-layout #header { order: 1; width: 100%; height: 8%; display: flex; justify-content: space-between; padding-top: 5px;}
+.portrait-layout #enemy { order: 2; width: 100%; height: 33%; padding: 10px}
 .portrait-layout #dialog { order: 3; width: 100%; height: 15%; padding: 15px;}
-.portrait-layout #player { order: 4; width: 100%; height: 35%; padding: 10px}
-.portrait-layout #buttons { order: 5; width: 100%; height: 10%; display: flex; align-items: center;}
-.portrait-layout .btn-stack {width: 100%; display: flex; flex-direction: row; justify-content: space-evenly; align-content: center;}
-.portrait-layout .btn-stack > * { width: 30%; height: fit-content; max-height: 100%; margin: 0; font-size: 1rem;}
+.portrait-layout #player { order: 4; width: 100%; height: 33%; padding: 10px}
+.portrait-layout #buttons { order: 5; width: 100%; max-height: 6%; display: flex !important; align-items: center; justify-content: space-around;}
+.portrait-layout .btn-stack {width: 100%; height: 100%; display: inherit; flex-direction: row; justify-content: space-evenly; align-content: center;}
+.portrait-layout .btn-stack > * {width: 30%; max-width: 12rem; padding-left: 20px; padding-right: 20px; font-size: 1rem;}
 
 #enemy-display {
 	justify-self: end;
@@ -82,11 +82,6 @@
 	padding-right: 5%;
 	font-size: 1rem;
 	line-height: 1;
-}
-
-.portrait-layout #menu {
-	width: 90%;
-	height: 75%;
 }
 
 .landscape-layout #dialog-box {
@@ -164,16 +159,18 @@ body {
 }
 
 #menu {
-	display: none;  /*Initially hidden*/ 
-	position: absolute;
-	top: 25%;
-	left: 25%;
-	width: 50%;
-	height: 50%;
-	border: 3px solid white;
-/*	border-radius: 50px;*/
-	background-color: var(--background-color-primary);  /*Menu color */
-	z-index: 1000;  /*Ensures it's above everything. Nothing should ever be in front of the menu */
+	visibility: hidden; /*Initially hidden*/
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: fit-content;
+	height: fit-content;
+	align-content: center;
+	padding: 3rem;
+	border: 2px solid white;
+	border-radius: 1rem;
+	background-color: var(--background-color-primary); /*Menu color */
+	z-index: 1000; /*Ensures it's above everything. Nothing should ever be in front of the menu */
 }
 
 /* Style for map container */
@@ -491,6 +488,24 @@ button:disabled {
 
 .pq-font {
 	font-size: 1rem;
+	color: white;
+	font-style: normal;
+}
+
+.pq-font-large {
+	font-size: 1.5rem;
+	color: white;
+	font-style: normal;
+}
+
+.pq-font-normal {
+	font-size: 1rem;
+	color: white;
+	font-style: normal;
+}
+
+.pq-font-small {
+	font-size: .8rem;
 	color: white;
 	font-style: normal;
 }
