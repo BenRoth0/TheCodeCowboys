@@ -15,10 +15,12 @@
 .landscape-layout #inventory-header {
 	order: 1;
 	width: 100%;
-	height: 8%;
+	height: 10%;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+	padding-bottom: 5px;
+	padding-top: 5px;
 }
 
 .portrait-layout #inventory-header {
@@ -28,6 +30,8 @@
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+	padding-bottom: 5px;
+	padding-top: 5px;
 }
 
 /* Player Info and Stats Section */
@@ -35,9 +39,11 @@
 	order: 2;
 	width: 25%;
 	max-width: 25%;
-	height: 90%;
+	max-height: 90%;
+	padding-right: 0;
 	display: flex;
 	flex-direction: column;
+	gap: .5rem;
 }
 
 .portrait-layout #inventory-player-section {
@@ -50,15 +56,16 @@
 }
 
 .landscape-layout #inventory-player-info {
-	max-height: 45%;
+	max-height: 60%;
 	width: 100%;
 	overflow: hidden;
 }
 
 .landscape-layout #inventory-stats {
-	max-height: 46%;
-	width: 100%;
+	flex: 1;
+	max-width: 100%;
 	flex-direction: column;
+	overflow: hidden;
 }
 
 .portrait-layout #inventory-player-info {
@@ -77,10 +84,9 @@
 /* Main Inventory */
 .landscape-layout #inventory-main {
 	order: 4;
-	width: 68%;
-	height: 86%;
+	max-width: 85%;
+	height: 90%;
 	flex-direction: column;
-	padding: 1.5rem;
 }
 
 .portrait-layout #inventory-main {
@@ -88,7 +94,7 @@
 	width: 100%;
 	max-width: 100%;
 	height: 70%;
-	max-height: 70%;
+	max-height: 74%;
 	padding: 1rem;
 }
 
@@ -98,16 +104,17 @@
 	display: flex;
 	flex-direction: inherit;
 	flex-wrap: wrap;
+	justify-content: space-evenly;
 /*	gap: 1vmin;*/
-	align-content: flex-start;
+	align-content: space-evenly;
 	overflow: auto;
 }
 
 /* Equipment Grid Container - Modified for flexbox */
 .landscape-layout #equipment-grid-container {
 	padding: 1rem;
-	/*	align-content: center;*/
-	order: 3;
+	align-content: center;
+	order: 1;
 	width: 35%;
 	max-width: 14rem;
 	height: 100%;
@@ -201,9 +208,9 @@
 
 /* Item Details Container - Modified for flexbox */
 .landscape-layout #item-details-container {
-	order: 1;
-	width: 60%;
-	min-width: 20rem;
+	order: 2;
+	width: 65%;
+/*	min-width: 20rem;*/
 	height: 55%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -219,8 +226,8 @@
 
 /* Inventory Grid - Modified for flexbox */
 .landscape-layout #inventory-grid {
-	order: 2;
-	width: 60%;
+	order: 3;
+	width: 65%;
 	height: 43%;
 	overflow-y: auto;
 	overflow-x: hidden;

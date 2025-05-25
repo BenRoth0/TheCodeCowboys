@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	floorBtn.addEventListener("click", async () => {
 		await executePlayerAction('move', 1);
 		let data = await sendGetRequest(`/Game/GetBackground?floor=${gameState.floor}`);
-		document.getElementById("main-background-image").src = data;
+		document.getElementById("game-container").style.backgroundImage = data;
 	});
 	// Fetch map from the server
 	mapDef = await sendGetRequest("/Game/GetMap");
@@ -111,19 +111,34 @@ async function refreshMap() {
 	floorBtn.syncButtonState(gameState.playerLocation == 18 && gameState.isLocationComplete);
 	// Store node elements for edge calculations
 	let nodeElements = [];
+	//Check if we are in landscape mode or portrait mode
+	let isPortraitMode = document.querySelectorAll('.portrait-layout').length > 0;
+	//Get max node height so we can scale the map properly.
+	let maxNodeHeight = Math.max(...mapDef.listMapNodes.map(mapNode => mapNode.nodeHeight)) + 1;
+	//Get max node distance so we can scale the map properly.
+	let maxNodeDistance = Math.max(...mapDef.listMapNodes.map(mapNode => mapNode.nodeDistance));
+	//Create some units based on the max values.
+	let heightUnit = 100 / maxNodeHeight;
+	let distanceUnit = 100 / maxNodeDistance;
 	// Draw map nodes
 	mapDef.listMapNodes.forEach((node, index) => {
 		const nodeElement = document.createElement("button");
 		nodeElement.className = "map-node";
 		nodeElement.setAttribute("data-node-id", node.mapNodeId);
+		nodeElement.style.position = "absolute";
 
 		// Set position dynamically
-		if (node.nodeHeight) {
-			nodeElement.style.position = "absolute";
-			nodeElement.style.top = `${(node.nodeHeight - 2) * 30}%`;
+		let y = (node.nodeHeight) * heightUnit;
+		let x = (node.nodeDistance-1) * distanceUnit;
+		if (isPortraitMode) {
+			//We're in portrait mode so x is top and y is left
+			nodeElement.style.bottom = x + '%';
+			nodeElement.style.left = y + '%';
 		}
-		if (node.nodeDistance) {
-			nodeElement.style.left = `${node.nodeDistance * 9}%`;
+		else {
+			//We're in landscape mode so y is top and x is left
+			nodeElement.style.top = y + '%';
+			nodeElement.style.left = x + '%';
 		}
 		// Append node and store it for edge calculations
 		mapContainer.appendChild(nodeElement);

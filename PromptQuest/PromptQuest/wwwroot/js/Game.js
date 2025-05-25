@@ -257,7 +257,7 @@ function refreshShop() {
 		const btn = document.createElement("button");
 		btn.textContent = "Buy " + item.name + " for " + item.price + " gold?";
 		btn.className = "pq-button";
-		btn.style = "margin-bottom:2vmin; width: 100%;";
+		btn.style = "width: 100%;";
 		// Attach the player action "purchase" with the item id as the value
 		btn.attachPlayerAction("purchase", () => item.id);
 		shopButtonDisplay.appendChild(btn);

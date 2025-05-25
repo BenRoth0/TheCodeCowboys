@@ -7,9 +7,9 @@
 	--background-color-primary: #171822;
 	--background-color-highlight: #282a3b;
 	--pq-font-color: white;
-	--pq-font-large: 3vmin;
-	--pq-font-normal: 2vmin;
-	--pq-font-small: 1vmin;
+	--pq-font-large: 1.5rem;
+	--pq-font-normal: .8rem;
+	--pq-font-small: 1rem;
 }
 
 /*------------------------- Layout -------------------------*/
@@ -20,6 +20,11 @@
 	flex-direction: row;
 	justify-content: space-between;
 	height: 100vh;
+	z-index: 2;
+}
+
+.landscape-layout * {
+	z-index: 2;
 }
 
 .portrait-layout {
@@ -27,26 +32,44 @@
 	flex-direction: column;
 	justify-content: start;
 	height: 100vh;
+	z-index: 2;
 }
 
-.container-fluid {max-width: 100vw; max-height: 100vh; overflow: hidden;}
+	.portrait-layout > * {
+		z-index: 2;
+	}
+
+.container-fluid {
+	max-width: 100vw;
+	max-height: 100vh;
+	overflow: hidden;
+	user-select: none;
+}
+
+#game-container {
+	background-image: url("/images/BackgroundGloomyDarkForest.png");
+	background-size: cover; /* Ensures full coverage */
+	background-position: center; /* Centers the image */
+	background-repeat: no-repeat; /* Prevents repetition */
+	z-index: 1;
+}
 
 /* Order modules based on screen orientation */
 .landscape-layout #header { order: 1; height: 10%; display: flex; justify-content: space-between; padding-top: 5px;}
 .landscape-layout #enemy { order: 5; height: 55%; width: min-content; min-width:fit-content; align-content: end;}
 .landscape-layout #dialog { order: 2; height: 35%; display: flex; justify-content:center; align-items: center;}
 .landscape-layout #player { order: 3; height: 55%; width: min-content; min-width:fit-content; align-content: end;}
-.landscape-layout #buttons { order: 4; height: 55%; width: 5rem; max-width: 400px; min-width: min-content;}
+.landscape-layout #buttons { order: 4; height: 55%; width: 5rem; max-width: 450px; min-width: min-content;}
 .landscape-layout .btn-stack {width: 100%; max-height: 100%; flex-direction: column; align-self: center;}
 .landscape-layout .btn-stack > * {width: 100%; height: fit-content; margin-bottom:5%; padding-left: 5%; padding-right: 5%; font-size: 1rem; text-overflow: inherit; }
 
-.portrait-layout #header { order: 1; width: 100%; height: 8%; display: flex; justify-content: space-between; padding-top: 5px;}
-.portrait-layout #enemy { order: 2; width: 100%; height: 33%; padding: 10px}
+.portrait-layout #header { order: 1; width: 100%; height: 6%; display: flex; justify-content: space-between; padding-top: 5px;}
+.portrait-layout #enemy { order: 2; width: 100%; height: 35%; padding: 10px}
 .portrait-layout #dialog { order: 3; width: 100%; height: 15%; padding: 15px;}
-.portrait-layout #player { order: 4; width: 100%; height: 33%; padding: 10px}
-.portrait-layout #buttons { order: 5; width: 100%; max-height: 6%; display: flex !important; align-items: center; justify-content: space-around;}
-.portrait-layout .btn-stack {width: 100%; height: 100%; display: inherit; flex-direction: row; justify-content: space-evenly; align-content: center;}
-.portrait-layout .btn-stack > * {width: 30%; max-width: 12rem; padding-left: 20px; padding-right: 20px; font-size: 1rem;}
+.portrait-layout #player { order: 4; width: 100%; height: 35%; padding: 10px; padding-bottom: 5px;}
+.portrait-layout #buttons { order: 5; width: 100%; max-height: 9%; display: flex !important; align-items: center; justify-content: space-around;}
+.portrait-layout .btn-stack {width: 100%; height: 100%; max-height: 100%; display: inherit; flex-direction: row; justify-content: space-evenly; padding:5px; }
+.portrait-layout .btn-stack > * {width: 35%; max-width: 13rem; height: 100%; padding-left: 20px; padding-right: 20px; padding-top: 5px; padding-bottom: 5px; font-size: 1rem; line-height: 1; margin: 0;}
 
 #enemy-display {
 	justify-self: end;
@@ -147,7 +170,7 @@ body {
 	}
 
 #overlay {
-	/*display: none;*/ /* Initially hidden */
+	visibility: hidden;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -159,11 +182,12 @@ body {
 }
 
 #menu {
-	visibility: hidden; /*Initially hidden*/
+	visibility: hidden;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	width: fit-content;
+	width: 75%;
+	max-width: 30rem;
 	height: fit-content;
 	align-content: center;
 	padding: 3rem;
@@ -181,24 +205,129 @@ body {
 	gap: 10px;
 }
 
+#bg-image {
+	visibility: visible;
+	position: absolute;
+	display: none;
+	visibility: visible;
+	position: absolute;
+	width: auto;
+	z-index: 1; /*Make sure it is behind everything but the background image*/
+	transform: translate(-50%, -10%);
+}
+
+.landscape-layout #bg-image {
+	bottom: 0;
+	left: 50%;
+	height: 60%;
+}
+
+.portrait-layout #bg-image {
+	top: 5%;
+	left: 50%;
+	height: 40%;
+}
+
+#floor-btn {
+	height: 3rem;
+	width: 4rem;
+	color: darkred;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	box-shadow: none;
+	cursor: pointer;
+	animation: flash 1.2s infinite;
+}
+
+	#floor-btn img {
+		width: 100%;
+		height: 100%;
+	}
+
+	@keyframes flash {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+#floor-btn:disabled {
+	cursor: not-allowed;
+	animation: none;
+}
+
+
 #map {
+	visibility: hidden;
 	z-index: 900; /* Ensures it's above the overlay */
+	display: flex;
+	justify-content: center;
+	position: fixed;
+	top: 5%;
+	left: 5%;
+	width: 90%;
+	height: 90%;
+	border: 3px solid black;
+	flex-direction: column;
+	padding: 1rem;
+	background-image: url('/images/BackgroundMap.png'); /* Path to image */
+	background-size: cover; /* Ensures full coverage */
+	background-position: center; /* Centers the image */
+	background-repeat: no-repeat; /* Prevents repetition */
+}
+
+	#map > div {
+		display: flex;
+		width: 100%;
+		height: fit-content;
+		user-select: none;
+	}
+
+#close-map-btn {
+	height: 50px;
+	width: 50px;
+	background: none;
+	border: none;
+	padding: 0;
+}
+
+	#close-map-btn img {
+		max-height: 100%;
+	}
+
+#map-container {
+	display: flex;
+	position: relative;
+	width: 100%;
+	height: auto;
+	flex-grow: 1;
+}
+
+#floor-tracker {
+	height: 100%;
+	width: fit-content;
+	color: black;
+	font-size: 3rem;
+	font-family: 'texture', sans-serif;
 }
 
 /* Style for map nodes */
 .map-node {
-	width: 80px;
-	height: 50px;
-	border: 4px dashed black;
+	width: 3rem;
+	min-width: 40px;
+	height: 2rem;
+	min-height: 20px;
+	border: .25rem dashed black;
 	border-radius: 50%;
 	background-color: transparent;
 	cursor: pointer;
 }
 
 @keyframes colorFlash {
-  0% { border-color: #FFBF00; } /* Amber */
-  50% { border-color: #FF8C00; } /* Darker Orange */
-  100% { border-color: #FFBF00; } /* Amber */
+	0% { border-color: #FFBF00; } /* Amber */
+	50% { border-color: #FF8C00; } /* Darker Orange */
+	100% { border-color: #FFBF00; } /* Amber */
 }
 
 .map-node-disabled {
@@ -210,11 +339,11 @@ body {
 }
 
 .map-node-completed {
-	border: 4px dashed darkgreen;
+	border: .25rem dashed darkgreen;
 }
 
 .map-node-current {
-	border: 4px dashed #EAAB11;
+	border: .25rem dashed #EAAB11;
 }
 
 /* Absolute positioning for map images */
@@ -226,7 +355,7 @@ body {
 	bottom: 50%;
 	left: 50%;
 	transform: translateX(-50%);
-	z-index: 998;
+	z-index: 998 !important;
 }
 
 /* Absolute positioning for player icon */
@@ -246,9 +375,10 @@ body {
 	position: absolute;
 	width: 50px;
 	height: 2px;
-	border-bottom: 4px dashed #000; /* Creates a true dashed line */
+	border-bottom: .25rem dashed #000; /* Creates a true dashed line */
 	background: none;
 	transform-origin: left center; /* Ensures rotation happens around the left edge */
+	z-index: 901 !important;
 }
 
 /* We have to have this here instead of in the view because it breaks the bracket coloring in the text editor for some reason. */

@@ -12,10 +12,9 @@
 <link rel="stylesheet" href="~/css/CreateCharacter.css">
 <link rel="stylesheet" href="~/css/Inventory.css">
 
-<div class="container-fluid">
+<div id="game-container" class="container-fluid">
 	<div class="row organizer">
-		<img src="" id="main-background-image" style="position: absolute; top: 50%; left: 50%; height: 100%; width: 100%; transform: translate(-50%, -50%); user-select: none;" />
-		<img class="bg-image" id="bg-image" src="~/images/campsite.png" style="display:none; position: absolute; top: 50%; left: 50%; height: 50%; width: auto; transform: translate(-50%, -10%);" />
+		<img class="bg-image" id="bg-image" src="~/images/campsite.png" />
 		<!-- Header Row -->
 		<div class="col-12" id="header">
 			<!-- Login Display -->
@@ -49,10 +48,10 @@
 				</div>
 				<div class="player-name name-text" style="top: 0%; left: 4%; height: 10%; width: 75%; "></div>
 				<img class="player-image pq-border" id="player-image" src="~/images/BlankImage.png" style="top: 10%; left: 3%; height: auto; width: 75%;" />
-				<button id="open-map-btn" class="map-btn" style="top: 69%; left: 5%; height: 10%; width: 10%; background: none; border: none; padding: 0; cursor: pointer;">
+				<button id="open-map-btn" class="map-btn" style="top: 65%; left: 5%; height: 15%; width: 15%; background: none; border: none; padding: 0; cursor: pointer;">
 					<img src="~/images/MapIcon.png" alt="Alternate Text" style="max-height:100%; " />
 				</button>
-				<button id="open-inventory-btn" class="map-btn" style="top: 57%; left: 5%; height: 10%; width: 10%; background: none; border: none; padding: 0; cursor: pointer;">
+				<button id="open-inventory-btn" class="map-btn" style="top: 47%; left: 5%; height: 15%; width: 15%; background: none; border: none; padding: 0; cursor: pointer;">
 					<img src="~/images/InventoryIcon.png" alt="Alternate Text" style="max-height:100%; " />
 				</button>
 				<div id="player-health-bar-container" class="pq-border" style="top: 10%; left: 81%; width: 5%; height: 55%; position: relative; overflow: hidden;">
@@ -60,10 +59,10 @@
 				</div>
 				<img class="player-potions-icon" src="~/images/PotionIcon.png" alt="Potion Icon" style="top: 70%; left: 76%; height: 15%; width: auto;">
 				<div class="player-potions stat-text" id="player-health-potions" style="top: 74%; left: 89%;"></div>
-				<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 18%; height: 15%; width: auto;">
-				<span class="player-attack stat-text" id="player-attack" style="bottom: 0%; left: 30%;">0</span>
-				<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 40%; height: 15%; width: auto;">
-				<span class="player-defense stat-text" id="player-defense" style="bottom: 0%; left: 53%;">0</span>
+				<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 12%; height: 15%; width: auto;">
+				<span class="player-attack stat-text" id="player-attack" style="bottom: 0%; left: 25%;">0</span>
+				<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 45%; height: 15%; width: auto;">
+				<span class="player-defense stat-text" id="player-defense" style="bottom: 0%; left: 58%;">0</span>
 			</div>
 		</div>
 
@@ -112,7 +111,7 @@
 				</div>
 				<div class="name-text" id="enemy-name" style="top: 0%; right: 4%; height: 10%; width: 75%; "></div>
 				<img class="enemy-image" id="enemy-image" src="~/images/BlankImage.png" style="top: 10%; right: 3%; height: auto; width: 75%;" />
-				<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 46%; height: 15%; width: auto;">
+				<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 56%; height: 15%; width: auto;">
 				<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 1%; right: 46%;"></span>
 				<img class="enemy-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; right: 24%; height: 15%; width: auto;">
 				<span class="enemy-defense stat-text" id="enemy-defense" style="bottom: 1%; right: 22%;"></span>
@@ -125,11 +124,13 @@
 </div>
 
 <!-- Inventory Window -->
-<div class="container-fluid" id="inventory" style="visibility: hidden; display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--background-color-primary); z-index: 950; padding: 1rem;">
+<div class="container-fluid" id="inventory" style="visibility: hidden; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--background-color-primary); z-index: 950;">
 	<div class="row organizer">
 		<!-- Close Button -->
 		<div class="col-12" id="inventory-header">
-			<button class="pq-button px-5 pq-font-small" id="close-inventory-btn" style="height: fit-content; width: fit-content; max-height: 100%; margin-left: auto; display: block;">Close</button>
+			<button class="pq-button px-5 pq-font-normal" id="close-inventory-btn" style="height: 100%; width: fit-content; max-height: 100%; margin-left: auto; display: block; line-height: 1; padding:0; padding-left: 5%; padding-right: 5%;">
+				Close
+			</button>
 		</div>
 		<!-- Player Info and Stats Section -->
 		<div class="col" id="inventory-player-section">
@@ -139,31 +140,27 @@
 			</div>
 
 			<div id="inventory-stats" style="flex-direction: column;">
-				@* <div class="stat-text" style="line-height: 1; font-size: 1.5rem;">Stats</div> *@
-				<div class="position-relative pq-border" style="height: 100%; width: 100%; padding: 1vmin;display: flex; flex-direction: inherit;">
-
-					<div style="height: 0%; width: auto;">
-						@* <span class="stat-text" style="font-size: 1rem;">Health:</span> *@
-						<span class="player-hp stat-text" id="player-hp" style="display:none;"></span>
-						<span class="pq-font" id="player-passive" style="font-size: 0;">nothing yet</span>
+				<div class="pq-font-large" style="height: 15%; width: 100%; line-height: 1; padding-bottom: 5px;">Abilities</div>
+				<div class="position-relative pq-border" style="height: 65%; width: 100%; padding: .5rem; display: flex; flex-direction: row; overflow-y: auto; flex-wrap: wrap; align-content: flex-start;">
+					<div style="height: fit-content; width: 100%; font-size: 1rem;">
+						<span class="ability-text" id="player-passive" style="">nothing yet</span>
 					</div>
-
-					<div style="height: 30%; width: auto;">
-						<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="display: inline; height: 100%; width: auto;">
-						<span class="player-defense pq-font-large" id="player-defense" style="">0</span>
-					</div>
-					<div style="height: 30%; width: auto;">
-						<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="height: 100%; width: auto;">
-						<span class="player-attack pq-font-large" id="player-attack" style="">0</span>
-					</div>
-					<div style="height: 30%; width: auto;">
-						<img id="gold-image" src="~/images/GoldCoin.png" style="height: 100%; width: auto;" />
-						<span class="pq-font-large" id="gold-display" style=""></span>
-					</div>
-					<div style="top:20%; left:35%; height: 80%; width:65%; overflow-y: auto;">
-						<span class="ability-text" id="player-passive">nothing yet</span>
-						<br />
+					<div style="height: fit-content; min-width:100%; font-size: 1rem;">
 						<span class="ability-text" id="player-active">nothing yet</span>
+					</div>
+				</div>
+				<div style="height: 20%; max-height: 3rem; width: 100%; overflow: auto; display: flex; flex-direction: row; padding: 2px; flex-wrap: nowrap">
+					<div style="height: 100%; width: fit-content; display: flex; flex-wrap: nowrap;">
+						<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="display: inline; height: 100%; width: auto;">
+						<span class="player-defense pq-font-normal" id="player-defense" style="">0</span>
+					</div>
+					<div style="height: 100%; width: fit-content; padding-left: 2px; display: flex; flex-wrap: nowrap;">
+						<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="height: 100%; width: auto;">
+						<span class="player-attack pq-font-normal" id="player-attack" style="">0</span>
+					</div>
+					<div style="height: 100%; width: fit-content; padding-left: 2px; display: flex; flex-wrap: nowrap;">
+						<img id="gold-image" src="~/images/GoldCoin.png" style="height: 100%; width: auto;" />
+						<span class="pq-font-normal" id="gold-display" style=""></span>
 					</div>
 				</div>
 			</div>
@@ -201,7 +198,7 @@
 							</div>
 
 							<!-- Stats section -->
-							<div class="stats-section" >
+							<div class="stats-section">
 								<div class="stat-item">
 									<img id="shield-icon" src="~/images/ShieldIcon.png" alt="Defense" class="stat-icon">
 									<div id="item-defense" class="pq-font stat-value">+2</div>
@@ -228,7 +225,7 @@
 </div>
 
 <!-- Overlay to make the background behind window's dark and not clickable -->
-<div id="overlay" style="visibility: hidden;"></div>
+<div id="overlay" style=""></div>
 
 <!-- Game Menu -->
 <div class="pq-center-element BackgroundColorDark" id="menu">
@@ -239,12 +236,22 @@
 </div>
 
 <!-- Map -->
-<div id="map" class="pq-container" style="visibility: hidden; display: block; position:absolute; top:5%; left:5%; width:90%; height: 90%; border: 3px solid black;">
-	<!-- Map Background -->
-
-	<img src="~/images/BackgroundMap.png" alt="Alternate Text" style="height:100%;width:100%;" />
-	<div class="pq-font" id="legend" style="top:0%; left:0%; height:5%; width:10%; color: black; font-size:5vmin; font-family: 'texture', sans-serif">Legend</div>
-	<div class="pq-font legend-item" style="top:10%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Enemy:</div>
+<div id="map" class="organizer">
+	<div style="justify-content: space-between; align-content: flex-start;">
+		<div id="floor-tracker"></div>
+		<button class="map-btn" id="close-map-btn">
+			<img src="~/images/MapCloseIcon.png" alt="Alternate Text" style="max-height:100%; " />
+		</button>
+	</div>
+	<div class="pq-map-display" id="map-container">
+	</div>
+	<div style="justify-content: flex-end; align-items: flex-end;">
+		<button id="floor-btn">
+			<img src="~/images/NextFloorIcon.png" alt="Move to next floor button" />
+		</button>
+	</div>
+	<div class="pq-font" id="legend" style="top:0%; left:0%; height:5%; width:10%; color: black; font-size:0; font-family: 'texture', sans-serif">Legend</div>
+	@* 	<div class="pq-font legend-item" style="top:10%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Enemy:</div>
 	<div class="pq-font legend-item" style="top:10%; left:7%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">No Icon</div>
 	<div class="pq-font legend-item" style="top:15%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Elite:</div>
 	<img src="/images/EliteEnemyIcon.png" class="legend-item" style="top:15%; left:7%; height:5%; width:auto; "/>
@@ -257,14 +264,7 @@
 	<div class="pq-font legend-item" style="top:35%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Camp:</div>
 	<img src="/images/campsite.png" class="legend-item" style="top:35%; left:7%; height:5%; width:auto; " />
 	<div class="pq-font legend-item" style="top:40%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Boss:</div>
-	<img src="/images/BossIcon.png" class="legend-item" style="top:40%; left:7%; height:5%; width:auto; " />
-	<button id="close-map-btn" class="map-btn" style="top: 2vmin; right: 2vmin; height: 50px; width: 50px; background: none; border: none; padding: 0;">
-		<img src="~/images/MapCloseIcon.png" alt="Alternate Text" style="max-height:100%; " />
-	</button>
-	<div class="pq-font text-center" id="floor-tracker" style="top:5%; left:5%; height:15%; width:90%; color: black; font-size:8vmin; font-family: 'texture', sans-serif"></div>
-	<button class="pq-button" id="floor-btn" style="top:25%; left:40%; height:10%; width:20%; font-size:2vmin;">Move to Next Floor</button>
-	<div class="pq-map-display" id="map-container" style="bottom:0; left:0; height: 40%; width: 100%">
-	</div>
+	<img src="/images/BossIcon.png" class="legend-item" style="top:40%; left:7%; height:5%; width:auto; " /> *@
 </div>
 
 <!-- Respawn Modal -->
@@ -310,7 +310,7 @@
 
 <script>
 	function adjustLayout() {
-			// const isPortrait = (window.innerHeight / window.innerWidth > .73);
+			// const isPortrait = (window.innerHeight / window.innerWidth > 1);
 			const isPortrait = (window.innerHeight / window.innerWidth > 1);
 			const containers = document.querySelectorAll('.organizer');
 
@@ -323,6 +323,7 @@
 						container.classList.remove('portrait-layout');
 				}
 			});
+		refreshMap();
 	}
 
 	// Run on load and when resizing
