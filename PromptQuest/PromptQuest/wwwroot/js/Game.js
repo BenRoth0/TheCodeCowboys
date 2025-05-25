@@ -14,6 +14,7 @@ let bleedingIndicator;
 let burningIndicator;
 let playerHealthBar;
 let enemyHealthBar;
+let activePopupWindow;
 //Player action buttons
 let attackBtn;
 let healBtn;
@@ -66,6 +67,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	openTreasureBtn.attachPlayerAction('open-treasure');
 	skipTreasureBtn.attachPlayerAction('skip-treasure');
 	respawnBtn.attachPlayerAction('respawn');
+	//Add hover action on/offs to items
+	activePopupWindow = document.getElementById("active-popup");
+	abilityBtn.addEventListener("mouseover", showActivePopup);
+	abilityBtn.addEventListener("mouseout", hideActivePopup);
+	hideActivePopup();
 });
 
 //----------- REFRESH DISPLAY ---------------------------------------------------------------------------------------
@@ -104,11 +110,16 @@ function refreshPlayerDisplay() {
 	document.querySelectorAll(".player-name").forEach(el => { el.textContent = gameState.player.name; });
 	document.querySelectorAll(".player-image").forEach(el => { el.src = `/Game/GetCharacterImage`; }); // Placeholder image for now.
 	document.querySelectorAll(".player-image").forEach(el => { el.alt = gameState.player.name; });
-	document.querySelectorAll(".player-attack").forEach(el => { el.textContent = gameState.player.attackStat ?? 0; });
+	document.querySelectorAll(".player-attack").forEach(el => {
+		const attackStat = gameState.player.attackStat ?? 0;
+		const min = Math.floor(attackStat * 0.8);
+		const max = Math.ceil(attackStat * 1.3);
+		el.textContent = `${min}-${max}`;
+	});
 	document.querySelectorAll(".player-defense").forEach(el => { el.textContent = gameState.player.defenseStat ?? 0; });
 	document.querySelectorAll(".player-hp").forEach(el => { el.textContent = gameState.player.currentHealth + "/" + gameState.player.maxHealth + " HP"; });
 	document.getElementById("player-health-potions").textContent = gameState.player.healthPotions;
-	document.getElementById("player-passive").textContent = getPassiveDescription(gameState.player.passive);
+	document.getElementById("player-passive").textContent = "Passive: " + getPassiveDescription(gameState.player.passive);
 	abilityCooldownIcon.src = "/images/" + gameState.player.abilityCooldown + "_6_Clock.png";
 	playerHealthBar.style.height = ((gameState.player.currentHealth / gameState.player.maxHealth) * 100) + "%";
 	let healthDifference = gameState.player.currentHealth - previousPlayerHealth;
@@ -129,13 +140,17 @@ function refreshPlayerDisplay() {
 		hideRespawnModal();
 	}
 	previousPlayerHealth = gameState.player.currentHealth;//Update cached value for next check.
+	activePopupWindow.textContent = getActiveDescription(gameState.player.class);//update active ability description. should only be needed once but whatever.
 }
 
 function refreshEnemyDisplay() {
 	document.getElementById("enemy-name").textContent = gameState.enemy.name;
 	document.getElementById("enemy-image").src = gameState.enemy.imageUrl;
 	document.getElementById("enemy-image").alt = gameState.enemy.name;
-	document.getElementById("enemy-attack").textContent = gameState.enemy.attack;
+	const enemyAttack = gameState.enemy.attack ?? 0;
+	const minEnemy = Math.floor(enemyAttack * 0.8);
+	const maxEnemy = Math.ceil(enemyAttack * 1.3);
+	document.getElementById("enemy-attack").textContent = `${minEnemy}-${maxEnemy}`;
 	document.getElementById("enemy-defense").textContent = gameState.enemy.defense;
 	//document.getElementById("enemy-hp").textContent = gameState.enemy.currentHealth + "/" + gameState.enemy.maxHealth + " HP";
 	enemyHealthBar.style.height = ((gameState.enemy.currentHealth / gameState.enemy.maxHealth) * 100) + "%";
@@ -261,6 +276,14 @@ function hideRespawnModal() {
 	if (modalInstance) {
 		modalInstance.hide();
 	}
+}
+// Function to show the Active Description Popup window
+function showActivePopup() {
+	activePopupWindow.style.visibility="visible"
+}
+//Function to hide the Active Description Popup window
+function hideActivePopup() {
+	activePopupWindow.style.visibility = "hidden"
 }
 
 //------------------------ EXTENSION METHODS --------------------------------------------------------------------------------------------------------------
