@@ -18,6 +18,7 @@ let isInventoryOpen = false; //Keep track of whether or not the inventory is ope
 let selectedItemIndex = -1; //No item selected on load.
 //Cached map object that is defined server side so we grab it on load and then it never needs to be updated.
 let mapDef;
+let legendVisible = true;
 //----------- LOAD UI ELEMENTS AND ADD EVENT LISTENERS ---------------------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -41,8 +42,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("close-inventory-btn").addEventListener("click", () => { overlay.syncVisibility(false); inventory.syncVisibility(false); isInventoryOpen = false; });//Force menu to hide on click.
 	document.getElementById("open-map-btn").addEventListener("click", () => { overlay.syncVisibility(true); map.syncVisibility(true); isMapOpen = true;  refreshMap(); });//Set tab and refresh menu
 	document.getElementById("close-map-btn").addEventListener("click", () => { overlay.syncVisibility(false); map.syncVisibility(false); isMapOpen = false; });//Set tab and refresh menu
-	equipBtn.attachPlayerAction('equip', () => selectedItemIndex);
+	document.getElementById("legend").addEventListener("click", () => { showHideLegend(); });//toggle the legend display
+  equipBtn.attachPlayerAction('equip', () => selectedItemIndex);
 	floorBtn.attachPlayerAction('move', () => 1);
+	floorBtn.addEventListener("click", async () => {
+		await executePlayerAction('move', 1);
+		let data = await sendGetRequest(`/Game/GetBackground?floor=${gameState.floor}`);
+		document.getElementById("main-background-image").src = data;
+	});
+	// Fetch map from the server
+	mapDef = await sendGetRequest("/Game/GetMap");
 });
 
 //------------------------ REFRESH DISPLAY METHODS --------------------------------------------------------------------------------------------------------
@@ -95,7 +104,7 @@ async function refreshMap() {
 	mapDef = await sendGetRequest(`/Game/GetMap?floor=${gameState.floor}`);
 	const mapContainer = document.getElementById("map-container");
 	mapContainer.innerHTML = ""; // Clear previous map
-	// Update floor counter
+	// Update floor counter & background
 	document.getElementById("floor-tracker").textContent = "Floor " + gameState.floor;
 	// Enable next floor button if the boss is defeated
 	floorBtn.syncButtonState(gameState.playerLocation == 18 && gameState.isLocationComplete);
@@ -309,4 +318,14 @@ function calculateMapEdges(mapDef, nodeElements, mapContainer) {
 			mapContainer.appendChild(edgeElement);
 		});
 	});
+} 
+function showHideLegend() {
+	legendVisible = !legendVisible;
+
+	visAttribute = "visible";
+	if (!legendVisible) {
+		visAttribute = "hidden";
+	}
+	document.querySelectorAll(".legend-item").forEach(el => { el.style.visibility=visAttribute });
+	
 }

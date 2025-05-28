@@ -10,7 +10,7 @@
 	}
 }
 
-<img src="~/images/BackgroundGloomyDarkForest.png" style="position: absolute; top: 50%; left: 50%; height: 100%; width: 100%; transform: translate(-50%, -50%); user-select: none;" />
+<img src="" id="main-background-image" style="position: absolute; top: 50%; left: 50%; height: 100%; width: 100%; transform: translate(-50%, -50%); user-select: none;" />
 <div class="pq-container">
 	<img class="bg-image" id="bg-image" src="~/images/campsite.png" style="display:none; position: absolute; top: 50%; left: 50%; height: 50%; width: auto; transform: translate(-50%, -10%);" />
 	<!-- Menu Button -->
@@ -52,7 +52,7 @@
 		<img class="player-potions-icon" src="~/images/PotionIcon.png" alt="Potion Icon" style="top: 70%; left: 76%; height: 15%; width: auto;">
 		<div class="player-potions stat-text" id="player-health-potions" style="top: 74%; left: 89%;"></div>
 		<img class="player-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; left: 15%; height: 15%; width: auto;">
-		<span class="player-attack stat-text" id="player-attack" style="bottom: 0%; left: 28%;">0</span>
+		<span class="player-attack stat-text" id="player-attack" style="bottom: 0%; left: 25%;">0</span>
 		<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 40%; height: 15%; width: auto;">
 		<span class="player-defense stat-text" id="player-defense" style="bottom: 0%; left: 53%;">0</span>
 		@* <span class="player-hp stat-text" id="player-hp" style="bottom: 3%; right: 25%;"></span> *@
@@ -99,7 +99,7 @@
 		<div class="enemy-name" id="enemy-name" style="top: 2%; right: 4%;"></div>
 		<img class="enemy-image" id="enemy-image" src="~/images/BlankImage.png" style="top: 10%; right: 3%; height: 75%; width: auto;" />
 		<img class="enemy-attack-icon" src="~/images/SwordIcon.png" alt="Attack Icon" style="bottom: 0; right: 49%; height: 15%; width: auto;">
-		<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 0%; right: 42%;"></span>
+		<span class="enemy-attack stat-text" id="enemy-attack" style="bottom: 0%; right: 39%;"></span>
 		<img class="enemy-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; right: 24%; height: 15%; width: auto;">
 		<span class="enemy-defense stat-text" id="enemy-defense" style="bottom: 0%; right: 22%;"></span>
 		@* <span class="enemy-hp stat-text" id="enemy-hp" style="bottom: 3%; right: 5%;"></span> *@
@@ -177,22 +177,21 @@
 	<!-- Map Background -->
 
 	<img src="~/images/BackgroundMap.png" alt="Alternate Text" style="height:100%;width:100%;" />
-	<!--Legend-->
-	<div class="pq-font" style="top:5%; left:5%; height:15%; width:90%; color: black; font-size:5vmin; font-family: 'texture', sans-serif">Legend:</div>
-	<div class="pq-font" style="top:15%; left:5%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Enemy:</div>
-	<div class="pq-font" style="top:15%; left:12%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">No Icon</div>
-	<div class="pq-font" style="top:20%; left:5%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Elite:</div>
-	<img src="/images/EliteEnemyIcon.png" style="top:20%; left:12%; height:5%; width:auto; " />
-	<div class="pq-font" style="top:25%; left:5%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Shop:</div>
-	<img src="/images/shop.png" style="top:25%; left:12%; height:5%; width:auto; " />
-	<div class="pq-font" style="top:30%; left:5%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Treasure:</div>
-	<img src="/images/treasure.png" style="top:30%; left:12%; height:5%; width:auto; " />
-	<div class="pq-font" style="top:35%; left:5%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Event:</div>
-	<img src="/images/event.png" style="top:35%; left:12%; height:5%; width:auto; " />
-	<div class="pq-font" style="top:40%; left:5%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Camp:</div>
-	<img src="/images/campsite.png" style="top:40%; left:12%; height:5%; width:auto; " />
-	<div class="pq-font" style="top:45%; left:5%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Boss:</div>
-	<img src="/images/BossIcon.png" style="top:45%; left:12%; height:5%; width:auto; " />
+	<div class="pq-font" id="legend" style="top:0%; left:0%; height:5%; width:10%; color: black; font-size:5vmin; font-family: 'texture', sans-serif">Legend</div>
+	<div class="pq-font legend-item" style="top:10%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Enemy:</div>
+	<div class="pq-font legend-item" style="top:10%; left:7%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">No Icon</div>
+	<div class="pq-font legend-item" style="top:15%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Elite:</div>
+	<img src="/images/EliteEnemyIcon.png" class="legend-item" style="top:15%; left:7%; height:5%; width:auto; "/>
+	<div class="pq-font legend-item" style="top:20%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Shop:</div>
+	<img src="/images/shop.png" class="legend-item"  style="top:20%; left:7%; height:5%; width:auto; " />
+	<div class="pq-font legend-item" style="top:25%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Treasure:</div>
+	<img src="/images/treasure.png" class="legend-item" style="top:25%; left:7%; height:5%; width:auto; " />
+	<div class="pq-font legend-item" style="top:30%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Event:</div>
+	<img src="/images/event.png" class="legend-item" style="top:30%; left:7%; height:5%; width:auto; " />
+	<div class="pq-font legend-item" style="top:35%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Camp:</div>
+	<img src="/images/campsite.png" class="legend-item" style="top:35%; left:7%; height:5%; width:auto; " />
+	<div class="pq-font legend-item" style="top:40%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Boss:</div>
+	<img src="/images/BossIcon.png" class="legend-item" style="top:40%; left:7%; height:5%; width:auto; " />
 	<button id="close-map-btn" class="map-btn" style="top: 2vmin; right: 2vmin; height: 50px; width: 50px; background: none; border: none; padding: 0;">
 		<img src="~/images/MapCloseIcon.png" alt="Alternate Text" style="max-height:100%; " />
 	</button>
