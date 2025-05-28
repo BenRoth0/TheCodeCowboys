@@ -18,6 +18,7 @@ let isInventoryOpen = false; //Keep track of whether or not the inventory is ope
 let selectedItemIndex = -1; //No item selected on load.
 //Cached map object that is defined server side so we grab it on load and then it never needs to be updated.
 let mapDef;
+let legendVisible = true;
 //----------- LOAD UI ELEMENTS AND ADD EVENT LISTENERS ---------------------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -43,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("close-map-btn").addEventListener("click", () => { overlay.syncVisibility(false); map.syncVisibility(false); isMapOpen = false; });//Set tab and refresh menu
 	equipBtn.attachPlayerAction('equip', () => selectedItemIndex);
 	floorBtn.attachPlayerAction('move', () => 1);
+	document.getElementById("legend").addEventListener("click", () => { showHideLegend(); });//toggle the legend display
 });
 
 //------------------------ REFRESH DISPLAY METHODS --------------------------------------------------------------------------------------------------------
@@ -309,4 +311,14 @@ function calculateMapEdges(mapDef, nodeElements, mapContainer) {
 			mapContainer.appendChild(edgeElement);
 		});
 	});
+} 
+function showHideLegend() {
+	legendVisible = !legendVisible;
+
+	visAttribute = "visible";
+	if (!legendVisible) {
+		visAttribute = "hidden";
+	}
+	document.querySelectorAll(".legend-item").forEach(el => { el.style.visibility=visAttribute });
+	
 }
