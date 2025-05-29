@@ -1,12 +1,5 @@
 @{
 	ViewData["Title"] = "Game";
-	bool isUserLoggedIn = User.Identity?.IsAuthenticated == true;
-	// Get User's profile image
-	string userProfileImage = User.FindFirst("GoogleProfileImageUrl")?.Value;
-	// Something went wrong, show the default image.
-	if(userProfileImage == null) {
-		userProfileImage = "";
-	}
 }
 
 <link rel="stylesheet" href="~/css/Inventory.css">
@@ -18,8 +11,8 @@
 		<div class="col-12" id="header">
 			<!-- Login Display -->
 			<div class="login-display" style="height: 100%; width: fit-content;">
-				@if(isUserLoggedIn) {
-					<img src="@userProfileImage" />
+				@if(ViewBag.isUserLoggedIn) {
+					<img src="@ViewBag.userProfileImage" />
 					<a class="pq-link" href="/Account/SignOutFromGoogleLogin">Logout</a>
 				}
 				else {
@@ -47,10 +40,10 @@
 				</div>
 				<div class="player-name name-text" style="top: 0%; left: 4%; height: 10%; width: 75%; "></div>
 				<img class="player-image pq-border" id="player-image" src="~/images/BlankImage.png" style="top: 10%; left: 3%; height: auto; width: 75%;" />
-				<button id="open-map-btn" class="map-btn" style="top: 65%; left: 5%; height: 15%; width: 15%; background: none; border: none; padding: 0; cursor: pointer;">
+				<button id="open-map-btn" class="map-btn" style="bottom: 18%; left: 5%; height: 15%; width: 15%; background: none; border: none; padding: 0; cursor: pointer;">
 					<img src="~/images/MapIcon.png" alt="Alternate Text" style="max-height:100%; " />
 				</button>
-				<button id="open-inventory-btn" class="map-btn" style="top: 47%; left: 5%; height: 15%; width: 15%; background: none; border: none; padding: 0; cursor: pointer;">
+				<button id="open-inventory-btn" class="map-btn" style="bottom: 35%; left: 5%; height: 15%; width: 15%; background: none; border: none; padding: 0; cursor: pointer;">
 					<img src="~/images/InventoryIcon.png" alt="Alternate Text" style="max-height:100%; " />
 				</button>
 				<div id="player-health-bar-container" class="pq-border" style="top: 10%; left: 81%; width: 5%; height: 55%; position: relative; overflow: hidden;">
@@ -62,6 +55,8 @@
 				<span class="player-attack stat-text" id="player-attack" style="bottom: 0%; left: 25%;">0</span>
 				<img class="player-defense-icon" src="~/images/ShieldIcon.png" alt="Shield Icon" style="bottom: 0; left: 45%; height: 15%; width: auto;">
 				<span class="player-defense stat-text" id="player-defense" style="bottom: 0%; left: 58%;">0</span>
+				<!-- Active Ability Cooldown Icon - moved here -->
+				<img class="player-ability-icon" id="ability-cooldown-icon" src="~/images/0_6_Clock.png" alt="Cooldown Counter" style="bottom: 18%; right: 25%; height: 12%; width: auto; max-height: 100%; max-width: 100%;">
 			</div>
 		</div>
 
@@ -70,10 +65,7 @@
 			<div class="btn-stack" id="action-button-display">
 				<button class="pq-button" id="attack-btn">Attack</button>
 				<button class="pq-button" id="health-potion-btn">Use Potion</button>
-				<button class="pq-button position-relative" id="ability-btn">
-					<img class="player-ability-icon" id="ability-cooldown-icon" src="~/images/0_6_Clock.png" alt="Cooldown Icon" style="float: inline-start; align-self: center; height: auto; width: 0%; max-height: 100%; max-width: 100%">
-					Active Ability
-				</button>
+				<button class="pq-button" id="ability-btn">Active Ability</button>
 			</div>
 			<!-- Campsite Buttons Display -->
 			<div class="btn-stack" id="campsite-button-display">

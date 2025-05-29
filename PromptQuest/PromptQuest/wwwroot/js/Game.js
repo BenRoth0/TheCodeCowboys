@@ -98,6 +98,12 @@ function refreshDisplay() {
 	// Check for status effects and update their visibility from the enum
 	bleedingIndicator.syncVisibility(gameState.enemy.statusEffects > 0 && (gameState.enemy.statusEffects == 1 || gameState.enemy.statusEffects == 3));
 	burningIndicator.syncVisibility(gameState.enemy.statusEffects > 0 && (gameState.enemy.statusEffects == 2 || gameState.enemy.statusEffects == 3));
+	let openMapBtn = document.getElementById("open-map-btn");
+	if (gameState.isLocationComplete) {
+		openMapBtn.style.animation = "glow 1.5s infinite ease-in-out";
+		return;
+	}
+	openMapBtn.style.animation = "none";
 }
 
 // ------------------------ REFRESH DISPLAY HELPER METHODS ------------------------------------------------------------------------------------------------------

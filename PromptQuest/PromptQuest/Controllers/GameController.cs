@@ -93,6 +93,8 @@ namespace PromptQuest.Controllers {
 
 		[HttpGet]
 		public IActionResult Game() {
+			ViewBag.isUserLoggedIn = User.Identity?.IsAuthenticated == true;
+			ViewBag.userProfileImage = User.FindFirst("GoogleProfileImageUrl")?.Value;
 			return View();
 		}
 

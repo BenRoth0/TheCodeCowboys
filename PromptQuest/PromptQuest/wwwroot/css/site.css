@@ -544,21 +544,28 @@ button:disabled {
 		background-color: var(--background-color-highlight);
 	}
 
-.pq-tab {
-	position: absolute;
-	background-color: var(--background-color-primary);
-	font-size: var(--pq-font-normal);
-	color: var(--pq-font-color);
-	border: var(--pq-border);
-	border-bottom: none;
+
+/* Active Ability Button Glow Animation */
+#ability-btn {
+	position: relative;
+	overflow: hidden;
+/*	animation: glow 1.5s infinite ease-in-out;*/
 }
 
-.pq-tab-current {
-	background-color: var(--background-color-highlight);
+#ability-btn:disabled {
+	animation: none;
 }
 
-.pq-tab:hover {
-	background-color: var(--background-color-highlight);
+@keyframes glow {
+	0% {
+		box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+	}
+	50% {
+		box-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 255, 255, 0.8);
+	}
+	100% {
+		box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+	}
 }
 
 .modal-header .btn-close {
