@@ -16,6 +16,8 @@ namespace PromptQuest.Controllers {
 		public async Task<IActionResult> Index() {
 			bool userHasSavedGame=await _gameStateService.DoesUserHaveSavedGame();
 			ViewBag.UserHasSavedGame = userHasSavedGame;
+			ViewBag.isUserLoggedIn = User.Identity?.IsAuthenticated == true;
+			ViewBag.userProfileImage = User.FindFirst("GoogleProfileImageUrl")?.Value;
 			return View();
 		}
 

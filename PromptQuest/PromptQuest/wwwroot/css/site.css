@@ -1,4 +1,4 @@
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+﻿.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
 	box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
@@ -10,6 +10,47 @@
 	--pq-font-large: 1.5rem;
 	--pq-font-normal: .8rem;
 	--pq-font-small: 1rem;
+}
+
+/*------------------------- Font and Scaling ---------------*/
+
+html {
+	font-size: 12px;
+}
+
+/* Small (sm: ≥576px) */
+@media (min-width: 576px) {
+	html {
+		font-size: 14px;
+	}
+}
+
+/* Medium (md: ≥768px) */
+@media (min-width: 768px) {
+	html {
+		font-size: 16px;
+	}
+}
+
+/* Large (lg: ≥992px) */
+@media (min-width: 992px) {
+	html {
+		font-size: 18px;
+	}
+}
+
+/* Extra large (xl: ≥1200px) */
+@media (min-width: 1200px) {
+	html {
+		font-size: 20px;
+	}
+}
+
+/* Super large (xxl: ≥1400px) */
+@media (min-width: 1400px) {
+	html {
+		font-size: 22px;
+	}
 }
 
 /*------------------------- Layout -------------------------*/
@@ -146,8 +187,6 @@ html, body {
 	width: 100vw;
 	background-color: var(--background-color-primary);
 	margin: 0;
-	/*	padding: 0;*/
-	font-size: 16pt;
 }
 
 body {
@@ -604,11 +643,10 @@ button:disabled {
 }
 
 .pq-title {
-	color: var(--pq-font-color);
-	font-style: normal;
-	font-family: Algerian;
-	font-size: 5vmin;
-	margin-left:auto;
+	color: whitesmoke;
+	font-family: 'texture', sans-serif;
+	font-size: 2.5rem;
+	margin-left: auto;
 }
 
 .BackgroundColorDark {

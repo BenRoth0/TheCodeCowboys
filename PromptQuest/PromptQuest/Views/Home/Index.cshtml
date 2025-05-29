@@ -1,54 +1,71 @@
 ﻿@{
 	ViewData["Title"] = "Main Menu";
-	bool isUserLoggedIn = User.Identity?.IsAuthenticated == true;
-	// Get User's profile image
-	string userProfileImage = User.FindFirst("GoogleProfileImageUrl")?.Value;
-	// Something went wrong, show the default image.
-	if(userProfileImage == null) {
-		userProfileImage = "";
-	}
 }
 
-<!-- Login Display -->
-<div class="pq-container">
-	<div class="login-display" style="top: 0; left: 0; height: 8vmin; width: 20vmin;">
-		@if(isUserLoggedIn) {
-			<img src="@userProfileImage"/>
-			<a class="pq-link" href="/Account/SignOutFromGoogleLogin">Logout</a>
-		}
-		else {
-			<a class="pq-link" href="/Account/GoogleLogin">Login with Google</a>
-		}
-	</div>
-	<div class="pq-container pq-center-element-x" style="width:50%; height:100%; top:0; left:50%;">
-		<!-- Logo -->
-		<img src="~/images/PromptQuestLogo.png" alt="The Prompt Quest logo" class="pq-center-element-x" style="height: 50%; width: auto; max-width: 100%; top:0; left:50%;">
-		<!-- Title -->
-		<div class="pq-title pq-center-element-x" style="height: 10%; width: max-content; top:50%; left:50%; overflow:hidden; max-width: 100%">Prompt Quest</div>
-		<!-- New Adventure button -->
-		<div class="action-button-display pq-center-element-x" style="height: 40%; width: 50%; bottom:0; left:50%;">
-			<form class="text-center">
-				<button class="pq-button" asp-controller="Game" asp-action="CreateCharacter">
-					New Adventure
-				</button>
-			</form>
-			<form class="text-center">
-				@if(ViewBag.UserHasSavedGame) { //Enable button if user has a saved game.
-					<button class="pq-button" id="continue-btn" asp-controller="Game" asp-action="Continue">
-						Continue
-					</button>
-				} 
-				else {// Disabled by default.
-					<button class="pq-button" id="continue-btn" asp-controller="Game" asp-action="Continue" disabled>
-						Continue
-					</button>
+<div class="container-fluid vh-100" style="overflow-x: hidden; overflow-y: auto;">
+	<!-- Login Display Row -->
+	<div class="row">
+		<div class="col-12 position-relative">
+			<div class="login-display py-2">
+				@if(ViewBag.isUserLoggedIn) {
+					<img src="@ViewBag.userProfileImage" class="rounded-circle me-2" style="width: 40px; height: 40px;" alt="Profile" />
+					<a class="pq-link p-0" href="/Account/SignOutFromGoogleLogin">Logout</a>
 				}
-			</form>
-			<form class="text-center">
-				<button class="pq-button" asp-controller="Game" asp-action="About">
-					About Us
-				</button>
-			</form>
+				else {
+					<a class="pq-link p-0" href="/Account/GoogleLogin">Login with Google</a>
+				}
+			</div>
+		</div>
+	</div>
+
+	<!-- Main Content Row -->
+	<div class="row justify-content-center mt-1" style="height: calc(100vh - 80px);">
+		<div class="col-12 col-md-8 col-lg-6 col-xl-4 text-center">
+			<!-- Logo -->
+			<div class="row">
+				<div class="col-12">
+					<img src="~/images/PromptQuestLogo.png" alt="The Prompt Quest logo" class="" style="max-height: 14rem;">
+				</div>
+			</div>
+
+			<!-- Title -->
+			<div class="row mb-5">
+				<div class="col-12">
+					<h1 class="pq-title">Prompt Quest</h1>
+				</div>
+			</div>
+
+			<!-- Buttons -->
+			<div class="row g-3">
+				<div class="col-12">
+					<form>
+						<button class="pq-button btn btn-lg w-100" asp-controller="Game" asp-action="CreateCharacter">
+							New Adventure
+						</button>
+					</form>
+				</div>
+				<div class="col-12">
+					<form>
+						@if(ViewBag.UserHasSavedGame) {
+							<button class="pq-button w-100" id="continue-btn" asp-controller="Game" asp-action="Continue">
+								Continue
+							</button>
+						}
+						else {
+							<button class="pq-button w-100" id="continue-btn" asp-controller="Game" asp-action="Continue" disabled>
+								Continue
+							</button>
+						}
+					</form>
+				</div>
+				<div class="col-12">
+					<form>
+						<button class="pq-button w-100" asp-controller="Game" asp-action="About">
+							About Us
+						</button>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
