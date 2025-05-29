@@ -396,6 +396,22 @@ body {
 	z-index: 998 !important;
 }
 
+#legend-window {
+	border: 2px solid black;
+	padding: 1rem;
+	z-index: 950;
+	display: flex;
+	flex-direction: column;
+	background-image: url('/images/BackgroundMap.png'); /* Path to image */
+	background-size: cover; /* Ensures full coverage */
+	background-position: center; /* Centers the image */
+	background-repeat: no-repeat; /* Prevents repetition */
+}
+
+#legend-window * {
+	color: black;
+}
+
 /* Absolute positioning for player icon */
 .player-icon {
 	width: 90%;

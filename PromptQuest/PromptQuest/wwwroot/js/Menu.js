@@ -9,6 +9,7 @@ let equippedChestSlot;
 let equippedLegsSlot;
 let equippedBootsSlot;
 let itemDetails;
+let legend;
 //Buttons
 let equipBtn;
 let floorBtn;
@@ -18,7 +19,6 @@ let isInventoryOpen = false; //Keep track of whether or not the inventory is ope
 let selectedItemIndex = 0; //No item selected on load.
 //Cached map object that is defined server side so we grab it on load and then it never needs to be updated.
 let mapDef;
-let legendVisible = true;
 //----------- LOAD UI ELEMENTS AND ADD EVENT LISTENERS ---------------------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -40,9 +40,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("quit-btn").addEventListener("click", () => {window.location.replace("/Home"); }); // Redirect to /Home and clear history
 	document.getElementById("open-inventory-btn").addEventListener("click", () => { overlay.syncVisibility(true); inventory.syncVisibility(true); isInventoryOpen = true; refreshInventory(); }); 
 	document.getElementById("close-inventory-btn").addEventListener("click", () => { overlay.syncVisibility(false); inventory.syncVisibility(false); itemDetails.syncVisibility(false); isInventoryOpen = false; });//Force menu to hide on click.
-	document.getElementById("open-map-btn").addEventListener("click", () => { overlay.syncVisibility(true); map.syncVisibility(true); isMapOpen = true;  refreshMap(); });//Set tab and refresh menu
-	document.getElementById("close-map-btn").addEventListener("click", () => { overlay.syncVisibility(false); map.syncVisibility(false); isMapOpen = false; });//Set tab and refresh menu
+	document.getElementById("open-map-btn").addEventListener("click", () => { overlay.syncVisibility(true); map.syncVisibility(true); isMapOpen = true; legend.syncVisibility(false); refreshMap(); });//Set tab and refresh menu
+	document.getElementById("close-map-btn").addEventListener("click", () => { overlay.syncVisibility(false); map.syncVisibility(false); legend.syncVisibility(false); isMapOpen = false; });//Set tab and refresh menu
 	document.getElementById("legend").addEventListener("click", () => { showHideLegend(); });//toggle the legend display
+	legend = document.getElementById('legend-window');
   equipBtn.attachPlayerAction('equip', () => selectedItemIndex);
 	floorBtn.attachPlayerAction('move', () => 1);
 	floorBtn.addEventListener("click", async () => {
@@ -336,12 +337,7 @@ function calculateMapEdges(mapDef, nodeElements, mapContainer) {
 	});
 } 
 function showHideLegend() {
-	legendVisible = !legendVisible;
-
-	visAttribute = "visible";
-	if (!legendVisible) {
-		visAttribute = "hidden";
-	}
-	document.querySelectorAll(".legend-item").forEach(el => { el.style.visibility=visAttribute });
-	
+	let legendWindow = document.getElementById('legend-window');
+	legendVisible = legendWindow.style.visibility !== "hidden";
+	legendWindow.syncVisibility(!legendVisible);
 }

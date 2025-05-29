@@ -171,7 +171,7 @@
 				</div>
 
 				<!-- Item Details Display -->
-				<div class="" id="item-details-container">
+				<div id="item-details-container">
 					<div id="item-details">
 						<!-- Left side - Image -->
 						<div class="image-container">
@@ -236,26 +236,46 @@
 	</div>
 	<div class="pq-map-display" id="map-container">
 	</div>
-	<div style="justify-content: flex-end; align-items: flex-end;">
+	<div style="justify-content: space-between; align-items: flex-end;">
+		<div class="pq-font px-3" id="legend" style="color: black; font-weight: bold; font-size:3rem; line-height: 1; cursor: pointer;">?</div>
 		<button id="floor-btn">
 			<img src="~/images/NextFloorIcon.png" alt="Move to next floor button" />
 		</button>
 	</div>
-	<div class="pq-font" id="legend" style="top:0%; left:0%; height:5%; width:10%; color: black; font-size:0; font-family: 'texture', sans-serif">Legend</div>
-	@* 	<div class="pq-font legend-item" style="top:10%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Enemy:</div>
-	<div class="pq-font legend-item" style="top:10%; left:7%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">No Icon</div>
-	<div class="pq-font legend-item" style="top:15%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Elite:</div>
-	<img src="/images/EliteEnemyIcon.png" class="legend-item" style="top:15%; left:7%; height:5%; width:auto; "/>
-	<div class="pq-font legend-item" style="top:20%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Shop:</div>
-	<img src="/images/shop.png" class="legend-item"  style="top:20%; left:7%; height:5%; width:auto; " />
-	<div class="pq-font legend-item" style="top:25%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Treasure:</div>
-	<img src="/images/treasure.png" class="legend-item" style="top:25%; left:7%; height:5%; width:auto; " />
-	<div class="pq-font legend-item" style="top:30%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Event:</div>
-	<img src="/images/event.png" class="legend-item" style="top:30%; left:7%; height:5%; width:auto; " />
-	<div class="pq-font legend-item" style="top:35%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Camp:</div>
-	<img src="/images/campsite.png" class="legend-item" style="top:35%; left:7%; height:5%; width:auto; " />
-	<div class="pq-font legend-item" style="top:40%; left:0%; height:15%; width:90%; color: black; font-size:3vmin; font-family: 'texture', sans-serif">Boss:</div>
-	<img src="/images/BossIcon.png" class="legend-item" style="top:40%; left:7%; height:5%; width:auto; " /> *@
+	<!-- Legend Window - positioned in bottom left -->
+	<div id="legend-window" class="pq-border pq-center-element" style="visibility: hidden; position: absolute; top: 50%; left: 50%;  height: 35rem; width: 35rem; max-height: 90%; max-width: 90%; padding: 2rem;">
+		<div class="pq-font-large" style="margin-bottom: 0.5rem; text-align: center; font-size: 3rem; border-bottom: 1px solid black; padding-bottom: 0.25rem; font-family: 'texture', sans-serif">Legend</div>
+		<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 2rem; height: fit-content; max-height: 80%;">
+			<div style="display: flex; align-items: center;">
+				<span class="pq-font-large" style="width: 4rem; font-family: 'texture', sans-serif">Enemy:</span>
+				<span class="pq-font-small" style="margin-left: 2rem; font-family: 'texture', sans-serif">No Icon</span>
+			</div>
+			<div style="display: flex; align-items: center;">
+				<span class="pq-font-large" style="width: 4rem;font-family: 'texture', sans-serif">Elite:</span>
+				<img src="/images/EliteEnemyIcon.png" style="height: 2.5rem; width: auto; margin-left: 1.5rem;" />
+			</div>
+			<div style="display: flex; align-items: center; ">
+				<span class="pq-font-large" style="width: 4rem; font-family: 'texture', sans-serif">Shop:</span>
+				<img src="/images/shop.png" style="height: 2.5rem; width: auto; margin-left: 1.5rem;" />
+			</div>
+			<div style="display: flex; align-items: center; ">
+				<span class="pq-font-large" style="width: 4rem; font-family: 'texture', sans-serif">Treasure:</span>
+				<img src="/images/treasure.png" style="height: 2.5rem; width: auto; margin-left: 1.5rem;" />
+			</div>
+			<div style="display: flex; align-items: center; ">
+				<span class="pq-font-large" style="width: 4rem; font-family: 'texture', sans-serif">Event:</span>
+				<img src="/images/event.png" style="height: 2.5rem; width: auto; margin-left: 1.5rem;" />
+			</div>
+			<div style="display: flex; align-items: center; ">
+				<span class="pq-font-large" style="width: 4rem; font-family: 'texture', sans-serif">Camp:</span>
+				<img src="/images/campsite.png" style="height: 2.5rem; width: auto; margin-left: 1.5rem;" />
+			</div>
+			<div style="display: flex; align-items: center;">
+				<span class="pq-font-large" style="width: 4rem; font-family: 'texture', sans-serif">Boss:</span>
+				<img src="/images/BossIcon.png" style="height: 2.5rem; width: auto; margin-left: 1.5rem;" />
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Respawn Modal -->
